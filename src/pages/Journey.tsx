@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Container, Typography, Card } from '@mui/material';
-import { styled, keyframes } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import {
   SeedIcon,
   SproutIcon,
@@ -13,18 +13,6 @@ import {
 } from '../components/JourneyIcons';
 import NebulaBackground from '../components/NebulaBackground';
 import ConnectingLines from '../components/ConnectingLines';
-
-const float = keyframes`
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
-`;
-
-const pulse = keyframes`
-  0% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.05); opacity: 1; }
-  100% { transform: scale(1); opacity: 0.8; }
-`;
 
 const JourneyPath = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -282,14 +270,14 @@ const Journey: React.FC = () => {
   ];
 
   return (
-    <Box sx={{
-      pt: 0,
-      pb: 3,
+    <Box sx={{ 
       minHeight: '100vh',
       position: 'relative',
+      py: { xs: 12, md: 16 },
       overflow: 'hidden',
+      backgroundColor: '#0F172A',
     }}>
-      <NebulaBackground />
+      <NebulaBackground isHighSpeed={true} />
       
       <Container maxWidth={false} sx={{ position: 'relative', zIndex: 1, pt: { xs: 6, md: 8 }, px: { xs: 2, sm: 4, md: 6, lg: 8 } }}>
         <Typography 

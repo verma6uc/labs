@@ -1,5 +1,63 @@
 import React from 'react';
 
+export const SeldonIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3Z" 
+          fill="rgba(14, 165, 233, 0.1)" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M12 7V17M7 12H17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M12 3V5M12 19V21M21 12H19M5 12H3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <circle cx="12" cy="12" r="4" fill="rgba(14, 165, 233, 0.1)" stroke="currentColor" strokeWidth="1.5"/>
+  </svg>
+);
+
+export const BaleyIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 4L20 8V16L12 20L4 16V8L12 4Z" fill="rgba(14, 165, 233, 0.1)" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M12 4V12M12 12V20M12 12L20 8M12 12L4 8" stroke="currentColor" strokeWidth="1.5"/>
+    <circle cx="12" cy="12" r="2" fill="rgba(14, 165, 233, 0.1)" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M15 12L17 11M9 12L7 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+);
+
+export const DorsIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="16" height="16" rx="2" fill="rgba(14, 165, 233, 0.1)" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12Z" 
+          fill="rgba(14, 165, 233, 0.1)" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M12 8V16M8 12H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M7 7L9 9M17 7L15 9M7 17L9 15M17 17L15 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+);
+
+export const DaneelIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5 8L12 4L19 8V16L12 20L5 16V8Z" fill="rgba(14, 165, 233, 0.1)" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M12 8V16M8 10L16 14M16 10L8 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <circle cx="12" cy="12" r="2" fill="rgba(14, 165, 233, 0.1)" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M12 4V2M12 22V20M5 8L3 7M21 7L19 8M5 16L3 17M21 17L19 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+);
+
+export const GiskardIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 3L21 8V16L12 21L3 16V8L12 3Z" fill="rgba(14, 165, 233, 0.1)" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M12 8L16 10V14L12 16L8 14V10L12 8Z" fill="rgba(14, 165, 233, 0.1)" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M12 3V8M12 16V21M3 8L8 10M16 14L21 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <circle cx="12" cy="12" r="1" fill="currentColor"/>
+  </svg>
+);
+
+export const CalvinIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z" 
+          fill="rgba(14, 165, 233, 0.1)" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M12 7V17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M7 10L12 12L17 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M7 14L12 12L17 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <circle cx="12" cy="12" r="2" fill="rgba(14, 165, 233, 0.1)" stroke="currentColor" strokeWidth="1.5"/>
+  </svg>
+);
+
 export const BrainProcessIcon = () => (
   <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M80 30C52.386 30 30 52.386 30 80C30 107.614 52.386 130 80 130C107.614 130 130 107.614 130 80C130 52.386 107.614 30 80 30Z" 

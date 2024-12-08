@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Container, Typography, Grid, useTheme, useMediaQuery } from '@mui/material';
 import { styled, keyframes } from '@mui/material/styles';
 import SolarSystem from '../components/SolarSystem';
+import ParticleBackground from '../components/ParticleBackground';
 
 const AgentCard = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -74,118 +75,121 @@ const agents = [
   },
 ];
 
-const Agents = () => {
+const Agents: React.FC = () => {
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
   return (
-    <Box sx={{
-      minHeight: '100vh',
-      position: 'relative',
-      background: 'linear-gradient(180deg, rgba(14, 165, 233, 0.05) 0%, rgba(14, 165, 233, 0) 100%)',
-      overflow: 'hidden',
-    }}>
-      <Container maxWidth={false} sx={{ position: 'relative', zIndex: 2, px: { xs: 2, sm: 4, md: 6, lg: 8 } }}>
-        <Box sx={{ textAlign: 'center', mb: { xs: 6, md: 8 }, pt: { xs: 8, md: 12 } }}>
-          <Typography
-            variant="h1"
-            sx={{
-              fontSize: { xs: '2.5rem', md: '3.5rem', lg: '4rem' },
-              fontWeight: 700,
-              mb: 3,
-              background: 'linear-gradient(45deg, #0EA5E9 30%, #6366F1 90%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            Meet Our Asimov-Inspired AI Agents
-          </Typography>
-          <Typography
-            variant="h5"
-            sx={{
-              color: 'rgba(255, 255, 255, 0.7)',
-              maxWidth: '900px',
-              mx: 'auto',
-              lineHeight: 1.6,
-              px: 2,
-            }}
-          >
-            Drawing on the spirit of Asimov\'s universe, we\'ve conceptualized a team of specialized AI agents—each playing a distinct role in guiding your product from idea to reality. Today, they\'re outlines of what they\'ll become; tomorrow, they\'ll plan, research, design, build, integrate, and refine your vision into something extraordinary.
-          </Typography>
-        </Box>
-      </Container>
-
-      <Box sx={{ 
-        position: 'relative', 
-        height: { xs: '60vh', md: '80vh' },
-        width: '100%',
-        mb: { xs: 6, md: 8 },
-        mt: { xs: 4, md: 6 },
+    <Box sx={{ position: 'relative', minHeight: '100vh', overflow: 'hidden' }}>
+      <ParticleBackground variant="sparse" />
+      <Box sx={{
+        minHeight: '100vh',
+        position: 'relative',
+        background: 'linear-gradient(180deg, rgba(14, 165, 233, 0.05) 0%, rgba(14, 165, 233, 0) 100%)',
+        overflow: 'hidden',
       }}>
-        <SolarSystem />
-      </Box>
+        <Container maxWidth={false} sx={{ position: 'relative', zIndex: 2, px: { xs: 2, sm: 4, md: 6, lg: 8 }, pt: { xs: 12, md: 16 } }}>
+          <Box sx={{ textAlign: 'center', mb: { xs: 6, md: 8 } }}>
+            <Typography
+              variant="h1"
+              sx={{
+                fontSize: { xs: '2.5rem', md: '3.5rem', lg: '4rem' },
+                fontWeight: 700,
+                mb: 3,
+                background: 'linear-gradient(45deg, #0EA5E9 30%, #6366F1 90%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Meet Our Asimov-Inspired AI Agents
+            </Typography>
+            <Typography
+              variant="h5"
+              sx={{
+                color: 'rgba(255, 255, 255, 0.7)',
+                maxWidth: '900px',
+                mx: 'auto',
+                lineHeight: 1.6,
+                px: 2,
+              }}
+            >
+              Drawing on the spirit of Asimov\'s universe, we\'ve conceptualized a team of specialized AI agents—each playing a distinct role in guiding your product from idea to reality. Today, they\'re outlines of what they\'ll become; tomorrow, they\'ll plan, research, design, build, integrate, and refine your vision into something extraordinary.
+            </Typography>
+          </Box>
+        </Container>
 
-      <Container maxWidth={false} sx={{ position: 'relative', zIndex: 2, pb: { xs: 8, md: 12 }, px: { xs: 2, sm: 4, md: 6, lg: 8 } }}>
-        <Grid container spacing={4}>
-          {agents.map((agent, index) => (
-            <Grid item xs={12} md={6} lg={4} key={index}>
-              <AgentCard>
-                <GlowingBackground />
-                <Box sx={{ position: 'relative', zIndex: 1 }}>
-                  <Typography
-                    variant="h3"
-                    sx={{
-                      textAlign: 'center',
-                      mb: 1,
-                      fontSize: { xs: '2rem', md: '2.25rem' },
-                      fontWeight: 700,
-                      background: 'linear-gradient(45deg, #0EA5E9 30%, #6366F1 90%)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                    }}
-                  >
-                    {agent.title}
-                  </Typography>
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      textAlign: 'center',
-                      mb: 3,
-                      color: 'rgba(255, 255, 255, 0.9)',
-                      fontWeight: 500,
-                    }}
-                  >
-                    {agent.subtitle}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      textAlign: 'center',
-                      color: 'rgba(255, 255, 255, 0.7)',
-                      lineHeight: 1.8,
-                      fontSize: '1.1rem',
-                      mb: 3,
-                    }}
-                  >
-                    {agent.description}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      textAlign: 'center',
-                      color: 'rgba(14, 165, 233, 0.9)',
-                      fontStyle: 'italic',
-                      fontSize: '1.1rem',
-                    }}
-                  >
-                    {agent.quote}
-                  </Typography>
-                </Box>
-              </AgentCard>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+        <Box sx={{ 
+          position: 'relative', 
+          height: { xs: '60vh', md: '80vh' },
+          width: '100%',
+          mb: { xs: 6, md: 8 },
+          mt: { xs: 4, md: 6 },
+        }}>
+          <SolarSystem />
+        </Box>
+
+        <Container maxWidth={false} sx={{ position: 'relative', zIndex: 2, pb: { xs: 8, md: 12 }, px: { xs: 2, sm: 4, md: 6, lg: 8 } }}>
+          <Grid container spacing={4}>
+            {agents.map((agent, index) => (
+              <Grid item xs={12} md={6} lg={4} key={index}>
+                <AgentCard>
+                  <GlowingBackground />
+                  <Box sx={{ position: 'relative', zIndex: 1 }}>
+                    <Typography
+                      variant="h3"
+                      sx={{
+                        textAlign: 'center',
+                        mb: 1,
+                        fontSize: { xs: '2rem', md: '2.25rem' },
+                        fontWeight: 700,
+                        background: 'linear-gradient(45deg, #0EA5E9 30%, #6366F1 90%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                      }}
+                    >
+                      {agent.title}
+                    </Typography>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        textAlign: 'center',
+                        mb: 3,
+                        color: 'rgba(255, 255, 255, 0.9)',
+                        fontWeight: 500,
+                      }}
+                    >
+                      {agent.subtitle}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        textAlign: 'center',
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        lineHeight: 1.8,
+                        fontSize: '1.1rem',
+                        mb: 3,
+                      }}
+                    >
+                      {agent.description}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        textAlign: 'center',
+                        color: 'rgba(14, 165, 233, 0.9)',
+                        fontStyle: 'italic',
+                        fontSize: '1.1rem',
+                      }}
+                    >
+                      {agent.quote}
+                    </Typography>
+                  </Box>
+                </AgentCard>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
     </Box>
   );
 };

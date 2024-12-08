@@ -1,209 +1,301 @@
-import { Box, Button, Container, Typography, styled, Paper } from '@mui/material';
-import LightbulbIcon from '@mui/icons-material/Lightbulb';
-import PsychologyIcon from '@mui/icons-material/Psychology';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
+import { Box, Button, Container, Typography, styled, Grid } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+import CodeIcon from '@mui/icons-material/Code';
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import RocketIcon from '@mui/icons-material/Rocket';
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
+import BrainIcon from '@mui/icons-material/Psychology';
+import ParticleBackground from '../components/ParticleBackground';
 
-const GradientText = styled('span')({
-  background: 'linear-gradient(90deg, #2196F3 0%, #00BCD4 100%)',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
+const EarlyAccessBadge = styled('div')({
+  background: 'rgba(14, 165, 233, 0.15)',
+  backdropFilter: 'blur(8px)',
+  border: '1px solid rgba(14, 165, 233, 0.3)',
+  borderRadius: '8px',
+  padding: '8px 16px',
+  color: '#0EA5E9',
+  fontSize: '0.875rem',
+  fontWeight: 600,
+  display: 'inline-block',
+  marginBottom: '2rem',
+  letterSpacing: '0.05em',
 });
 
-const FeatureCard = styled(Paper)(({ theme }) => ({
+const GradientText = styled('span')({
+  background: 'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  display: 'inline',
+});
+
+const ActionButton = styled(Button)({
+  padding: '12px 24px',
+  fontSize: '1rem',
+  fontWeight: 500,
+  minWidth: '180px',
+  height: '48px',
+  borderRadius: '0',
+  transition: 'all 0.3s ease-in-out',
+  backgroundColor: 'rgba(14, 165, 233, 0.1)',
+  border: '1px solid #0EA5E9',
+  color: '#0EA5E9',
+  '&:hover': {
+    backgroundColor: 'rgba(14, 165, 233, 0.2)',
+    transform: 'translateY(-2px)',
+  },
+  '&.MuiButton-contained': {
+    backgroundColor: 'rgba(14, 165, 233, 0.1)',
+    color: '#0EA5E9',
+    border: '1px solid #0EA5E9',
+    '&:hover': {
+      backgroundColor: 'rgba(14, 165, 233, 0.2)',
+      transform: 'translateY(-2px)',
+    },
+  },
+  '&.MuiButton-outlined': {
+    backgroundColor: 'rgba(14, 165, 233, 0.1)',
+    border: '1px solid #0EA5E9',
+    color: '#0EA5E9',
+    '&:hover': {
+      backgroundColor: 'rgba(14, 165, 233, 0.2)',
+      transform: 'translateY(-2px)',
+    },
+  },
+});
+
+const ProgressCard = styled(Box)(({ theme }) => ({
   padding: theme.spacing(4),
-  height: '100%',
-  background: 'rgba(15, 23, 42, 0.6)',
+  backgroundColor: 'rgba(15, 23, 42, 0.6)',
   backdropFilter: 'blur(10px)',
-  border: '1px solid rgba(148, 163, 184, 0.1)',
-  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  borderRadius: '16px',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  transition: 'all 0.3s ease-in-out',
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  textAlign: 'center',
   '&:hover': {
     transform: 'translateY(-8px)',
-    background: 'rgba(15, 23, 42, 0.8)',
-    border: '1px solid rgba(14, 165, 233, 0.2)',
-    boxShadow: '0 8px 30px rgba(14, 165, 233, 0.15)',
-    '& .MuiSvgIcon-root': {
-      color: '#0EA5E9',
-      transform: 'scale(1.1)',
-    },
-    '& .MuiTypography-h5': {
-      color: '#0EA5E9',
-    }
+    backgroundColor: 'rgba(15, 23, 42, 0.8)',
+    border: '1px solid rgba(14, 165, 233, 0.3)',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
   },
-  '& .MuiSvgIcon-root': {
-    fontSize: '2.5rem',
-    marginBottom: theme.spacing(2),
-    transition: 'all 0.3s ease',
-  },
-  '& .MuiTypography-h5': {
-    marginBottom: theme.spacing(2),
-    transition: 'color 0.3s ease',
-  }
 }));
 
-const StyledButton = styled(Button)(({ theme }) => ({
-  borderRadius: '50px',
-  padding: '10px 24px',
-  fontSize: '1rem',
-  textTransform: 'none',
-  margin: theme.spacing(1),
+const IconCircle = styled(Box)(({ theme }) => ({
+  width: '64px',
+  height: '64px',
+  borderRadius: '50%',
+  backgroundColor: 'rgba(14, 165, 233, 0.1)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom: theme.spacing(2),
+  '& svg': {
+    fontSize: '32px',
+    color: '#0EA5E9',
+  },
 }));
 
-const Home = () => {
+const NumberText = styled(Typography)(({ theme }) => ({
+  fontSize: '3rem',
+  fontWeight: 700,
+  background: 'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  marginBottom: theme.spacing(2),
+}));
+
+const Home: React.FC = () => {
   return (
-    <Box sx={{ minHeight: '100vh', position: 'relative' }}>
+    <Box sx={{ position: 'relative', minHeight: '100vh', overflow: 'hidden' }}>
+      <ParticleBackground variant="default" />
       {/* Hero Section */}
-      <Container maxWidth={false} sx={{ 
-        pt: { xs: 8, sm: 12, md: 16 },
-        pb: { xs: 8, sm: 12 },
-        position: 'relative',
-        zIndex: 1,
-        px: { xs: 2, sm: 4, md: 6, lg: 8 }
+      <Box sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        width: '100%',
       }}>
-        <Typography variant="caption" sx={{ 
-          bgcolor: 'rgba(14, 165, 233, 0.1)', 
-          color: '#38BDF8',
-          px: 3,
-          py: 1.5,
-          borderRadius: '50px',
-          display: 'inline-block',
-          mb: 4,
-          mt: 8,
-          transition: 'all 0.3s ease',
-          '&:hover': {
-            bgcolor: 'rgba(14, 165, 233, 0.2)',
-            transform: 'translateY(-2px)',
-            boxShadow: '0 4px 20px rgba(14, 165, 233, 0.2)',
-          }
-        }}>
-          Now in Early Access
-        </Typography>
-        
-        <Typography variant="h2" component="h1" sx={{ 
-          mb: 2, 
-          fontWeight: 'bold',
-          position: 'relative',
-          textShadow: '0 0 40px rgba(14, 165, 233, 0.1)',
-          '&::after': {
-            content: '""',
-            position: 'absolute',
-            top: '-20%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '140%',
-            height: '140%',
-            background: 'radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, rgba(14, 165, 233, 0) 70%)',
-            zIndex: -1,
-          }
-        }}>
-          Transform Ideas into <GradientText>Reality</GradientText>
-        </Typography>
-        
-        <Typography variant="h6" sx={{ 
-          mb: 4, 
-          color: '#94A3B8', 
-          maxWidth: '800px', 
-          mx: 'auto',
-          textShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-          backdropFilter: 'blur(8px)',
-          borderRadius: '8px',
-          p: 2,
-          background: 'rgba(15, 23, 42, 0.6)',
-        }}>
-          Join us on the journey of building the next generation of creative tools. We're crafting an AI-powered
-          platform that turns inspiration into innovation.
-        </Typography>
+        <Container 
+          maxWidth={false} 
+          sx={{ 
+            position: 'relative',
+            zIndex: 2,
+            px: { xs: 2, sm: 4, md: 6, lg: 8 },
+            py: { xs: 12, md: 16 },
+          }}
+        >
+          <EarlyAccessBadge>
+            Now in early access
+          </EarlyAccessBadge>
 
-        <Box>
-          <StyledButton variant="contained" color="primary" startIcon={<RocketLaunchIcon />}>
-            Start Your Journey
-          </StyledButton>
-          <StyledButton variant="outlined" color="primary">
-            Explore Features
-          </StyledButton>
-        </Box>
-      </Container>
+          <Typography 
+            variant="h1" 
+            sx={{ 
+              fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4rem' },
+              fontWeight: 700,
+              mb: 3,
+              color: '#fff',
+              lineHeight: 1.2,
+              textShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+            }}
+          >
+            Transform Ideas into{' '}
+            <GradientText>Reality</GradientText>
+          </Typography>
+
+          <Typography 
+            variant="h5" 
+            sx={{ 
+              fontSize: { xs: '1rem', sm: '1.125rem', md: '1.25rem' },
+              color: 'rgba(255, 255, 255, 0.8)',
+              maxWidth: '800px',
+              mx: 'auto',
+              mb: 6,
+              lineHeight: 1.6,
+              backdropFilter: 'blur(4px)',
+            }}
+          >
+            Join us on the journey of building the next generation of creative tools. We're crafting an AI-powered
+            platform that turns inspiration into innovation.
+          </Typography>
+
+          <Box sx={{ 
+            display: 'flex', 
+            gap: 2, 
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+          }}>
+            <ActionButton
+              component={RouterLink}
+              to="/auth/signup"
+              variant="contained"
+              startIcon={<RocketLaunchIcon />}
+            >
+              Start Your Journey
+            </ActionButton>
+
+            <ActionButton
+              component={RouterLink}
+              to="/features"
+              variant="outlined"
+              startIcon={<CodeIcon />}
+            >
+              Explore Features
+            </ActionButton>
+          </Box>
+        </Container>
+      </Box>
 
       {/* Idea Section */}
-      <Container maxWidth="lg" sx={{ textAlign: 'center', mb: 15 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
-          <LightbulbIcon sx={{ fontSize: 40, color: '#2196F3' }} />
-        </Box>
-        <Typography variant="h3" component="h2" sx={{ mb: 2 }}>
-          It Starts with an <GradientText>Idea</GradientText>
-        </Typography>
-        <Typography sx={{ mb: 8, color: 'grey.400', maxWidth: '800px', mx: 'auto' }}>
-          We're at the dawn of something new: a platform that transforms a spark of inspiration
-          into a tangible concept you can test and refine. It's early, and there's still so much to
-          discover—but that's part of the excitement. Through honest feedback, steady iteration,
-          and a growing set of AI-driven capabilities, we're laying the first building blocks of a
-          more intuitive, frictionless creation process.
-        </Typography>
-
-        {/* Feature Cards */}
-        <Box sx={{ 
-          display: 'grid', 
-          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr 1fr' },
-          gap: 4 
-        }}>
-          <FeatureCard sx={{
-            background: 'rgba(15, 23, 42, 0.8)',
-            border: '1px solid rgba(148, 163, 184, 0.1)',
-            backdropFilter: 'blur(16px)',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-          }}>
-            <PsychologyIcon sx={{ fontSize: 40, color: '#0EA5E9', mb: 2 }} />
-            <Typography variant="h2" sx={{ mb: 1, color: '#0EA5E9' }}>3</Typography>
-            <Typography variant="h6" sx={{ mb: 2, color: '#E2E8F0' }}>AI Modules in Progress</Typography>
-            <Typography variant="body2" sx={{ color: '#94A3B8' }}>
-              We're exploring intelligent helpers designed to assist at every phase, ensuring that as your idea grows, so does our support.
+      <Box sx={{ py: { xs: 8, md: 12 }, width: '100%' }}>
+        <Container maxWidth={false} sx={{ px: { xs: 2, sm: 4, md: 6, lg: 8 } }}>
+          <Box sx={{ textAlign: 'center', mb: 8 }}>
+            <IconCircle sx={{ mx: 'auto', mb: 3 }}>
+              <LightbulbIcon />
+            </IconCircle>
+            <Typography
+              variant="h2"
+              sx={{
+                fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
+                fontWeight: 700,
+                mb: 3,
+                color: '#fff',
+                '& .highlight': {
+                  color: '#0EA5E9',
+                },
+              }}
+            >
+              It Starts with an <span className="highlight">Idea</span>
             </Typography>
-          </FeatureCard>
-
-          <FeatureCard sx={{
-            background: 'rgba(15, 23, 42, 0.8)',
-            border: '1px solid rgba(148, 163, 184, 0.1)',
-            backdropFilter: 'blur(16px)',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-          }}>
-            <AutorenewIcon sx={{ fontSize: 40, color: '#0EA5E9', mb: 2 }} />
-            <Typography variant="h2" sx={{ mb: 1, color: '#0EA5E9' }}>2</Typography>
-            <Typography variant="h6" sx={{ mb: 2, color: '#E2E8F0' }}>Refined by Your Feedback</Typography>
-            <Typography variant="body2" sx={{ color: '#94A3B8' }}>
-              Every suggestion matters. With each insight we gather, we adjust course, shaping the platform to reflect what you truly need.
+            <Typography
+              sx={{
+                fontSize: { xs: '1rem', sm: '1.125rem' },
+                color: 'rgba(255, 255, 255, 0.8)',
+                maxWidth: '800px',
+                mx: 'auto',
+                lineHeight: 1.8,
+                backdropFilter: 'blur(4px)',
+              }}
+            >
+              We're at the dawn of something new: a platform that transforms a spark of inspiration
+              into a tangible concept you can test and refine. It's early, and there's still so much to
+              discover—but that's part of the excitement. Through honest feedback, steady iteration,
+              and a growing set of AI-driven capabilities, we're laying the first building blocks of a
+              more intuitive, frictionless creation process.
             </Typography>
-          </FeatureCard>
+          </Box>
 
-          <FeatureCard sx={{
-            background: 'rgba(15, 23, 42, 0.8)',
-            border: '1px solid rgba(148, 163, 184, 0.1)',
-            backdropFilter: 'blur(16px)',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-          }}>
-            <RocketLaunchIcon sx={{ fontSize: 40, color: '#0EA5E9', mb: 2 }} />
-            <Typography variant="h2" sx={{ mb: 1, color: '#0EA5E9' }}>1</Typography>
-            <Typography variant="h6" sx={{ mb: 2, color: '#E2E8F0' }}>A Prototype Emerging</Typography>
-            <Typography variant="body2" sx={{ color: '#94A3B8' }}>
-              Our first working model is taking shape - an early glimpse of what's possible when the right tools align with your vision.
-            </Typography>
-          </FeatureCard>
+          <Grid container spacing={4}>
+            <Grid item xs={12} sm={6} lg={3}>
+              <ProgressCard>
+                <IconCircle>
+                  <BrainIcon />
+                </IconCircle>
+                <NumberText>3</NumberText>
+                <Typography variant="h6" sx={{ mb: 2, color: '#fff', fontWeight: 600 }}>
+                  AI Modules in Progress
+                </Typography>
+                <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                  We're exploring intelligent helpers designed to assist at every phase, ensuring that as your idea grows, so does our support.
+                </Typography>
+              </ProgressCard>
+            </Grid>
 
-          <FeatureCard sx={{
-            background: 'rgba(15, 23, 42, 0.8)',
-            border: '1px solid rgba(148, 163, 184, 0.1)',
-            backdropFilter: 'blur(16px)',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-          }}>
-            <AllInclusiveIcon sx={{ fontSize: 40, color: '#0EA5E9', mb: 2 }} />
-            <Typography variant="h2" sx={{ mb: 1, color: '#0EA5E9' }}>∞</Typography>
-            <Typography variant="h6" sx={{ mb: 2, color: '#E2E8F0' }}>Unlimited Potential</Typography>
-            <Typography variant="body2" sx={{ color: '#94A3B8' }}>
-              This is just the start. As we learn, evolve, and expand, the horizon keeps opening, inviting you to dream bigger and build bolder.
-            </Typography>
-          </FeatureCard>
-        </Box>
-      </Container>
+            <Grid item xs={12} sm={6} lg={3}>
+              <ProgressCard>
+                <IconCircle>
+                  <AutorenewIcon />
+                </IconCircle>
+                <NumberText>2</NumberText>
+                <Typography variant="h6" sx={{ mb: 2, color: '#fff', fontWeight: 600 }}>
+                  Refined by Your Feedback
+                </Typography>
+                <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                  Every suggestion matters. With each insight we gather, we adjust course, shaping the platform to reflect what you truly need.
+                </Typography>
+              </ProgressCard>
+            </Grid>
+
+            <Grid item xs={12} sm={6} lg={3}>
+              <ProgressCard>
+                <IconCircle>
+                  <RocketIcon />
+                </IconCircle>
+                <NumberText>1</NumberText>
+                <Typography variant="h6" sx={{ mb: 2, color: '#fff', fontWeight: 600 }}>
+                  A Prototype Emerging
+                </Typography>
+                <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                  Our first working model is taking shape - an early glimpse of what's possible when the right tools align with your vision.
+                </Typography>
+              </ProgressCard>
+            </Grid>
+
+            <Grid item xs={12} sm={6} lg={3}>
+              <ProgressCard>
+                <IconCircle>
+                  <AllInclusiveIcon />
+                </IconCircle>
+                <NumberText>∞</NumberText>
+                <Typography variant="h6" sx={{ mb: 2, color: '#fff', fontWeight: 600 }}>
+                  Unlimited Potential
+                </Typography>
+                <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                  This is just the start. As we learn, evolve, and expand, the horizon keeps opening, inviting you to dream bigger and build bolder.
+                </Typography>
+              </ProgressCard>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
     </Box>
   );
 };

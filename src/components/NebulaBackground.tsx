@@ -63,7 +63,8 @@ const Stars = styled(Box)({
   opacity: 0.2,
 });
 
-const AgentCircle = styled(Box)<{ delay: number; startPosition: string; color: string }>(({ delay, startPosition, color }) => ({
+const AgentCircle = styled(Box)<{ delay: number; startPosition: string; color: string; speed?: number; isHighSpeed?: boolean }>(
+  ({ delay, startPosition, color, speed = 8, isHighSpeed = false }) => ({
   position: 'absolute',
   width: '150px',
   height: '150px',
@@ -71,14 +72,14 @@ const AgentCircle = styled(Box)<{ delay: number; startPosition: string; color: s
   background: `radial-gradient(circle at 30% 30%, ${color}, transparent)`,
   filter: 'blur(20px)',
   opacity: 0.5,
-  animation: `${converge} 8s ${delay}s ease-in-out infinite`,
+  animation: `${converge} ${isHighSpeed ? speed * 0.5 : speed}s ${delay}s ease-in-out infinite`,
   '--startX': startPosition.split(',')[0],
   '--startY': startPosition.split(',')[1],
   '--midX': `calc(${startPosition.split(',')[0]} / 2)`,
   '--midY': `calc(${startPosition.split(',')[1]} / 2)`,
 }));
 
-const CentralCore = styled(Box)({
+const CentralCore = styled(Box)<{ isHighSpeed?: boolean }>(({ isHighSpeed = false }) => ({
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -96,10 +97,10 @@ const CentralCore = styled(Box)({
     bottom: '-20px',
     border: '2px solid rgba(255,255,255,0.1)',
     borderRadius: '50%',
-    animation: `${rotate} 10s linear infinite`,
+    animation: `${rotate} ${isHighSpeed ? (Math.random() * 2 + 3) : (Math.random() * 5 + 8)}s linear infinite`,
   },
-  animation: `${pulse} 4s ease-in-out infinite`,
-});
+  animation: `${pulse} ${isHighSpeed ? (Math.random() * 1 + 1.5) : (Math.random() * 2 + 3)}s ease-in-out infinite`,
+}));
 
 const EnergyRing = styled(Box)({
   position: 'absolute',
@@ -124,31 +125,50 @@ const EnergyRing = styled(Box)({
   }
 });
 
-// Agent colors representing different capabilities
-const agentConfigs = [
-  { color: '#4facfe', startPosition: '-100%,-100%', delay: 0 },   // Logic
-  { color: '#00f2fe', startPosition: '200%,-100%', delay: 0.5 },  // Analysis
-  { color: '#38ef7d', startPosition: '-100%,200%', delay: 1 },    // Creation
-  { color: '#11998e', startPosition: '200%,200%', delay: 1.5 },   // Learning
-  { color: '#e100ff', startPosition: '-50%,-150%', delay: 2 },    // Vision
-  { color: '#8e2de2', startPosition: '150%,-50%', delay: 2.5 },   // Language
-  { color: '#ff9a9e', startPosition: '-150%,150%', delay: 3 },    // Reasoning
-  { color: '#ff867a', startPosition: '150%,150%', delay: 3.5 },   // Planning
-];
+interface NebulaBackgroundProps {
+  isHighSpeed?: boolean;
+}
 
-const NebulaBackground: React.FC = () => {
+const NebulaBackground: React.FC<NebulaBackgroundProps> = ({ isHighSpeed = false }) => {
+  const getRandomSpeed = (min: number, max: number) => Math.random() * (max - min) + min;
+  
+  const agentPositions = [
+    { 
+      pos: '-20%,-20%', 
+      color: '#4F46E5', 
+      speed: isHighSpeed ? getRandomSpeed(2, 4) : getRandomSpeed(6, 10)
+    },
+    { 
+      pos: '120%,-20%', 
+      color: '#10B981', 
+      speed: isHighSpeed ? getRandomSpeed(1.5, 3.5) : getRandomSpeed(7, 11)
+    },
+    { 
+      pos: '-20%,120%', 
+      color: '#F59E0B', 
+      speed: isHighSpeed ? getRandomSpeed(2.5, 4.5) : getRandomSpeed(8, 12)
+    },
+    { 
+      pos: '120%,120%', 
+      color: '#EC4899', 
+      speed: isHighSpeed ? getRandomSpeed(2, 3) : getRandomSpeed(5, 9)
+    },
+  ];
+
   return (
     <CosmicBackground>
       <Stars />
-      {agentConfigs.map((config, index) => (
+      {agentPositions.map((agent, index) => (
         <AgentCircle
           key={index}
-          delay={config.delay}
-          startPosition={config.startPosition}
-          color={config.color}
+          delay={index * (isHighSpeed ? 0.2 : 0.5)}
+          startPosition={agent.pos}
+          color={agent.color}
+          speed={agent.speed}
+          isHighSpeed={isHighSpeed}
         />
       ))}
-      <CentralCore />
+      <CentralCore isHighSpeed={isHighSpeed} />
       <EnergyRing sx={{ transform: 'translate(-50%, -50%) scale(1.2) rotate(0deg)' }} />
       <EnergyRing sx={{ transform: 'translate(-50%, -50%) scale(1.5) rotate(45deg)' }} />
       <EnergyRing sx={{ transform: 'translate(-50%, -50%) scale(1.8) rotate(-45deg)' }} />

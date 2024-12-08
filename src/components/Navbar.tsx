@@ -1,41 +1,52 @@
-import { AppBar, Toolbar, Typography, Button, Box, styled, Container } from '@mui/material'
-import { Link as RouterLink } from 'react-router-dom'
-import BeakerIcon from './BeakerIcon'
+import { AppBar, Toolbar, Typography, Button, Box, styled, Container } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import BeakerIcon from './BeakerIcon';
 
-const StyledButton = styled(Button)({
+const NavButton = styled(Button)(({ theme }) => ({
+  color: '#FFFFFF',
   textTransform: 'none',
   fontSize: '0.875rem',
   fontWeight: 500,
   padding: '6px 12px',
   '&:hover': {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    color: '#0EA5E9',
   },
-});
+}));
 
-const LoginButton = styled(Button)({
+const LoginButton = styled(Button)(({ theme }) => ({
+  backgroundColor: 'rgba(14, 165, 233, 0.1)',
+  color: '#0EA5E9',
   textTransform: 'none',
   fontSize: '0.875rem',
   fontWeight: 500,
-  padding: '6px 16px',
-  backgroundColor: '#0EA5E9',
+  padding: '8px 20px',
+  borderRadius: 0,
+  border: '1px solid #0EA5E9',
   '&:hover': {
-    backgroundColor: '#0284C7',
+    backgroundColor: 'rgba(14, 165, 233, 0.2)',
+    transform: 'translateY(-2px)',
   },
-});
+}));
 
 const Navbar = () => {
   return (
     <AppBar 
       position="fixed" 
       sx={{ 
-        backgroundColor: 'rgba(17, 24, 39, 0.8)',
-        backdropFilter: 'blur(8px)',
+        backgroundColor: 'rgba(17, 24, 39, 0.95)',
+        backdropFilter: 'blur(10px)',
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
         boxShadow: 'none',
       }}
     >
       <Container maxWidth={false} sx={{ px: { xs: 2, sm: 4, md: 6, lg: 8 } }}>
-        <Toolbar sx={{ py: 1.5, px: '0 !important' }}>
+        <Toolbar 
+          sx={{ 
+            py: 1.5, 
+            px: '0 !important',
+            minHeight: { xs: '64px', md: '72px' },
+          }}
+        >
           <Typography 
             component={RouterLink} 
             to="/" 
@@ -47,11 +58,14 @@ const Navbar = () => {
               gap: 1.5,
               flexGrow: { xs: 1, md: 0 },
               mr: { md: 8 },
-              fontSize: '1.25rem',
+              fontSize: { xs: '1.125rem', md: '1.25rem' },
               fontWeight: 600,
+              '&:hover': {
+                color: '#0EA5E9',
+              },
             }}
           >
-            <BeakerIcon sx={{ color: '#0EA5E9', fontSize: 24 }} />
+            <BeakerIcon sx={{ color: '#0EA5E9', fontSize: { xs: 22, md: 24 } }} />
             Creator Labs
           </Typography>
           
@@ -61,27 +75,27 @@ const Navbar = () => {
             gap: 2,
             flexGrow: 1,
           }}>
-            <StyledButton color="inherit" component={RouterLink} to="/">
+            <NavButton component={RouterLink} to="/">
               Home
-            </StyledButton>
-            <StyledButton color="inherit" component={RouterLink} to="/features">
+            </NavButton>
+            <NavButton component={RouterLink} to="/features">
               Features
-            </StyledButton>
-            <StyledButton color="inherit" component={RouterLink} to="/solutions">
+            </NavButton>
+            <NavButton component={RouterLink} to="/solutions">
               Solutions
-            </StyledButton>
-            <StyledButton color="inherit" component={RouterLink} to="/agents">
+            </NavButton>
+            <NavButton component={RouterLink} to="/agents">
               Agents
-            </StyledButton>
-            <StyledButton color="inherit" component={RouterLink} to="/journey">
+            </NavButton>
+            <NavButton component={RouterLink} to="/journey">
               Journey
-            </StyledButton>
+            </NavButton>
           </Box>
 
           <LoginButton 
-            variant="contained" 
             component={RouterLink} 
-            to="/login"
+            to="/auth/login"
+            variant="contained"
             disableElevation
           >
             Login
@@ -89,7 +103,7 @@ const Navbar = () => {
         </Toolbar>
       </Container>
     </AppBar>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

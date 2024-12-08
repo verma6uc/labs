@@ -13,6 +13,7 @@ import {
   AdaptiveIntelligenceIcon,
   ScalabilityIcon,
 } from '../components/FeatureIcons';
+import ParticleBackground from '../components/ParticleBackground';
 
 const FeatureCard = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -97,58 +98,103 @@ const features = [
   },
 ];
 
-const Features = () => {
+const Features: React.FC = () => {
   return (
-    <Box sx={{ py: 8, minHeight: '100vh' }}>
-      <Container maxWidth={false} sx={{ px: { xs: 2, sm: 4, md: 6, lg: 8 } }}>
-        <Typography
-          variant="h2"
-          component="h1"
-          align="center"
-          gutterBottom
-          sx={{
-            mb: 8,
-            background: 'linear-gradient(45deg, #0EA5E9 30%, #6366F1 90%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            fontWeight: 'bold',
-          }}
-        >
-          Powerful Features
-        </Typography>
-        
-        <Grid container spacing={4}>
-          {features.map((feature, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <FeatureCard>
-                <IconWrapper>
-                  {feature.icon}
-                </IconWrapper>
-                <Typography
-                  variant="h5"
-                  component="h3"
-                  align="center"
-                  gutterBottom
-                  sx={{
-                    fontWeight: 600,
-                    color: 'primary.main',
-                  }}
-                >
-                  {feature.title}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  align="center"
-                  color="text.secondary"
-                  sx={{ lineHeight: 1.7 }}
-                >
-                  {feature.description}
-                </Typography>
-              </FeatureCard>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+    <Box sx={{ position: 'relative', minHeight: '100vh', overflow: 'hidden' }}>
+      <ParticleBackground variant="sparse" />
+      <Box sx={{ 
+        py: { xs: 12, md: 16 }, 
+        minHeight: '100vh',
+        backgroundColor: 'transparent',
+        position: 'relative',
+        zIndex: 1,
+      }}>
+        <Container maxWidth={false} sx={{ 
+          px: { xs: 2, sm: 4, md: 6, lg: 8 },
+          position: 'relative',
+          zIndex: 2,
+        }}>
+          <Box sx={{ textAlign: 'center', mb: 8 }}>
+            <Typography
+              component="span"
+              sx={{
+                display: 'inline-block',
+                background: 'rgba(14, 165, 233, 0.2)',
+                border: '1px solid rgba(14, 165, 233, 0.4)',
+                borderRadius: 0,
+                px: 2,
+                py: 1,
+                mb: 4,
+                color: '#0EA5E9',
+                fontSize: '0.875rem',
+                fontWeight: 500,
+              }}
+            >
+              Cutting-Edge Capabilities
+            </Typography>
+
+            <Typography
+              variant="h1"
+              sx={{
+                fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4rem' },
+                fontWeight: 700,
+                mb: 3,
+                '& .highlight': {
+                  color: '#0EA5E9',
+                }
+              }}
+            >
+              Where <span className="highlight">Innovation</span> Meets Intelligence
+            </Typography>
+
+            <Typography
+              variant="h5"
+              sx={{
+                fontSize: { xs: '1rem', sm: '1.125rem', md: '1.25rem' },
+                color: 'rgba(255, 255, 255, 0.7)',
+                maxWidth: '800px',
+                mx: 'auto',
+                lineHeight: 1.6,
+              }}
+            >
+              Advanced AI tools and features designed to amplify your creative potential 
+              and streamline development
+            </Typography>
+          </Box>
+          
+          <Grid container spacing={4}>
+            {features.map((feature, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <FeatureCard>
+                  <IconWrapper>
+                    {feature.icon}
+                  </IconWrapper>
+                  <Typography
+                    variant="h5"
+                    component="h3"
+                    align="center"
+                    gutterBottom
+                    sx={{
+                      fontWeight: 600,
+                      color: 'primary.main',
+                    }}
+                  >
+                    {feature.title}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    align="center"
+                    color="text.secondary"
+                    sx={{ lineHeight: 1.7 }}
+                  >
+                    {feature.description}
+                  </Typography>
+                </FeatureCard>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
     </Box>
   );
 };
