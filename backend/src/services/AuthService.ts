@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Repository, MoreThan } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { User, UserRole } from '../entities/User';
@@ -6,6 +6,9 @@ import { Company } from '../entities/Company';
 import { Session } from '../entities/Session';
 import { AppDataSource } from '../config/database';
 import { sendEmail } from '../utils/email';
+
+// TODO: Move this to environment variables in production
+const JWT_SECRET = 'your-256-bit-secret-key-for-development-only-12345';
 
 export class AuthService {
   private userRepository: Repository<User>;
@@ -26,7 +29,6 @@ export class AuthService {
     companyName?: string;
     role?: UserRole;
   }) {
-    // Check if user already exists
     const existingUser = await this.userRepository.findOne({
       where: { email: userData.email }
     });
@@ -35,63 +37,64 @@ export class AuthService {
       throw new Error('User already exists');
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(userData.password, 10);
-
-    // Create company if companyName is provided (for creators)
-    let company: Company | null = null;
+    let company: Company | undefined;
     if (userData.companyName) {
-      company = this.companyRepository.create({
-        name: userData.companyName
+      const foundCompany = await this.companyRepository.findOne({
+        where: { name: userData.companyName }
       });
-      await this.companyRepository.save(company);
+
+      if (foundCompany) {
+        company = foundCompany;
+      } else {
+        company = this.companyRepository.create({
+          name: userData.companyName
+        });
+        await this.companyRepository.save(company);
+      }
     }
 
-    // Create user
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    const verificationToken = jwt.sign(
+      { email: userData.email },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
     const user = this.userRepository.create({
-      email: userData.email,
+      ...userData,
       password: hashedPassword,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      role: userData.role || UserRole.CREATOR,
-      company: company
+      company: company,
+      role: userData.role || UserRole.USER,
+      verificationToken,
+      verificationExpires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
+      isActive: false
     });
 
     await this.userRepository.save(user);
 
     // Send verification email
-    const verificationToken = jwt.sign(
-      { userId: user.id },
-      process.env.JWT_SECRET!,
-      { expiresIn: '24h' }
-    );
-
     await sendEmail({
       to: user.email,
       subject: 'Welcome to Creator Labs - Verify Your Email',
-      html: `
-        <h1>Welcome to Creator Labs!</h1>
-        <p>Please verify your email by clicking the link below:</p>
-        <a href="${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}">
-          Verify Email
-        </a>
-      `
+      text: `Please verify your email by clicking this link: http://localhost:5176/verify-email?token=${verificationToken}`,
+      html: `<p>Please verify your email by clicking <a href="http://localhost:5176/verify-email?token=${verificationToken}">this link</a></p>`
     });
 
     return {
-      message: 'User created successfully. Please check your email for verification.',
+      message: 'User registered successfully. Please check your email to verify your account.',
       userId: user.id
     };
   }
 
   async login(email: string, password: string, deviceInfo?: string, ipAddress?: string) {
     const user = await this.userRepository.findOne({
-      where: { email, isActive: true },
-      select: ['id', 'email', 'password', 'role']
+      where: { email },
+      select: ['id', 'email', 'password', 'role', 'isActive'],
+      relations: ['company', 'team']
     });
 
     if (!user) {
-      throw new Error('Invalid credentials');
+      throw new Error('User not found');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -102,34 +105,46 @@ export class AuthService {
     // Create session
     const session = this.sessionRepository.create({
       user,
-      deviceInfo,
-      ipAddress,
-      token: jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, { expiresIn: '7d' }),
+      deviceInfo: deviceInfo || 'Unknown device',
+      ipAddress: ipAddress || 'Unknown IP',
+      token: jwt.sign(
+        {
+          userId: user.id,
+          email: user.email,
+          role: user.role,
+          companyId: user.company?.id,
+          teamId: user.team?.id
+        },
+        JWT_SECRET,
+        { expiresIn: '7d' }
+      ),
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
     });
 
     await this.sessionRepository.save(session);
-
-    // Update last login
-    await this.userRepository.update(user.id, { lastLoginAt: new Date() });
 
     return {
       token: session.token,
       user: {
         id: user.id,
         email: user.email,
-        role: user.role
+        role: user.role,
+        company: user.company,
+        team: user.team
       }
     };
   }
 
   async forgotPassword(email: string) {
-    const user = await this.userRepository.findOne({ where: { email, isActive: true } });
+    const user = await this.userRepository.findOne({
+      where: { email }
+    });
+
     if (!user) {
       throw new Error('User not found');
     }
 
-    const resetToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    const resetToken = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
     const resetExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
     await this.userRepository.update(user.id, {
@@ -137,12 +152,12 @@ export class AuthService {
       passwordResetExpires: resetExpires
     });
 
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
-    
+    // Send reset email
     await sendEmail({
-      to: email,
+      to: user.email,
       subject: 'Password Reset Request',
-      text: `Please click on the following link to reset your password: ${resetUrl}`
+      text: `Reset your password by clicking this link: http://localhost:5176/reset-password?token=${resetToken}`,
+      html: `<p>Reset your password by clicking <a href="http://localhost:5176/reset-password?token=${resetToken}">this link</a></p>`
     });
 
     return { message: 'Password reset email sent' };
@@ -164,8 +179,8 @@ export class AuthService {
 
     await this.userRepository.update(user.id, {
       password: hashedPassword,
-      passwordResetToken: null,
-      passwordResetExpires: null
+      passwordResetToken: '',
+      passwordResetExpires: undefined
     });
 
     // Invalidate all existing sessions
@@ -175,6 +190,58 @@ export class AuthService {
     );
 
     return { message: 'Password successfully reset' };
+  }
+
+  async verifyEmail(token: string) {
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET) as { email: string };
+      const user = await this.userRepository.findOne({
+        where: { email: decoded.email }
+      });
+
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      if (user.isActive) {
+        throw new Error('Email already verified');
+      }
+
+      await this.userRepository.update(user.id, { 
+        isActive: true,
+        verificationToken: '',
+        verificationExpires: undefined
+      });
+
+      return { message: 'Email verified successfully' };
+    } catch (error) {
+      throw new Error('Invalid or expired verification token');
+    }
+  }
+
+  async getAllUsers() {
+    const users = await this.userRepository.find({
+      select: ['id', 'email', 'firstName', 'lastName', 'role', 'isActive', 'lastLoginAt'],
+      relations: ['company', 'team']
+    });
+
+    return users.map(user => ({
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      isActive: user.isActive,
+      lastLoginAt: user.lastLoginAt,
+      company: user.company ? {
+        id: user.company.id,
+        name: user.company.name
+      } : null,
+      team: user.team ? {
+        id: user.team.id,
+        name: user.team.name
+      } : null
+    }));
   }
 
   async logout(sessionId: string) {
@@ -203,28 +270,5 @@ export class AuthService {
     }
 
     return session;
-  }
-
-  async verifyEmail(token: string) {
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
-      const user = await this.userRepository.findOne({
-        where: { id: decoded.userId }
-      });
-
-      if (!user) {
-        throw new Error('User not found');
-      }
-
-      if (user.isEmailVerified) {
-        throw new Error('Email already verified');
-      }
-
-      await this.userRepository.update(user.id, { isEmailVerified: true });
-
-      return { message: 'Email verified successfully' };
-    } catch (error) {
-      throw new Error('Invalid or expired verification token');
-    }
   }
 }

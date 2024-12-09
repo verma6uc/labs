@@ -13,6 +13,7 @@ import { Team } from './Team';
 import { Session } from './Session';
 
 export enum UserRole {
+  USER = 'user',
   CREATOR = 'creator',
   SUPERADMIN = 'superadmin'
 }
@@ -41,35 +42,38 @@ export class User {
   })
   role: UserRole;
 
-  @ManyToOne(() => Company, company => company.users)
+  @Column({ default: false })
+  isActive: boolean;
+
+  @Column({ nullable: true })
+  verificationToken: string;
+
+  @Column({ type: 'timestamp', nullable: true })
+  verificationExpires: Date;
+
+  @Column({ nullable: true })
+  passwordResetToken: string;
+
+  @Column({ type: 'timestamp', nullable: true })
+  passwordResetExpires: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
+  lastLoginAt: Date;
+
+  @ManyToOne(() => Company, company => company.users, { nullable: true })
   @JoinColumn({ name: 'company_id' })
   company: Company;
 
-  @ManyToOne(() => Team, team => team.members)
+  @ManyToOne(() => Team, team => team.members, { nullable: true })
   @JoinColumn({ name: 'team_id' })
   team: Team;
 
   @OneToMany(() => Session, session => session.user)
   sessions: Session[];
 
-  @Column({ nullable: true })
-  passwordResetToken: string;
-
-  @Column({ nullable: true })
-  passwordResetExpires: Date;
-
-  @Column({ default: false })
-  isEmailVerified: boolean;
-
-  @Column({ nullable: true })
-  lastLoginAt: Date;
-
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @Column({ default: true })
-  isActive: boolean;
 }

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { AuthService } from '../services/AuthService';
 import { getUserAgent } from '../utils/request';
+import { AuthRequest } from '../middleware/auth';
 
 export class AuthController {
   private authService: AuthService;
@@ -52,13 +53,19 @@ export class AuthController {
     }
   }
 
-  async getSessionHistory(req: Request, res: Response) {
+  async getSessionHistory(req: AuthRequest, res: Response) {
     try {
-      const userId = req.user.id; // Assuming user is attached by auth middleware
-      const sessions = await this.authService.getSessionHistory(userId);
+      if (!req.user) {
+        throw new Error('User not authenticated');
+      }
+      const sessions = await this.authService.getSessionHistory(req.user.id);
       res.json(sessions);
     } catch (error) {
       res.status(400).json({ message: error.message });
     }
+  }
+
+  async getAllUsers() {
+    return this.authService.getAllUsers();
   }
 }

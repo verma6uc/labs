@@ -17,8 +17,13 @@ router.post('/logout', authController.logout.bind(authController));
 router.get('/sessions', authController.getSessionHistory.bind(authController));
 
 // Super admin only routes
-router.get('/users', roleMiddleware([UserRole.SUPERADMIN]), (req, res) => {
-  // Add user management logic here
+router.get('/users', roleMiddleware([UserRole.SUPERADMIN]), async (_req, res) => {
+  try {
+    const users = await authController.getAllUsers();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching users' });
+  }
 });
 
 export default router;
