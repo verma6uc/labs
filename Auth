@@ -1,0 +1,657 @@
+Here's the detailed API specification for the Java backend:
+
+java
+CopyInsert
+// Base URL: http://localhost:3001/api/auth
+
+/**
+ * Authentication Controller
+ * Base path: /api/auth
+ */
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    /**
+     * Login endpoint
+     * POST /api/auth/login
+     * 
+     * @param LoginRequest {
+     *   email: String,
+     *   password: String
+     * }
+     * @return LoginResponse {
+     *   token: String,
+     *   user: {
+     *     id: String,
+     *     email: String,
+     *     role: UserRole,
+     *     company: Company,
+     *     team: Team
+     *   }
+     * }
+     * @throws UnauthorizedException if credentials are invalid
+     */
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request, 
+                                             HttpServletRequest httpRequest);
+
+    /**
+     * Signup endpoint
+     * POST /api/auth/signup
+     * 
+     * @param SignupRequest {
+     *   email: String,
+     *   password: String,
+     *   firstName: String,
+     *   lastName: String,
+     *   companyName: String (optional),
+     *   role: UserRole (optional)
+     * }
+     * @return SignupResponse {
+     *   message: String,
+     *   userId: String
+     * }
+     * @throws BadRequestException if user already exists
+     */
+    @PostMapping("/signup")
+    public ResponseEntity<SignupResponse> signup(@RequestBody SignupRequest request);
+
+    /**
+     * Forgot Password endpoint
+     * POST /api/auth/forgot-password
+     * 
+     * @param ForgotPasswordRequest {
+     *   email: String
+     * }
+     * @return MessageResponse {
+     *   message: String
+     * }
+     */
+    @PostMapping("/forgot-password")
+    public ResponseEntity<MessageResponse> forgotPassword(@RequestBody ForgotPasswordRequest request);
+
+    /**
+     * Reset Password endpoint
+     * POST /api/auth/reset-password
+     * 
+     * @param ResetPasswordRequest {
+     *   token: String,
+     *   newPassword: String
+     * }
+     * @return MessageResponse {
+     *   message: String
+     * }
+     * @throws BadRequestException if token is invalid or expired
+     */
+    @PostMapping("/reset-password")
+    public ResponseEntity<MessageResponse> resetPassword(@RequestBody ResetPasswordRequest request);
+
+    /**
+     * Verify Email endpoint
+     * GET /api/auth/verify-email
+     * 
+     * @param token String (query parameter)
+     * @return MessageResponse {
+     *   message: String
+     * }
+     * @throws BadRequestException if token is invalid or expired
+     */
+    @GetMapping("/verify-email")
+    public ResponseEntity<MessageResponse> verifyEmail(@RequestParam String token);
+
+    /**
+     * Logout endpoint (Protected)
+     * POST /api/auth/logout
+     * Requires: Authorization header with JWT token
+     * 
+     * @param LogoutRequest {
+     *   sessionId: String
+     * }
+     * @return MessageResponse {
+     *   message: String
+     * }
+     */
+    @PostMapping("/logout")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<MessageResponse> logout(@RequestBody LogoutRequest request);
+
+    /**
+     * Get Session History (Protected)
+     * GET /api/auth/sessions
+     * Requires: Authorization header with JWT token
+     * 
+     * @return List<Session> [
+     *   {
+     *     id: String,
+     *     deviceInfo: String,
+     *     ipAddress: String,
+     *     isActive: boolean,
+     *     createdAt: Date,
+     *     expiresAt: Date
+     *   }
+     * ]
+     */
+    @GetMapping("/sessions")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<SessionDTO>> getSessionHistory();
+
+    /**
+     * Get All Users (Protected, Super Admin only)
+     * GET /api/auth/users
+     * Requires: Authorization header with JWT token
+     * Role required: SUPERADMIN
+     * 
+     * @return List<UserDTO> [
+     *   {
+     *     id: String,
+     *     email: String,
+     *     firstName: String,
+     *     lastName: String,
+     *     role: UserRole,
+     *     isActive: boolean,
+     *     lastLoginAt: Date,
+     *     company: {
+     *       id: String,
+     *       name: String
+     *     },
+     *     team: {
+     *       id: String,
+     *       name: String
+     *     }
+     *   }
+     * ]
+     */
+    @GetMapping("/users")
+    @PreAuthorize("hasRole('SUPERADMIN')")
+    public ResponseEntity<List<UserDTO>> getAllUsers();
+}
+
+/**
+ * Enums
+ */
+public enum UserRole {
+    USER,
+    CREATOR,
+    SUPERADMIN
+}
+
+/**
+ * Entity Models
+ */
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+    private String email;
+    private String password;
+    private String firstName;
+    private String lastName;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+    private boolean isActive;
+    private String verificationToken;
+    private Date verificationExpires;
+    private String passwordResetToken;
+    private Date passwordResetExpires;
+    private Date lastLoginAt;
+    
+    @ManyToOne
+    private Company company;
+    
+    @ManyToOne
+    private Team team;
+    
+    @OneToMany(mappedBy = "user")
+    private List<Session> sessions;
+}
+
+@Entity
+public class Session {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+    private String token;
+    private String deviceInfo;
+    private String ipAddress;
+    private boolean isActive;
+    private Date expiresAt;
+    private Date createdAt;
+    
+    @ManyToOne
+    private User user;
+}
+Key Features to Implement:
+
+JWT Authentication:
+Use io.jsonwebtoken:jjwt for JWT handling
+Token expiration: 7 days for session tokens, 24 hours for verification tokens
+Include user ID, email, role, company ID, and team ID in JWT claims
+Password Security:
+Use org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+Salt rounds: 10
+Store only hashed passwords
+Email Service:
+Use org.springframework.mail.javamail.JavaMailSender
+Templates for:
+Email verification
+Password reset
+Welcome email
+Security Configuration:
+java
+CopyInsert
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    // Configure CORS, CSRF, Session Management
+    // Configure JWT Filter
+    // Configure Role-based Authorization
+}
+Database Configuration:
+java
+CopyInsert
+@Configuration
+@EnableJpaRepositories
+public class DatabaseConfig {
+    // Configure PostgreSQL DataSource
+    // Configure JPA properties
+    // Configure Transaction Management
+}
+Dependencies (add to pom.xml):
+
+xml
+CopyInsert
+<dependencies>
+    <!-- Spring Boot Starters -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-mail</artifactId>
+    </dependency>
+    
+    <!-- JWT -->
+    <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt</artifactId>
+        <version>0.9.1</version>
+    </dependency>
+    
+    <!-- PostgreSQL -->
+    <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+    </dependency>
+    
+    <!-- Lombok -->
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <optional>true</optional>
+    </dependency>
+</dependencies>
+Would you like me to provide more details about any specific part of the implementation?
+
+Me
+
+You have missed error messages exit cnditions etc 
+
+You're right. Let me provide a comprehensive error handling and response specification:
+
+java
+CopyInsert
+/**
+ * Exception Handling
+ */
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    /**
+     * Custom Exceptions
+     */
+    public class AuthenticationException extends RuntimeException {
+        public AuthenticationException(String message) {
+            super(message);
+        }
+    }
+
+    public class UserNotFoundException extends RuntimeException {
+        public UserNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+    public class InvalidTokenException extends RuntimeException {
+        public InvalidTokenException(String message) {
+            super(message);
+        }
+    }
+
+    public class UserAlreadyExistsException extends RuntimeException {
+        public UserAlreadyExistsException(String message) {
+            super(message);
+        }
+    }
+
+    public class EmailVerificationException extends RuntimeException {
+        public EmailVerificationException(String message) {
+            super(message);
+        }
+    }
+}
+
+/**
+ * API Error Response Format
+ */
+@Getter @Setter
+public class ApiError {
+    private HttpStatus status;
+    private String message;
+    private String errorCode;
+    private List<String> errors;
+    private LocalDateTime timestamp;
+}
+
+/**
+ * Error Constants
+ */
+public class ErrorCodes {
+    // Authentication Errors (1xxx)
+    public static final String INVALID_CREDENTIALS = "ERR_1001";
+    public static final String INVALID_TOKEN = "ERR_1002";
+    public static final String TOKEN_EXPIRED = "ERR_1003";
+    public static final String USER_NOT_VERIFIED = "ERR_1004";
+    public static final String INSUFFICIENT_PERMISSIONS = "ERR_1005";
+    
+    // User Management Errors (2xxx)
+    public static final String USER_NOT_FOUND = "ERR_2001";
+    public static final String USER_ALREADY_EXISTS = "ERR_2002";
+    public static final String INVALID_USER_DATA = "ERR_2003";
+    public static final String EMAIL_ALREADY_VERIFIED = "ERR_2004";
+    
+    // Session Errors (3xxx)
+    public static final String SESSION_EXPIRED = "ERR_3001";
+    public static final String SESSION_NOT_FOUND = "ERR_3002";
+    public static final String INVALID_SESSION = "ERR_3003";
+    
+    // Password Reset Errors (4xxx)
+    public static final String RESET_TOKEN_EXPIRED = "ERR_4001";
+    public static final String INVALID_RESET_TOKEN = "ERR_4002";
+    public static final String PASSWORD_TOO_WEAK = "ERR_4003";
+}
+
+/**
+ * Detailed API Specifications with Error Conditions
+ */
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    /**
+     * Login endpoint
+     * POST /api/auth/login
+     * 
+     * @param LoginRequest {
+     *   email: String (required, email format),
+     *   password: String (required, min length: 8)
+     * }
+     * @return LoginResponse {
+     *   token: String,
+     *   user: UserDTO
+     * }
+     * @throws AuthenticationException (401) when:
+     *   - Invalid credentials (ERR_1001)
+     *   - User not found (ERR_2001)
+     *   - User not verified (ERR_1004)
+     */
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+        // Implementation
+    }
+
+    /**
+     * Signup endpoint
+     * POST /api/auth/signup
+     * 
+     * @param SignupRequest {
+     *   email: String (required, email format),
+     *   password: String (required, min length: 8, must contain: uppercase, lowercase, number, special char),
+     *   firstName: String (required, max length: 50),
+     *   lastName: String (required, max length: 50),
+     *   companyName: String (optional, max length: 100),
+     *   role: UserRole (optional, default: USER)
+     * }
+     * @return SignupResponse {
+     *   message: String,
+     *   userId: String
+     * }
+     * @throws BadRequestException (400) when:
+     *   - Email already exists (ERR_2002)
+     *   - Invalid password format (ERR_4003)
+     *   - Invalid input data (ERR_2003)
+     */
+    @PostMapping("/signup")
+    public ResponseEntity<SignupResponse> signup(@Valid @RequestBody SignupRequest request) {
+        // Implementation
+    }
+
+    /**
+     * Forgot Password endpoint
+     * POST /api/auth/forgot-password
+     * 
+     * @param ForgotPasswordRequest {
+     *   email: String (required, email format)
+     * }
+     * @return MessageResponse {
+     *   message: String,
+     *   resetToken: String (only in development)
+     * }
+     * @throws NotFoundException (404) when:
+     *   - User not found (ERR_2001)
+     * Note: Always returns success message even if email doesn't exist (security best practice)
+     */
+    @PostMapping("/forgot-password")
+    public ResponseEntity<MessageResponse> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        // Implementation
+    }
+
+    /**
+     * Reset Password endpoint
+     * POST /api/auth/reset-password
+     * 
+     * @param ResetPasswordRequest {
+     *   token: String (required),
+     *   newPassword: String (required, min length: 8, must contain: uppercase, lowercase, number, special char)
+     * }
+     * @return MessageResponse {
+     *   message: String
+     * }
+     * @throws BadRequestException (400) when:
+     *   - Invalid token format (ERR_4002)
+     *   - Token expired (ERR_4001)
+     *   - Password too weak (ERR_4003)
+     */
+    @PostMapping("/reset-password")
+    public ResponseEntity<MessageResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        // Implementation
+    }
+
+    /**
+     * Verify Email endpoint
+     * GET /api/auth/verify-email
+     * 
+     * @param token String (required, query parameter)
+     * @return MessageResponse {
+     *   message: String
+     * }
+     * @throws BadRequestException (400) when:
+     *   - Invalid token (ERR_1002)
+     *   - Token expired (ERR_1003)
+     *   - Email already verified (ERR_2004)
+     */
+    @GetMapping("/verify-email")
+    public ResponseEntity<MessageResponse> verifyEmail(@RequestParam @NotBlank String token) {
+        // Implementation
+    }
+
+    /**
+     * Logout endpoint
+     * POST /api/auth/logout
+     * 
+     * @param LogoutRequest {
+     *   sessionId: String (required)
+     * }
+     * @return MessageResponse {
+     *   message: String
+     * }
+     * @throws UnauthorizedException (401) when:
+     *   - Invalid token (ERR_1002)
+     *   - Token expired (ERR_1003)
+     * @throws NotFoundException (404) when:
+     *   - Session not found (ERR_3002)
+     */
+    @PostMapping("/logout")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<MessageResponse> logout(@Valid @RequestBody LogoutRequest request) {
+        // Implementation
+    }
+
+    /**
+     * Get Session History
+     * GET /api/auth/sessions
+     * 
+     * @return List<SessionDTO> [
+     *   {
+     *     id: String,
+     *     deviceInfo: String,
+     *     ipAddress: String,
+     *     isActive: boolean,
+     *     createdAt: Date,
+     *     expiresAt: Date,
+     *     lastActivityAt: Date
+     *   }
+     * ]
+     * @throws UnauthorizedException (401) when:
+     *   - Invalid token (ERR_1002)
+     *   - Token expired (ERR_1003)
+     */
+    @GetMapping("/sessions")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<SessionDTO>> getSessionHistory() {
+        // Implementation
+    }
+
+    /**
+     * Get All Users (Super Admin only)
+     * GET /api/auth/users
+     * 
+     * @param page Integer (optional, default: 0)
+     * @param size Integer (optional, default: 20)
+     * @param sort String (optional, default: "createdAt,desc")
+     * @return PageResponse<UserDTO> {
+     *   content: [UserDTO],
+     *   totalElements: Long,
+     *   totalPages: Integer,
+     *   currentPage: Integer,
+     *   size: Integer
+     * }
+     * @throws UnauthorizedException (401) when:
+     *   - Invalid token (ERR_1002)
+     *   - Token expired (ERR_1003)
+     * @throws ForbiddenException (403) when:
+     *   - Insufficient permissions (ERR_1005)
+     */
+    @GetMapping("/users")
+    @PreAuthorize("hasRole('SUPERADMIN')")
+    public ResponseEntity<PageResponse<UserDTO>> getAllUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "createdAt,desc") String sort) {
+        // Implementation
+    }
+}
+
+/**
+ * Validation Constraints
+ */
+public class ValidationConstants {
+    public static final int MIN_PASSWORD_LENGTH = 8;
+    public static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+    public static final int MAX_NAME_LENGTH = 50;
+    public static final int MAX_COMPANY_NAME_LENGTH = 100;
+    public static final int MAX_EMAIL_LENGTH = 255;
+    public static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@(.+)$";
+}
+
+/**
+ * Response Messages
+ */
+public class ResponseMessages {
+    public static final String LOGIN_SUCCESS = "Successfully logged in";
+    public static final String LOGOUT_SUCCESS = "Successfully logged out";
+    public static final String SIGNUP_SUCCESS = "User registered successfully. Please check your email to verify your account";
+    public static final String PASSWORD_RESET_EMAIL_SENT = "If the email exists in our system, you will receive password reset instructions";
+    public static final String PASSWORD_RESET_SUCCESS = "Password has been reset successfully";
+    public static final String EMAIL_VERIFICATION_SUCCESS = "Email verified successfully";
+    public static final String EMAIL_ALREADY_VERIFIED = "Email is already verified";
+}
+Additional Security Considerations:
+
+Rate Limiting:
+java
+CopyInsert
+@Component
+public class RateLimitingFilter extends OncePerRequestFilter {
+    private final RateLimiter rateLimiter;
+    
+    private static final int REQUESTS_PER_SECOND = 10;
+    private static final int BURST_SIZE = 20;
+}
+Input Validation:
+java
+CopyInsert
+public class PasswordValidator {
+    public static boolean isValid(String password) {
+        return password != null &&
+               password.length() >= ValidationConstants.MIN_PASSWORD_LENGTH &&
+               password.matches(ValidationConstants.PASSWORD_PATTERN);
+    }
+}
+Session Management:
+java
+CopyInsert
+@Component
+public class SessionManager {
+    private static final int MAX_SESSIONS_PER_USER = 5;
+    private static final int SESSION_TIMEOUT_DAYS = 7;
+    
+    public void validateSession(String sessionId) {
+        // Implementation
+    }
+    
+    public void cleanupExpiredSessions() {
+        // Implementation
+    }
+}
+This specification includes:
+
+Detailed error codes and messages
+Input validation constraints
+Security considerations
+Rate limiting
+Session management
+Pagination for large result sets
+Comprehensive exception handling
+Would you like me to elaborate on any specific aspect?
+
