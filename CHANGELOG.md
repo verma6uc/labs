@@ -29,6 +29,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added mobile-optimized grid layouts for Dashboard, User Management, and System Settings
   - Enhanced table and card views for better mobile experience
   - Optimized notification and menu interfaces for touch devices
+- Custom SVG icons for feature representation
+- Glowing icon effects with hover animations
+- Enhanced hero section with more dramatic visuals
+- Custom icon components in a dedicated icons directory
 
 ### Changed
 - Updated Agents page styling
@@ -48,12 +52,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added theme-aware styling for light/dark modes
   - Enhanced typography and spacing consistency
   - Improved component organization and readability
+- Improved homepage layout with full-width design
+- Enhanced typography with better scaling and effects
+- Updated background styles with radial gradients
+- Refined feature cards with glassmorphism effects
+- Removed early access badge and simplified hero section
+- Improved responsive behavior across all screen sizes
 
 ### Deprecated
 - N/A
 
 ### Removed
 - Material-UI icons from Agents page in favor of custom SVG icons
+- Material-UI default icons in favor of custom SVG icons
+- Early access badge and redundant CTA buttons
+- Progress cards section from homepage
 - N/A
 
 ### Fixed

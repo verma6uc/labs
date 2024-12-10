@@ -1,273 +1,216 @@
-import { Box, Button, Container, Typography, styled, Grid, useTheme } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
-import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
-import CodeIcon from '@mui/icons-material/Code';
-import LightbulbIcon from '@mui/icons-material/Lightbulb';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
-import RocketIcon from '@mui/icons-material/Rocket';
-import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
-import BrainIcon from '@mui/icons-material/Psychology';
+import React from 'react';
+import { Box, Container, Grid, Typography, useTheme } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import ParticleBackground from '../components/ParticleBackground';
+import HowItWorks from '../components/home/HowItWorks';
+import AgentsIntroduction from '../components/home/AgentsIntroduction';
+import TrustSection from '../components/home/TrustSection';
+import { AIInsightsIcon, BlueprintIcon, FeedbackIcon, IntegrationIcon } from '../components/icons/CustomIcons';
 
-const EarlyAccessBadge = styled('div')(({ theme }) => ({
-  background: theme.palette.mode === 'dark' 
-    ? 'rgba(14, 165, 233, 0.15)'
-    : 'rgba(14, 165, 233, 0.1)',
-  backdropFilter: 'blur(8px)',
-  border: '1px solid rgba(14, 165, 233, 0.3)',
-  borderRadius: '8px',
-  padding: '8px 16px',
-  color: '#0EA5E9',
-  fontSize: '0.875rem',
-  fontWeight: 600,
-  display: 'inline-block',
-  marginBottom: '2rem',
-  letterSpacing: '0.05em',
-}));
+const PageWrapper = styled(Box)({
+  position: 'relative',
+  overflow: 'hidden',
+  width: '100%',
+});
 
-const GradientText = styled('span')(({ theme }) => ({
-  background: theme.palette.mode === 'dark'
-    ? 'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)'
-    : 'linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%)',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  display: 'inline',
-}));
-
-const ActionButton = styled(Button)(({ theme }) => ({
-  padding: '12px 24px',
-  fontSize: '1rem',
-  fontWeight: 500,
-  minWidth: '180px',
-  height: '48px',
-  borderRadius: '8px',
-  transition: 'all 0.3s ease-in-out',
-  backgroundColor: theme.palette.mode === 'dark'
-    ? 'rgba(14, 165, 233, 0.1)'
-    : 'rgba(14, 165, 233, 0.08)',
-  border: '1px solid #0EA5E9',
-  color: '#0EA5E9',
-  '&:hover': {
-    backgroundColor: theme.palette.mode === 'dark'
-      ? 'rgba(14, 165, 233, 0.2)'
-      : 'rgba(14, 165, 233, 0.15)',
-    transform: 'translateY(-2px)',
-  },
-  '&.MuiButton-contained': {
-    backgroundColor: '#0EA5E9',
-    color: '#fff',
-    border: 'none',
-    '&:hover': {
-      backgroundColor: '#0284C7',
-      transform: 'translateY(-2px)',
-    },
-  },
-  '&.MuiButton-outlined': {
-    backgroundColor: 'transparent',
-    border: '1px solid #0EA5E9',
-    color: '#0EA5E9',
-    '&:hover': {
-      backgroundColor: theme.palette.mode === 'dark'
-        ? 'rgba(14, 165, 233, 0.1)'
-        : 'rgba(14, 165, 233, 0.08)',
-      transform: 'translateY(-2px)',
-    },
-  },
-}));
-
-const ProgressCard = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(4),
-  backgroundColor: theme.palette.mode === 'dark'
-    ? 'rgba(15, 23, 42, 0.6)'
-    : 'rgba(255, 255, 255, 0.8)',
-  backdropFilter: 'blur(10px)',
-  borderRadius: '16px',
-  border: `1px solid ${theme.palette.mode === 'dark' 
-    ? 'rgba(255, 255, 255, 0.1)' 
-    : 'rgba(0, 0, 0, 0.1)'}`,
-  transition: 'all 0.3s ease-in-out',
-  height: '100%',
+const HeroSection = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  minHeight: '100vh',
   display: 'flex',
-  flexDirection: 'column',
   alignItems: 'center',
+  justifyContent: 'center',
+  padding: theme.spacing(4),
   textAlign: 'center',
-  '&:hover': {
-    transform: 'translateY(-8px)',
-    backgroundColor: theme.palette.mode === 'dark'
-      ? 'rgba(15, 23, 42, 0.8)'
-      : 'rgba(255, 255, 255, 0.9)',
-    border: '1px solid rgba(14, 165, 233, 0.3)',
-    boxShadow: theme.palette.mode === 'dark'
-      ? '0 8px 32px rgba(0, 0, 0, 0.2)'
-      : '0 8px 32px rgba(14, 165, 233, 0.1)',
+  backgroundColor: theme.palette.mode === 'dark' ? '#0A1929' : '#F8FAFC',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '100%',
+    background: theme.palette.mode === 'dark'
+      ? 'radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.15), rgba(10, 25, 41, 0) 70%)'
+      : 'radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.1), rgba(248, 250, 252, 0) 70%)',
   },
 }));
 
-const IconCircle = styled(Box)(({ theme }) => ({
-  width: '64px',
-  height: '64px',
-  borderRadius: '50%',
+const GlowingIcon = styled(Box)(({ theme }) => ({
+  width: '80px',
+  height: '80px',
+  borderRadius: '24px',
   backgroundColor: theme.palette.mode === 'dark'
     ? 'rgba(14, 165, 233, 0.1)'
     : 'rgba(14, 165, 233, 0.08)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  marginBottom: theme.spacing(2),
+  marginBottom: theme.spacing(3),
+  position: 'relative',
+  transition: 'all 0.3s ease-in-out',
   '& svg': {
-    fontSize: '32px',
+    width: '40px',
+    height: '40px',
     color: '#0EA5E9',
+    filter: 'drop-shadow(0 0 8px rgba(14, 165, 233, 0.5))',
+  },
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    inset: '-1px',
+    borderRadius: 'inherit',
+    padding: '1px',
+    background: 'linear-gradient(45deg, #0EA5E9, #38BDF8)',
+    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+    WebkitMaskComposite: 'xor',
+    maskComposite: 'exclude',
+  },
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    inset: '-2px',
+    borderRadius: 'inherit',
+    background: 'linear-gradient(45deg, #0EA5E9, #38BDF8)',
+    filter: 'blur(8px)',
+    opacity: 0,
+    transition: 'opacity 0.3s ease-in-out',
+  },
+  '&:hover': {
+    transform: 'translateY(-5px)',
+    '&::after': {
+      opacity: 0.3,
+    },
   },
 }));
 
-const Home = () => {
+const FeatureCard = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(4),
+  height: '100%',
+  backgroundColor: theme.palette.mode === 'dark'
+    ? 'rgba(10, 25, 41, 0.7)'
+    : 'rgba(255, 255, 255, 0.9)',
+  backdropFilter: 'blur(20px)',
+  borderRadius: '24px',
+  border: `1px solid ${theme.palette.mode === 'dark'
+    ? 'rgba(255, 255, 255, 0.1)'
+    : 'rgba(0, 0, 0, 0.1)'}`,
+  transition: 'all 0.3s ease-in-out',
+  '&:hover': {
+    transform: 'translateY(-8px)',
+    backgroundColor: theme.palette.mode === 'dark'
+      ? 'rgba(10, 25, 41, 0.8)'
+      : 'rgba(255, 255, 255, 0.95)',
+    boxShadow: theme.palette.mode === 'dark'
+      ? '0 20px 40px rgba(0, 0, 0, 0.4)'
+      : '0 20px 40px rgba(14, 165, 233, 0.15)',
+  },
+}));
+
+const features = [
+  {
+    icon: <AIInsightsIcon />,
+    title: 'AI Insights',
+    description: 'Get real-time feedback and suggestions powered by advanced AI algorithms',
+  },
+  {
+    icon: <BlueprintIcon />,
+    title: 'Blueprinting & PRD',
+    description: 'Generate comprehensive product requirements and specifications automatically',
+  },
+  {
+    icon: <FeedbackIcon />,
+    title: 'Continuous Feedback',
+    description: 'Receive ongoing suggestions for improvement throughout development',
+  },
+  {
+    icon: <IntegrationIcon />,
+    title: 'Seamless Integration',
+    description: 'Connect with your existing tools and workflows effortlessly',
+  },
+];
+
+const Home: React.FC = () => {
   const theme = useTheme();
 
   return (
-    <Box 
-      sx={{ 
-        minHeight: '100vh',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
-      <ParticleBackground variant={theme.palette.mode === 'dark' ? 'sparse' : 'light'} />
-      <Box
-        sx={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: theme.palette.mode === 'dark'
-            ? 'radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.15), rgba(15, 23, 42, 0) 70%)'
-            : 'radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.1), rgba(241, 245, 249, 0) 70%)',
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}
-      />
-      <Container 
-        maxWidth="lg" 
-        sx={{ 
-          position: 'relative',
-          zIndex: 2,
-          pt: { xs: 4, sm: 6, md: 8 },
-        }}
-      >
-        <Box sx={{ textAlign: 'center', mb: { xs: 6, md: 8 } }}>
-          <EarlyAccessBadge>Now in early access</EarlyAccessBadge>
-          
-          <Typography 
-            variant="h1" 
-            sx={{ 
-              fontSize: { xs: '2.5rem', sm: '3rem', md: '3.75rem' },
-              fontWeight: 700,
-              mb: 2,
-              color: theme.palette.mode === 'dark' ? '#fff' : '#1E293B',
+    <PageWrapper>
+      <ParticleBackground />
+      
+      <HeroSection>
+        <Box sx={{ maxWidth: '1400px', width: '100%', px: 3 }}>
+          <Typography
+            variant="h1"
+            sx={{
+              fontSize: { xs: '3.5rem', sm: '4.5rem', md: '6rem' },
+              fontWeight: 800,
+              letterSpacing: '-0.02em',
+              mb: 3,
+              background: theme.palette.mode === 'dark'
+                ? 'linear-gradient(135deg, #E2E8F0 0%, #94A3B8 100%)'
+                : 'linear-gradient(135deg, #1E293B 0%, #475569 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              textAlign: 'center',
+              filter: 'drop-shadow(0 4px 6px rgba(14, 165, 233, 0.2))',
             }}
           >
-            Transform Ideas into <GradientText>Reality</GradientText>
+            Creator Labs
           </Typography>
-          
-          <Typography 
-            variant="h2" 
-            sx={{ 
-              fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' },
-              fontWeight: 500,
-              mb: 4,
+
+          <Typography
+            variant="h2"
+            sx={{
+              fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
+              fontWeight: 600,
               color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569',
+              mb: 10,
+              maxWidth: '900px',
+              mx: 'auto',
+              lineHeight: 1.4,
+              textShadow: theme.palette.mode === 'dark'
+                ? '0 2px 4px rgba(0, 0, 0, 0.5)'
+                : '0 2px 4px rgba(0, 0, 0, 0.1)',
             }}
           >
-            It starts with an <GradientText>Idea</GradientText>
+            AI-powered platform that transforms your vision into fully realized products
           </Typography>
 
-          <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', mb: 8 }}>
-            <ActionButton 
-              variant="contained" 
-              startIcon={<RocketLaunchIcon />}
-              component={RouterLink}
-              to="/auth/signup"
-            >
-              START YOUR JOURNEY
-            </ActionButton>
-            <ActionButton 
-              variant="outlined" 
-              startIcon={<CodeIcon />}
-              component={RouterLink}
-              to="/features"
-            >
-              EXPLORE FEATURES
-            </ActionButton>
-          </Box>
+          <Grid container spacing={4} sx={{ maxWidth: '1400px', mx: 'auto' }}>
+            {features.map((feature, index) => (
+              <Grid item xs={12} sm={6} md={3} key={index}>
+                <FeatureCard>
+                  <GlowingIcon>
+                    {feature.icon}
+                  </GlowingIcon>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: 600,
+                      mb: 2,
+                      color: theme.palette.mode === 'dark' ? '#E2E8F0' : '#1E293B',
+                    }}
+                  >
+                    {feature.title}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569',
+                    }}
+                  >
+                    {feature.description}
+                  </Typography>
+                </FeatureCard>
+              </Grid>
+            ))}
+          </Grid>
         </Box>
+      </HeroSection>
 
-        <Grid container spacing={4}>
-          {[
-            {
-              icon: <BrainIcon />,
-              number: '3',
-              title: 'AI Modules in Progress',
-              description: "We're exploring intelligent helpers designed to assist at every phase, ensuring that as your idea grows, so does our support."
-            },
-            {
-              icon: <AutorenewIcon />,
-              number: '2',
-              title: 'Refined by Your Feedback',
-              description: 'Every suggestion matters. With each insight we gather, we adjust course, shaping the platform to reflect what you truly need.'
-            },
-            {
-              icon: <RocketIcon />,
-              number: '1',
-              title: 'A Prototype Emerging',
-              description: 'Our first working model is taking shape - an early glimpse of what is possible when the right tools align with your vision.'
-            },
-            {
-              icon: <AllInclusiveIcon />,
-              number: '∞',
-              title: 'Unlimited Potential',
-              description: 'This is just the start. As we learn, evolve, and expand, the horizon keeps opening, inviting you to dream bigger and build bolder.'
-            }
-          ].map((card, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
-              <ProgressCard>
-                <IconCircle>
-                  {card.icon}
-                </IconCircle>
-                <Typography 
-                  variant="h2" 
-                  sx={{ 
-                    fontSize: '3rem', 
-                    fontWeight: 700, 
-                    mb: 1,
-                    color: theme.palette.mode === 'dark' ? '#0EA5E9' : '#0284C7',
-                  }}
-                >
-                  {card.number}
-                </Typography>
-                <Typography 
-                  variant="h6" 
-                  sx={{ 
-                    mb: 2,
-                    fontWeight: 600,
-                    color: theme.palette.mode === 'dark' ? '#E2E8F0' : '#1E293B',
-                  }}
-                >
-                  {card.title}
-                </Typography>
-                <Typography 
-                  variant="body1" 
-                  sx={{ 
-                    color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569',
-                  }}
-                >
-                  {card.description}
-                </Typography>
-              </ProgressCard>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-    </Box>
+      <HowItWorks />
+      <AgentsIntroduction />
+      <TrustSection />
+    </PageWrapper>
   );
 };
 
