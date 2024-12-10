@@ -1,34 +1,59 @@
-import { AppBar, Toolbar, Typography, Button, Box, styled, Container } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box, styled, Container, IconButton, Drawer } from '@mui/material';
+import { 
+  Menu as MenuIcon, 
+  Close as CloseIcon,
+  Home as HomeIcon,
+  Lightbulb as FeaturesIcon,
+  Business as SolutionsIcon,
+  SmartToy as AgentsIcon,
+  Timeline as JourneyIcon,
+  Login as LoginIcon
+} from '@mui/icons-material';
 import { Link as RouterLink } from 'react-router-dom';
 import BeakerIcon from './BeakerIcon';
+import { useState } from 'react';
 
-const NavButton = styled(Button)(({ theme }) => ({
+const NavButton = styled(Button)({
   color: '#FFFFFF',
   textTransform: 'none',
   fontSize: '0.875rem',
   fontWeight: 500,
-  padding: '6px 12px',
+  padding: '8px 16px',
+  borderRadius: '50px',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
   '&:hover': {
     color: '#0EA5E9',
+    backgroundColor: 'rgba(14, 165, 233, 0.08)',
   },
-}));
+});
 
-const LoginButton = styled(Button)(({ theme }) => ({
+const LoginButton = styled(Button)({
   backgroundColor: 'rgba(14, 165, 233, 0.1)',
   color: '#0EA5E9',
   textTransform: 'none',
   fontSize: '0.875rem',
   fontWeight: 500,
   padding: '8px 20px',
-  borderRadius: 0,
+  borderRadius: '50px',
   border: '1px solid #0EA5E9',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
   '&:hover': {
     backgroundColor: 'rgba(14, 165, 233, 0.2)',
     transform: 'translateY(-2px)',
   },
-}));
+});
 
 const Navbar = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleMobileMenuToggle = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
   return (
     <AppBar 
       position="fixed" 
@@ -69,6 +94,7 @@ const Navbar = () => {
             Creator Labs
           </Typography>
           
+          {/* Desktop Menu */}
           <Box sx={{ 
             display: { xs: 'none', md: 'flex' }, 
             alignItems: 'center',
@@ -92,14 +118,118 @@ const Navbar = () => {
             </NavButton>
           </Box>
 
-          <LoginButton 
-            component={RouterLink} 
-            to="/auth/login"
-            variant="contained"
-            disableElevation
+          {/* Mobile Menu Button */}
+          <IconButton
+            sx={{ 
+              display: { xs: 'flex', md: 'none' },
+              color: 'white',
+              mr: 1
+            }}
+            onClick={handleMobileMenuToggle}
           >
-            Login
-          </LoginButton>
+            <MenuIcon />
+          </IconButton>
+
+          {/* Login Button - Hide on mobile */}
+          <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+            <LoginButton 
+              component={RouterLink} 
+              to="/auth/login"
+              variant="contained"
+              disableElevation
+              startIcon={<LoginIcon />}
+            >
+              Login
+            </LoginButton>
+          </Box>
+
+          {/* Mobile Menu Drawer */}
+          <Drawer
+            anchor="right"
+            open={mobileMenuOpen}
+            onClose={() => setMobileMenuOpen(false)}
+            PaperProps={{
+              sx: {
+                width: '100%',
+                maxWidth: '300px',
+                backgroundColor: 'rgba(17, 24, 39, 0.98)',
+                backdropFilter: 'blur(10px)',
+                borderLeft: '1px solid rgba(255, 255, 255, 0.1)',
+                boxShadow: 'none',
+              }
+            }}
+          >
+            <Box sx={{ p: 3 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+                <IconButton
+                  onClick={() => setMobileMenuOpen(false)}
+                  sx={{ color: 'white' }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <NavButton 
+                  component={RouterLink} 
+                  to="/"
+                  onClick={() => setMobileMenuOpen(false)}
+                  fullWidth
+                  startIcon={<HomeIcon />}
+                >
+                  Home
+                </NavButton>
+                <NavButton 
+                  component={RouterLink} 
+                  to="/features"
+                  onClick={() => setMobileMenuOpen(false)}
+                  fullWidth
+                  startIcon={<FeaturesIcon />}
+                >
+                  Features
+                </NavButton>
+                <NavButton 
+                  component={RouterLink} 
+                  to="/solutions"
+                  onClick={() => setMobileMenuOpen(false)}
+                  fullWidth
+                  startIcon={<SolutionsIcon />}
+                >
+                  Solutions
+                </NavButton>
+                <NavButton 
+                  component={RouterLink} 
+                  to="/agents"
+                  onClick={() => setMobileMenuOpen(false)}
+                  fullWidth
+                  startIcon={<AgentsIcon />}
+                >
+                  Agents
+                </NavButton>
+                <NavButton 
+                  component={RouterLink} 
+                  to="/journey"
+                  onClick={() => setMobileMenuOpen(false)}
+                  fullWidth
+                  startIcon={<JourneyIcon />}
+                >
+                  Journey
+                </NavButton>
+                {/* Login Button in Mobile Menu */}
+                <LoginButton 
+                  component={RouterLink} 
+                  to="/auth/login"
+                  variant="contained"
+                  disableElevation
+                  onClick={() => setMobileMenuOpen(false)}
+                  fullWidth
+                  startIcon={<LoginIcon />}
+                  sx={{ mt: 2 }}
+                >
+                  Login
+                </LoginButton>
+              </Box>
+            </Box>
+          </Drawer>
         </Toolbar>
       </Container>
     </AppBar>

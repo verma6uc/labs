@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Enhanced Journey page with interactive agent contributions
+  - Added AgentContributions component showing agent involvement at each stage
+  - Custom SVG icons for each agent (Seldon, Baley, Dors, Daneel, Giskard, Calvin)
+  - Interactive tooltips showing agent roles and responsibilities
+  - Visual indicators for active agents with animations
+- Custom SVG icons for all agents
+  - Replaced Material-UI icons with custom-designed SVG icons
+  - Each icon represents the agent's specific role and capabilities
+  - Consistent styling with the overall design system
 - Initial project setup
 - Created CHANGELOG.md to track all future changes
 - Interactive particle background effects across pages
@@ -17,15 +26,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Performance optimized with intersection observer
 
 ### Changed
+- Updated Agents page styling
+  - Fixed TypeScript interfaces for styled components
+  - Improved animations and transitions
+  - Enhanced visual hierarchy
+- Improved Navbar component
+  - Fixed TypeScript issues with styled components
+  - Enhanced mobile menu functionality
+  - Optimized component styling
 - N/A
 
 ### Deprecated
 - N/A
 
 ### Removed
+- Material-UI icons from Agents page in favor of custom SVG icons
 - N/A
 
 ### Fixed
+- TypeScript issues in Navbar and Agents components
+- Mobile menu styling and functionality
+- Agent card animations and transitions
 - N/A
 
 ### Security

@@ -13,6 +13,7 @@ import {
 } from '../components/JourneyIcons';
 import NebulaBackground from '../components/NebulaBackground';
 import ConnectingLines from '../components/ConnectingLines';
+import AgentContributions from '../components/AgentContributions';
 
 const JourneyPath = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -153,7 +154,8 @@ const Journey: React.FC = () => {
         'Defined product spark & direction',
         'Initial market & user insights',
         'Strategic framing to guide decisions'
-      ]
+      ],
+      activeAgents: ['Seldon', 'Baley']
     },
     {
       icon: <SproutIcon />,
@@ -169,7 +171,8 @@ const Journey: React.FC = () => {
         'Detailed feature evaluation',
         'User behavior & journey mapping',
         'Early integration & quality considerations'
-      ]
+      ],
+      activeAgents: ['Seldon', 'Baley', 'Dors', 'Daneel', 'Giskard', 'Calvin']
     },
     {
       icon: <FoundationIcon />,
@@ -185,7 +188,8 @@ const Journey: React.FC = () => {
         'Navigation & interaction design',
         'Technical feature specifications',
         'Aligned data and logic models'
-      ]
+      ],
+      activeAgents: ['Seldon', 'Dors', 'Daneel']
     },
     {
       icon: <StructureIcon />,
@@ -201,7 +205,8 @@ const Journey: React.FC = () => {
         'Wireframes & state diagrams',
         'Clear user flow mapping',
         'Component level visual clarity'
-      ]
+      ],
+      activeAgents: ['Dors']
     },
     {
       icon: <DevelopmentIcon />,
@@ -217,7 +222,8 @@ const Journey: React.FC = () => {
         'Core features coded',
         'Initial frontend/backend integration',
         'Performance optimization starts'
-      ]
+      ],
+      activeAgents: ['Daneel', 'Giskard']
     },
     {
       icon: <LaunchIcon />,
@@ -233,7 +239,8 @@ const Journey: React.FC = () => {
         'Quality assured release',
         'Security & performance checks complete',
         'Confident public launch'
-      ]
+      ],
+      activeAgents: ['Calvin']
     },
     {
       icon: <GrowthIcon />,
@@ -249,7 +256,8 @@ const Journey: React.FC = () => {
         'User-informed feature tweaks',
         'Analytics-driven decisions',
         'Roadmap adjustments for growth'
-      ]
+      ],
+      activeAgents: ['Baley', 'Calvin']
     },
     {
       icon: <ScaleIcon />,
@@ -265,7 +273,8 @@ const Journey: React.FC = () => {
         'Regular feature enhancements',
         'Workflow & UX improvements',
         'Market responsive growth strategy'
-      ]
+      ],
+      activeAgents: ['Seldon', 'Baley', 'Dors', 'Daneel', 'Giskard', 'Calvin']
     }
   ];
 
@@ -401,12 +410,11 @@ const Journey: React.FC = () => {
                           position: 'absolute',
                           left: 0,
                           top: '50%',
+                          transform: 'translateY(-50%)',
                           width: 4,
                           height: 4,
                           borderRadius: '50%',
                           backgroundColor: '#0EA5E9',
-                          transform: 'translateY(-50%)',
-                          opacity: 0.8,
                         },
                         '&:last-child': { mb: 0 },
                       }}
@@ -415,6 +423,21 @@ const Journey: React.FC = () => {
                     </Typography>
                   ))}
                 </OutcomesBox>
+
+                <Box sx={{ mt: 2 }}>
+                  <Typography 
+                    variant="h6" 
+                    sx={{ 
+                      color: '#0EA5E9',
+                      mb: 1,
+                      fontWeight: 600,
+                      fontSize: '0.95rem',
+                    }}
+                  >
+                    Contributing Agents
+                  </Typography>
+                  <AgentContributions activeAgents={step.activeAgents} />
+                </Box>
               </Box>
             </MilestoneCard>
           ))}
