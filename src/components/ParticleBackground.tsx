@@ -1,162 +1,117 @@
 import React, { useCallback } from 'react';
 import { Box } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { loadFull } from "tsparticles";
 import type { Engine } from "tsparticles-engine";
-import { useTheme } from '@mui/material/styles';
-import { useInView } from 'react-intersection-observer';
 import Particles from "react-tsparticles";
 
 interface ParticleBackgroundProps {
-  variant?: 'default' | 'dense' | 'sparse';
+  variant?: 'default' | 'dense' | 'sparse' | 'light';
 }
 
 const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ variant = 'default' }) => {
   const theme = useTheme();
-  const { ref, inView } = useInView({
-    threshold: 0,
-    triggerOnce: true,
-  });
 
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
   }, []);
 
-  const getParticlesConfig = (variant: string) => {
-    const baseConfig = {
-      fullScreen: {
+  const particlesConfig = {
+    background: {
+      color: 'transparent',
+    },
+    particles: {
+      number: {
+        value: variant === 'dense' ? 100 : variant === 'sparse' ? 50 : 80,
+        density: {
+          enable: true,
+          area: 800,
+        },
+      },
+      color: {
+        value: theme.palette.mode === 'dark' ? '#0EA5E9' : '#0284C7',
+      },
+      shape: {
+        type: 'circle',
+      },
+      opacity: {
+        value: theme.palette.mode === 'dark' ? 0.3 : 0.15,
+      },
+      size: {
+        value: { min: 1, max: 3 },
+      },
+      links: {
         enable: true,
-        zIndex: -1,
+        distance: 150,
+        color: theme.palette.mode === 'dark' ? '#0EA5E9' : '#0284C7',
+        opacity: theme.palette.mode === 'dark' ? 0.2 : 0.1,
+        width: 1,
       },
-      background: {
-        color: {
-          value: "transparent",
+      move: {
+        enable: true,
+        speed: 1,
+        direction: 'none',
+        random: true,
+        straight: false,
+        outModes: {
+          default: 'bounce',
         },
       },
-      fpsLimit: 120,
-      particles: {
-        color: {
-          value: "#0EA5E9",
-        },
-        links: {
-          color: "#0EA5E9",
-          distance: 150,
+    },
+    interactivity: {
+      events: {
+        onHover: {
           enable: true,
-          opacity: 0.2,
-          width: 1,
+          mode: 'repulse',
         },
-        collisions: {
+        onClick: {
           enable: true,
-        },
-        move: {
-          direction: "none",
-          enable: true,
-          outModes: {
-            default: "bounce",
-          },
-          random: true,
-          speed: 3,
-          straight: false,
-        },
-        number: {
-          density: {
-            enable: true,
-            area: 800,
-          },
-          value: 80,
-        },
-        opacity: {
-          value: 0.3,
-        },
-        shape: {
-          type: "circle",
-        },
-        size: {
-          value: { min: 1, max: 3 },
+          mode: 'push',
         },
       },
-      detectRetina: true,
-      interactivity: {
-        events: {
-          onClick: {
-            enable: true,
-            mode: "push",
-          },
-          onHover: {
-            enable: true,
-            mode: "repulse",
-          },
-          resize: true,
+      modes: {
+        repulse: {
+          distance: 100,
+          duration: 0.4,
         },
-        modes: {
-          push: {
-            quantity: 4,
-          },
-          repulse: {
-            distance: 100,
-            duration: 0.4,
-          },
+        push: {
+          quantity: 4,
         },
       },
-    };
-
-    switch (variant) {
-      case 'dense':
-        return {
-          ...baseConfig,
-          particles: {
-            ...baseConfig.particles,
-            number: {
-              density: {
-                enable: true,
-                area: 600,
-              },
-              value: 100,
-            },
-          },
-        };
-      case 'sparse':
-        return {
-          ...baseConfig,
-          particles: {
-            ...baseConfig.particles,
-            number: {
-              density: {
-                enable: true,
-                area: 1000,
-              },
-              value: 60,
-            },
-            opacity: {
-              value: 0.2,
-            },
-          },
-        };
-      default:
-        return baseConfig;
-    }
+    },
+    detectRetina: true,
+    fullScreen: false,
   };
 
   return (
     <Box
-      ref={ref}
       sx={{
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        zIndex: 0,
-        opacity: inView ? 1 : 0,
-        transition: 'opacity 1s ease-in-out',
+        height: '100%',
+        width: '100%',
+        '& canvas': {
+          position: 'absolute !important',
+          zIndex: 'inherit',
+        },
       }}
     >
-      {inView && (
-        <Particles
-          id="tsparticles"
-          init={particlesInit}
-          options={getParticlesConfig(variant)}
-        />
-      )}
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        options={{
+          ...particlesConfig,
+          style: {
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            zIndex: 'inherit',
+          },
+        }}
+      />
     </Box>
   );
 };

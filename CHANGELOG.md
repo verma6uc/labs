@@ -43,6 +43,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Changed drawer to temporary mode on mobile devices
   - Improved header and menu responsiveness
   - Optimized spacing and typography for mobile screens
+- Improved Home page layout and theme support
+  - Simplified page structure for better particle visibility
+  - Added theme-aware styling for light/dark modes
+  - Enhanced typography and spacing consistency
+  - Improved component organization and readability
 
 ### Deprecated
 - N/A
