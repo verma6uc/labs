@@ -17,7 +17,6 @@ import Dashboard from './pages/admin/Dashboard';
 import UserManagement from './pages/admin/UserManagement';
 import SystemSettings from './pages/admin/SystemSettings';
 import SecurityAudit from './pages/admin/SecurityAudit';
-import Analytics from './pages/admin/Analytics';
 import LiveSessions from './pages/admin/LiveSessions';
 
 // Static Pages
@@ -99,10 +98,6 @@ const router = createBrowserRouter([
       {
         path: 'dashboard',
         element: <Dashboard />,
-      },
-      {
-        path: 'analytics',
-        element: <Analytics />,
       },
       {
         path: 'user-management',

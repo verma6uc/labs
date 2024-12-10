@@ -1,3 +1,182 @@
+export interface Agent {
+  id: string;
+  name: string;
+  role: string;
+  description: string;
+  quote: string;
+  contributions: {
+    category: string;
+    items: string[];
+  }[];
+  icon: string;
+  color: string;
+}
+
+export const agents: Agent[] = [
+  {
+    id: '1',
+    name: 'Seldon',
+    role: 'Strategic Planner',
+    description: "Inspired by Hari Seldon's predictive genius, Seldon sets the course. Over time, he'll map out milestones, ensure coherence, and help you navigate each critical decision point on your product journey.",
+    quote: "A well-charted path keeps every goal within reach...",
+    contributions: [
+      {
+        category: 'Planning',
+        items: ['Conducts product roadmap', 'Identifies key milestones', 'Analyzes market trends']
+      },
+      {
+        category: 'Design',
+        items: ['Ensures design decisions align with strategic goals and user needs']
+      },
+      {
+        category: 'Launch',
+        items: ['Coordinates launch strategy and timing for maximum impact']
+      },
+      {
+        category: 'Evolution',
+        items: ['Plans future iterations based on market response and emerging opportunities']
+      }
+    ],
+    icon: 'Timeline',
+    color: '#0EA5E9'
+  },
+  {
+    id: '2',
+    name: 'Baley',
+    role: 'Research & Insights',
+    description: "Echoing Elijah Baley's investigative prowess, Baley probes markets, competitors, and user needs. As he matures, he'll distill vast information into actionable insights, helping you make informed, data-driven choices.",
+    quote: "Knowledge transforms uncertainty into opportunity...",
+    contributions: [
+      {
+        category: 'Planning',
+        items: ['Conducts market research', 'Competitor analysis', 'User need assessment']
+      },
+      {
+        category: 'Development',
+        items: ['Provides ongoing user feedback and behavior analysis']
+      },
+      {
+        category: 'Testing',
+        items: ['Analyzes user testing results and identifies improvement areas']
+      },
+      {
+        category: 'Evolution',
+        items: ['Monitors market trends and user satisfaction for continuous improvement']
+      }
+    ],
+    icon: 'Search',
+    color: '#6366F1'
+  },
+  {
+    id: '3',
+    name: 'Dors',
+    role: 'Frontend Experience',
+    description: "Like Dors Venabili's gentle guidance, Dors shapes friendly, intuitive interfaces. Eventually, she'll craft clean layouts, fluid navigation, and a user experience that feels both natural and engaging.",
+    quote: "A well-designed interface invites exploration...",
+    contributions: [
+      {
+        category: 'Design',
+        items: ['Creates intuitive UI/UX designs and interactive prototypes']
+      },
+      {
+        category: 'Development',
+        items: ['Implements responsive and accessible frontend components']
+      },
+      {
+        category: 'Testing',
+        items: ['Conducts usability testing and interface refinements']
+      },
+      {
+        category: 'Evolution',
+        items: ['Updates UI based on user feedback and modern design trends']
+      }
+    ],
+    icon: 'Brush',
+    color: '#F59E0B'
+  },
+  {
+    id: '4',
+    name: 'Daneel',
+    role: 'Backend & Data Logic',
+    description: "Channeling R. Daneel Olivaw's reliability, Daneel will handle data processing and storage. In time, he'll ensure your product's backend is efficient, stable, and always ready to serve up the right information.",
+    quote: "Structure data lays the foundation for clarity...",
+    contributions: [
+      {
+        category: 'Design',
+        items: ['Architects database schema and API structure']
+      },
+      {
+        category: 'Development',
+        items: ['Implements secure and efficient backend systems']
+      },
+      {
+        category: 'Testing',
+        items: ['Performs load testing and optimization']
+      },
+      {
+        category: 'Evolution',
+        items: ['Scales infrastructure and improves performance']
+      }
+    ],
+    icon: 'Storage',
+    color: '#10B981'
+  },
+  {
+    id: '5',
+    name: 'Giskard',
+    role: 'Integration & Cohesion',
+    description: "Reflecting R. Giskard's subtle interplay, Giskard will orchestrate seamless communication between systems. As he evolves, expect effortless integrations, ensuring all parts work together in perfect harmony.",
+    quote: "When every piece fits, the whole grows stronger...",
+    contributions: [
+      {
+        category: 'Development',
+        items: ['Manages system responses and API connections']
+      },
+      {
+        category: 'Testing',
+        items: ['Ensures cross-system compatibility and data flow']
+      },
+      {
+        category: 'Launch',
+        items: ['Coordinates deployment of integrated systems']
+      },
+      {
+        category: 'Evolution',
+        items: ['Maintains and updates service interconnections']
+      }
+    ],
+    icon: 'Extension',
+    color: '#8B5CF6'
+  },
+  {
+    id: '6',
+    name: 'Calvin',
+    role: 'Quality & Evolution',
+    description: "Inspired by Susan Calvin's deep understanding of robotic minds, Calvin will focus on testing, refining, and iterating. Over time, she'll assess feedback, suggest improvements, and ensure your product continuously evolves for the better.",
+    quote: "Refinement is the engine of lasting progress...",
+    contributions: [
+      {
+        category: 'Development',
+        items: ['Implements quality assurance processes']
+      },
+      {
+        category: 'Testing',
+        items: ['Conducts comprehensive testing and bug tracking']
+      },
+      {
+        category: 'Launch',
+        items: ['Ensures product stability and performance']
+      },
+      {
+        category: 'Evolution',
+        items: ['Monitors and improves quality control metrics']
+      }
+    ],
+    icon: 'CheckCircle',
+    color: '#EC4899'
+  }
+];
+
 export interface User {
   id: string;
   name: string;
@@ -124,12 +303,6 @@ export const menuItems: MenuItem[] = [
     allowedRoles: ['SUPERADMIN', 'CREATOR', 'USER'],
   },
   {
-    title: 'Analytics',
-    path: '/admin/analytics',
-    icon: 'analytics',
-    allowedRoles: ['SUPERADMIN'],
-  },
-  {
     title: 'User Management',
     path: '/admin/user-management',
     icon: 'people',
@@ -149,7 +322,7 @@ export const menuItems: MenuItem[] = [
   },
   {
     title: 'System Settings',
-    path: '/admin/settings',
+    path: '/admin/system-settings',
     icon: 'settings',
     allowedRoles: ['SUPERADMIN'],
   },
@@ -408,35 +581,6 @@ export const mockAuditLogs: AuditLog[] = [
     status: 'failure',
   },
   // Add more audit logs as needed
-];
-
-// Mock Analytics Data
-export const mockAnalytics: AnalyticsData[] = [
-  {
-    id: 'ana-001',
-    metric: 'Active Users',
-    value: 2847,
-    change: 12.5,
-    period: 'daily',
-    lastUpdated: '2023-12-10T00:00:00',
-  },
-  {
-    id: 'ana-002',
-    metric: 'API Requests',
-    value: 1200000,
-    change: 8.2,
-    period: 'daily',
-    lastUpdated: '2023-12-10T00:00:00',
-  },
-  {
-    id: 'ana-003',
-    metric: 'Storage Usage',
-    value: 642,
-    change: 5.7,
-    period: 'daily',
-    lastUpdated: '2023-12-10T00:00:00',
-  },
-  // Add more analytics data as needed
 ];
 
 // Mock Notifications
