@@ -21,9 +21,11 @@ import Analytics from './pages/admin/Analytics';
 import LiveSessions from './pages/admin/LiveSessions';
 
 // Static Pages
+import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import Features from './pages/Features';
 import Solutions from './pages/Solutions';
+import Journey from './pages/Journey';
 import Agents from './pages/Agents';
 import Pricing from './pages/Pricing';
 import Contact from './pages/Contact';
@@ -31,28 +33,38 @@ import Contact from './pages/Contact';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
+    element: <MainLayout />,
     errorElement: <ErrorBoundary />,
-  },
-  {
-    path: 'features',
-    element: <Features />,
-  },
-  {
-    path: 'solutions',
-    element: <Solutions />,
-  },
-  {
-    path: 'agents',
-    element: <Agents />,
-  },
-  {
-    path: 'pricing',
-    element: <Pricing />,
-  },
-  {
-    path: 'contact',
-    element: <Contact />,
+    children: [
+      {
+        path: '',
+        element: <Home />,
+      },
+      {
+        path: 'features',
+        element: <Features />,
+      },
+      {
+        path: 'solutions',
+        element: <Solutions />,
+      },
+      {
+        path: 'journey',
+        element: <Journey />,
+      },
+      {
+        path: 'agents',
+        element: <Agents />,
+      },
+      {
+        path: 'pricing',
+        element: <Pricing />,
+      },
+      {
+        path: 'contact',
+        element: <Contact />,
+      },
+    ],
   },
   {
     path: 'auth',
@@ -101,12 +113,12 @@ const router = createBrowserRouter([
         element: <LiveSessions />,
       },
       {
-        path: 'security-audit',
-        element: <SecurityAudit />,
+        path: 'system-settings',
+        element: <SystemSettings />,
       },
       {
-        path: 'settings',
-        element: <SystemSettings />,
+        path: 'security-audit',
+        element: <SecurityAudit />,
       },
     ],
   },
