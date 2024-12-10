@@ -1,71 +1,108 @@
-import { ThemeProvider, CssBaseline } from '@mui/material';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import { CssBaseline } from '@mui/material';
 import { StyledEngineProvider } from '@mui/material/styles';
-import { Box } from '@mui/material';
-import theme from './theme';
-import ParticlesBackground from './components/ParticlesBackground';
-import Navbar from './components/Navbar';
-
-// Main Pages
-import Home from './pages/Home';
-import Features from './pages/Features';
-import Solutions from './pages/Solutions';
-import Agents from './pages/Agents';
-import Journey from './pages/Journey';
+import { ThemeProvider as CustomThemeProvider } from './contexts/ThemeContext';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Auth Pages
 import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
-import SessionHistory from './pages/auth/SessionHistory';
 
-function App() {
+// Admin Pages
+import AdminLayout from './layouts/AdminLayout';
+import Dashboard from './pages/admin/Dashboard';
+import UserManagement from './pages/admin/UserManagement';
+import SystemSettings from './pages/admin/SystemSettings';
+import SecurityAudit from './pages/admin/SecurityAudit';
+import Analytics from './pages/admin/Analytics';
+import LiveSessions from './pages/admin/LiveSessions';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Navigate to="/auth/login" replace />,
+    errorElement: <ErrorBoundary />,
+  },
+  {
+    path: 'auth',
+    children: [
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'signup',
+        element: <Signup />,
+      },
+      {
+        path: 'forgot-password',
+        element: <ForgotPassword />,
+      },
+      {
+        path: 'reset-password',
+        element: <ResetPassword />,
+      },
+    ],
+  },
+  {
+    path: 'admin',
+    element: <AdminLayout />,
+    errorElement: <ErrorBoundary />,
+    children: [
+      {
+        path: '',
+        element: <Dashboard />,
+      },
+      {
+        path: 'dashboard',
+        element: <Dashboard />,
+      },
+      {
+        path: 'analytics',
+        element: <Analytics />,
+      },
+      {
+        path: 'user-management',
+        element: <UserManagement />,
+      },
+      {
+        path: 'live-sessions',
+        element: <LiveSessions />,
+      },
+      {
+        path: 'security-audit',
+        element: <SecurityAudit />,
+      },
+      {
+        path: 'settings',
+        element: <SystemSettings />,
+      },
+    ],
+  },
+]);
+
+const App: React.FC = () => {
+  useEffect(() => {
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+      loadingScreen.style.opacity = '0';
+      setTimeout(() => {
+        loadingScreen.style.display = 'none';
+      }, 500);
+    }
+  }, []);
+
   return (
     <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
+      <CustomThemeProvider>
         <CssBaseline />
-        <Router>
-          <Box 
-            component="main"
-            sx={{
-              minHeight: '100vh',
-              backgroundColor: 'transparent',
-              position: 'relative',
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column'
-            }}
-          >
-            <Box sx={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 }}>
-              <ParticlesBackground />
-            </Box>
-            <Navbar />
-            <Box sx={{ flex: 1, position: 'relative', zIndex: 1 }}>
-              <Routes>
-                {/* Auth Routes */}
-                <Route path="/auth/login" element={<Login />} />
-                <Route path="/auth/signup" element={<Signup />} />
-                <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-                <Route path="/auth/reset-password" element={<ResetPassword />} />
-                <Route path="/auth/session-history" element={<SessionHistory />} />
-
-                {/* Main Routes */}
-                <Route path="/" element={<Home />} />
-                <Route path="/features" element={<Features />} />
-                <Route path="/solutions" element={<Solutions />} />
-                <Route path="/journey" element={<Journey />} />
-                <Route path="/agents" element={<Agents />} />
-
-                {/* Redirect unknown routes to home */}
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </Box>
-          </Box>
-        </Router>
-      </ThemeProvider>
+        <RouterProvider router={router} />
+      </CustomThemeProvider>
     </StyledEngineProvider>
   );
-}
+};
 
 export default App;

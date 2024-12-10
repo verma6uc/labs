@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Box } from '@mui/material';
-import { loadSlim } from "tsparticles-slim";
-import type { Container, Engine } from "tsparticles-engine";
+import { loadFull } from "tsparticles";
+import type { Engine } from "tsparticles-engine";
 import { useTheme } from '@mui/material/styles';
 import { useInView } from 'react-intersection-observer';
 import Particles from "react-tsparticles";
@@ -18,39 +18,21 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ variant = 'defa
   });
 
   const particlesInit = useCallback(async (engine: Engine) => {
-    await loadSlim(engine);
+    await loadFull(engine);
   }, []);
 
   const getParticlesConfig = (variant: string) => {
     const baseConfig = {
+      fullScreen: {
+        enable: true,
+        zIndex: -1,
+      },
       background: {
         color: {
           value: "transparent",
         },
       },
       fpsLimit: 120,
-      interactivity: {
-        events: {
-          onClick: {
-            enable: true,
-            mode: "push",
-          },
-          onHover: {
-            enable: true,
-            mode: "repulse",
-          },
-          resize: true,
-        },
-        modes: {
-          push: {
-            quantity: 4,
-          },
-          repulse: {
-            distance: 200,
-            duration: 0.4,
-          },
-        },
-      },
       particles: {
         color: {
           value: "#0EA5E9",
@@ -59,8 +41,11 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ variant = 'defa
           color: "#0EA5E9",
           distance: 150,
           enable: true,
-          opacity: 0.3,
+          opacity: 0.2,
           width: 1,
+        },
+        collisions: {
+          enable: true,
         },
         move: {
           direction: "none",
@@ -68,8 +53,8 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ variant = 'defa
           outModes: {
             default: "bounce",
           },
-          random: false,
-          speed: 2,
+          random: true,
+          speed: 3,
           straight: false,
         },
         number: {
@@ -90,6 +75,28 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ variant = 'defa
         },
       },
       detectRetina: true,
+      interactivity: {
+        events: {
+          onClick: {
+            enable: true,
+            mode: "push",
+          },
+          onHover: {
+            enable: true,
+            mode: "repulse",
+          },
+          resize: true,
+        },
+        modes: {
+          push: {
+            quantity: 4,
+          },
+          repulse: {
+            distance: 100,
+            duration: 0.4,
+          },
+        },
+      },
     };
 
     switch (variant) {
@@ -99,16 +106,11 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ variant = 'defa
           particles: {
             ...baseConfig.particles,
             number: {
-              ...baseConfig.particles.number,
-              value: 120,
               density: {
                 enable: true,
                 area: 600,
               },
-            },
-            move: {
-              ...baseConfig.particles.move,
-              speed: 3,
+              value: 100,
             },
           },
         };
@@ -118,16 +120,14 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ variant = 'defa
           particles: {
             ...baseConfig.particles,
             number: {
-              ...baseConfig.particles.number,
-              value: 40,
               density: {
                 enable: true,
                 area: 1000,
               },
+              value: 60,
             },
-            move: {
-              ...baseConfig.particles.move,
-              speed: 1.5,
+            opacity: {
+              value: 0.2,
             },
           },
         };
@@ -140,14 +140,14 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ variant = 'defa
     <Box
       ref={ref}
       sx={{
-        position: 'fixed',
+        position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
         zIndex: 0,
         opacity: inView ? 1 : 0,
-        transition: 'opacity 0.5s ease-in-out',
+        transition: 'opacity 1s ease-in-out',
       }}
     >
       {inView && (

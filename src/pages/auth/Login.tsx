@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import AuthLayout from '../../components/auth/AuthLayout';
 import { FormContainer, Form, Input, Button, InputWrapper, PasswordInput, EyeIcon } from '../../components/auth/AuthStyles';
-import { API_ENDPOINTS } from '../../config/api';
 
 const EyeIconSvg = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -31,21 +30,29 @@ const Login = () => {
     setError('');
     setLoading(true);
 
+    // Mock credentials for the prototype
+    const validCredentials = {
+      email: 'admin@creatorlabs.com',
+      password: 'admin123'
+    };
+
     try {
-      const response = await fetch(API_ENDPOINTS.AUTH.LOGIN, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+      if (email === validCredentials.email && password === validCredentials.password) {
+        // Store mock token
+        localStorage.setItem('token', 'mock-jwt-token');
+        localStorage.setItem('user', JSON.stringify({
+          id: 'admin-001',
+          name: 'John Admin',
+          email: validCredentials.email,
+          role: 'SUPERADMIN'
+        }));
+        navigate('/admin');
+      } else {
+        throw new Error('Invalid email or password');
       }
-
-      localStorage.setItem('token', data.token);
-      navigate('/dashboard');
     } catch (err) {
       setError(err.message);
     } finally {
