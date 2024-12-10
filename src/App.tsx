@@ -20,11 +20,39 @@ import SecurityAudit from './pages/admin/SecurityAudit';
 import Analytics from './pages/admin/Analytics';
 import LiveSessions from './pages/admin/LiveSessions';
 
+// Static Pages
+import Home from './pages/Home';
+import Features from './pages/Features';
+import Solutions from './pages/Solutions';
+import Agents from './pages/Agents';
+import Pricing from './pages/Pricing';
+import Contact from './pages/Contact';
+
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Navigate to="/auth/login" replace />,
+    element: <Home />,
     errorElement: <ErrorBoundary />,
+  },
+  {
+    path: 'features',
+    element: <Features />,
+  },
+  {
+    path: 'solutions',
+    element: <Solutions />,
+  },
+  {
+    path: 'agents',
+    element: <Agents />,
+  },
+  {
+    path: 'pricing',
+    element: <Pricing />,
+  },
+  {
+    path: 'contact',
+    element: <Contact />,
   },
   {
     path: 'auth',
@@ -84,7 +112,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-const App: React.FC = () => {
+function App() {
   useEffect(() => {
     const loadingScreen = document.getElementById('loading-screen');
     if (loadingScreen) {
@@ -103,6 +131,6 @@ const App: React.FC = () => {
       </CustomThemeProvider>
     </StyledEngineProvider>
   );
-};
+}
 
 export default App;
