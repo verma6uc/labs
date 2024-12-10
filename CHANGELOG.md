@@ -24,6 +24,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Implemented particle effects on Home, Solutions, Features, and Agents pages
   - Each page uses optimized particle density for its content
   - Performance optimized with intersection observer
+- Enhanced mobile responsiveness across admin pages
+  - Implemented responsive drawer navigation in AdminLayout
+  - Added mobile-optimized grid layouts for Dashboard, User Management, and System Settings
+  - Enhanced table and card views for better mobile experience
+  - Optimized notification and menu interfaces for touch devices
 
 ### Changed
 - Updated Agents page styling
@@ -34,7 +39,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fixed TypeScript issues with styled components
   - Enhanced mobile menu functionality
   - Optimized component styling
-- N/A
+- Enhanced AdminLayout for better mobile experience
+  - Changed drawer to temporary mode on mobile devices
+  - Improved header and menu responsiveness
+  - Optimized spacing and typography for mobile screens
 
 ### Deprecated
 - N/A
