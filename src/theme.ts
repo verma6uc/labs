@@ -1,91 +1,117 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, alpha } from '@mui/material/styles';
+import { PaletteMode } from '@mui/material';
 
-const theme = createTheme({
+const defaultTheme = createTheme({
   palette: {
-    mode: 'dark',
     primary: {
       main: '#0EA5E9',
       light: '#38BDF8',
       dark: '#0284C7',
+      contrastText: '#FFFFFF',
     },
-    background: {
-      default: '#0F172A',
-      paper: 'rgba(15, 23, 42, 0.8)',
-    },
-    text: {
-      primary: '#fff',
-      secondary: 'rgba(255, 255, 255, 0.7)',
+    secondary: {
+      main: '#8B5CF6',
+      light: '#A78BFA',
+      dark: '#7C3AED',
+      contrastText: '#FFFFFF',
     },
   },
   typography: {
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
-    h1: {
-      fontSize: '3.5rem',
-      fontWeight: 700,
-      letterSpacing: '-0.02em',
-      lineHeight: 1.2,
-    },
-    h2: {
-      fontSize: '2.5rem',
-      fontWeight: 600,
-      letterSpacing: '-0.01em',
-    },
-    h3: {
-      fontSize: '2rem',
-      fontWeight: 600,
-    },
-    h4: {
-      fontSize: '1.75rem',
-      fontWeight: 600,
-    },
-    h5: {
-      fontSize: '1.25rem',
-      fontWeight: 500,
-    },
-    h6: {
-      fontSize: '1rem',
-      fontWeight: 500,
-    },
-    body1: {
-      fontSize: '1rem',
-      lineHeight: 1.7,
-    },
-    body2: {
-      fontSize: '0.875rem',
-      lineHeight: 1.6,
-    },
   },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 0,
-          textTransform: 'none',
-          fontWeight: 500,
-        },
+  shape: {
+    borderRadius: 8,
+  },
+});
+
+export const getTheme = (mode: PaletteMode) => {
+  const isLight = mode === 'light';
+  
+  return createTheme({
+    ...defaultTheme,
+    palette: {
+      ...defaultTheme.palette,
+      mode,
+      background: {
+        default: isLight ? '#F1F5F9' : '#0F172A',
+        paper: isLight ? '#FFFFFF' : '#1E293B',
+      },
+      text: {
+        primary: isLight ? '#1E293B' : '#E2E8F0',
+        secondary: isLight ? '#64748B' : '#94A3B8',
+      },
+      divider: alpha(isLight ? '#64748B' : '#94A3B8', 0.12),
+      error: {
+        main: '#EF4444',
+        light: '#F87171',
+        dark: '#DC2626',
+      },
+      warning: {
+        main: '#F59E0B',
+        light: '#FBBF24',
+        dark: '#D97706',
+      },
+      success: {
+        main: '#10B981',
+        light: '#34D399',
+        dark: '#059669',
       },
     },
-    MuiAppBar: {
-      styleOverrides: {
-        root: {
-          backgroundColor: 'rgba(15, 23, 42, 0.9)',
-          backdropFilter: 'blur(10px)',
+    components: {
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            backgroundImage: 'none',
+          },
         },
       },
-    },
-    MuiContainer: {
-      styleOverrides: {
-        root: {
-          paddingLeft: '24px',
-          paddingRight: '24px',
-          '@media (min-width: 600px)': {
-            paddingLeft: '32px',
-            paddingRight: '32px',
+      MuiCssBaseline: {
+        styleOverrides: {
+          body: {
+            scrollbarColor: isLight ? '#CBD5E1 #F1F5F9' : '#475569 #1E293B',
+            '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
+              width: 8,
+              height: 8,
+              backgroundColor: isLight ? '#F1F5F9' : '#1E293B',
+            },
+            '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
+              borderRadius: 8,
+              backgroundColor: isLight ? '#CBD5E1' : '#475569',
+              border: '2px solid transparent',
+              backgroundClip: 'content-box',
+            },
+            '&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover': {
+              backgroundColor: isLight ? '#94A3B8' : '#64748B',
+            },
           },
         },
       },
     },
-  },
-});
+  });
+};
 
-export default theme;
+export const getCardStyle = (mode: PaletteMode) => {
+  const isLight = mode === 'light';
+  
+  return {
+    background: alpha(isLight ? '#FFFFFF' : '#1E293B', isLight ? 0.8 : 0.6),
+    backdropFilter: 'blur(16px) saturate(180%)',
+    border: `1px solid ${alpha(isLight ? '#E2E8F0' : '#475569', 0.1)}`,
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    '&:hover': {
+      transform: 'translateY(-4px) scale(1.01)',
+      boxShadow: isLight 
+        ? '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+        : '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2)',
+      border: `1px solid ${alpha(isLight ? '#0EA5E9' : '#38BDF8', 0.2)}`,
+      '& .MuiChip-root': {
+        transform: 'scale(1.05)',
+      },
+    },
+    '& .MuiChip-root': {
+      transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    },
+  };
+};
+
+export default defaultTheme;
