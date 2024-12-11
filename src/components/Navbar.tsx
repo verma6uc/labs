@@ -7,6 +7,7 @@ import {
   IconButton,
   Toolbar,
   useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
@@ -15,6 +16,7 @@ import { GlassButton } from './shared/StyledComponents';
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const theme = useTheme();
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   const navItems = [
     { text: 'Home', path: '/' },
@@ -105,8 +107,8 @@ const Navbar = () => {
           </Box>
         </RouterLink>
 
-        {/* Mobile Menu Button - Always visible for testing */}
-        <Box sx={{ display: 'block' }}>
+        {/* Mobile Menu Button */}
+        {isMobile && (
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -115,36 +117,38 @@ const Navbar = () => {
           >
             <MenuIcon />
           </IconButton>
-        </Box>
+        )}
 
-        {/* Desktop Navigation - Hidden for testing */}
-        <Box sx={{ display: 'none' }}>
-          {navItems.map((item) => (
-            <GlassButton
-              key={item.text}
-              component={RouterLink}
-              to={item.path}
-            >
-              {item.text}
-            </GlassButton>
-          ))}
-          <Box sx={{ ml: 2 }}>
-            <GlassButton
-              component={RouterLink}
-              to="/auth/login"
-              sx={{ mr: 1 }}
-            >
-              Login
-            </GlassButton>
-            <GlassButton
-              component={RouterLink}
-              to="/auth/signup"
-              className="primary"
-            >
-              Sign Up
-            </GlassButton>
+        {/* Desktop Navigation */}
+        {!isMobile && (
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            {navItems.map((item) => (
+              <GlassButton
+                key={item.text}
+                component={RouterLink}
+                to={item.path}
+              >
+                {item.text}
+              </GlassButton>
+            ))}
+            <Box sx={{ ml: 2 }}>
+              <GlassButton
+                component={RouterLink}
+                to="/auth/login"
+                sx={{ mr: 1 }}
+              >
+                Login
+              </GlassButton>
+              <GlassButton
+                component={RouterLink}
+                to="/auth/signup"
+                className="primary"
+              >
+                Sign Up
+              </GlassButton>
+            </Box>
           </Box>
-        </Box>
+        )}
         {renderMobileMenu()}
       </Toolbar>
     </AppBar>
