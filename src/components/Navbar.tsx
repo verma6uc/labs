@@ -16,7 +16,8 @@ import { GlassButton } from './shared/StyledComponents';
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery('(max-width:1024px)');
+  // Use a smaller breakpoint for testing
+  const isMobile = useMediaQuery('(max-width:768px)');
 
   const navItems = [
     { text: 'Home', path: '/' },
@@ -107,27 +108,25 @@ const Navbar = () => {
           </Box>
         </RouterLink>
 
-        {/* Mobile Menu Button */}
-        {isMobile && (
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="end"
-            onClick={() => setMobileMenuOpen(true)}
-            sx={{
-              display: { xs: 'flex', md: 'none' },
-              color: 'white',
-              background: 'rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              '&:hover': {
-                background: 'rgba(255, 255, 255, 0.1)',
-              },
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-        )}
+        {/* Mobile Menu Button - Always show during testing */}
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          edge="end"
+          onClick={() => setMobileMenuOpen(true)}
+          sx={{
+            display: { xs: 'flex' },
+            color: 'white',
+            background: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            '&:hover': {
+              background: 'rgba(255, 255, 255, 0.1)',
+            },
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
 
         {/* Desktop Navigation */}
         {!isMobile && (
