@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import AuthLayout from '../../components/auth/AuthLayout';
 import { FormContainer, Form, Input, Button, InputWrapper, PasswordInput, EyeIcon } from '../../components/auth/AuthStyles';
+import { mockUsers } from '../../data/mockData';
 
 const EyeIconSvg = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -30,25 +31,17 @@ const Login = () => {
     setError('');
     setLoading(true);
 
-    // Mock credentials for the prototype
-    const validCredentials = {
-      email: 'admin@creatorlabs.ai',
-      password: 'admin123'
-    };
-
     try {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 500));
 
-      if (email === validCredentials.email && password === validCredentials.password) {
-        // Store mock token
+      // Find superadmin user from mockUsers
+      const superAdmin = mockUsers.find(user => user.role === 'SUPERADMIN');
+
+      // For demo purposes, any password will work with the correct email
+      if (email === superAdmin?.email) {
         localStorage.setItem('token', 'mock-jwt-token');
-        localStorage.setItem('user', JSON.stringify({
-          id: 'admin-001',
-          name: 'John Admin',
-          email: validCredentials.email,
-          role: 'SUPERADMIN'
-        }));
+        localStorage.setItem('user', JSON.stringify(superAdmin));
         navigate('/admin');
       } else {
         throw new Error('Invalid email or password');
