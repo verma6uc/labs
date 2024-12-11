@@ -15,11 +15,6 @@ import { GlassButton } from './shared/StyledComponents';
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const theme = useTheme();
-  const isMobile = true; // Always force mobile view for testing
-
-  const handleMobileMenuToggle = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
 
   const navItems = [
     { text: 'Home', path: '/' },
@@ -43,15 +38,11 @@ const Navbar = () => {
           backgroundColor: 'rgba(17, 24, 39, 0.98)',
           backdropFilter: 'blur(10px)',
           borderLeft: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: 'none',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-          p: 2,
+          padding: '1rem',
         }
       }}
     >
-      <Box sx={{ p: 2, display: 'flex', justifyContent: 'flex-end' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
         <IconButton
           onClick={() => setMobileMenuOpen(false)}
           sx={{ color: 'white' }}
@@ -59,34 +50,32 @@ const Navbar = () => {
           <CloseIcon />
         </IconButton>
       </Box>
-      <Box sx={{ p: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
         {navItems.map((item) => (
           <GlassButton
             key={item.text}
             component={RouterLink}
             to={item.path}
             onClick={() => setMobileMenuOpen(false)}
-            className="secondary"
             fullWidth
             sx={{ justifyContent: 'flex-start', textAlign: 'left' }}
           >
             {item.text}
           </GlassButton>
         ))}
-        <Box sx={{ mt: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ mt: 2 }}>
           <GlassButton
             component={RouterLink}
             to="/auth/login"
             onClick={() => setMobileMenuOpen(false)}
-            className="secondary"
             fullWidth
+            sx={{ mb: 1 }}
           >
             Login
           </GlassButton>
           <GlassButton
             component={RouterLink}
             to="/auth/signup"
-            onClick={() => setMobileMenuOpen(false)}
             className="primary"
             fullWidth
           >
@@ -117,22 +106,45 @@ const Navbar = () => {
         </RouterLink>
 
         {/* Mobile Menu Button */}
-        {isMobile && (
-          <GlassButton
-            aria-label="menu"
-            className="secondary"
-            sx={{
-              display: { xs: 'flex', md: 'none' },
-              minWidth: 'unset',
-              p: 1
-            }}
-            onClick={handleMobileMenuToggle}
+        <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={() => setMobileMenuOpen(true)}
           >
             <MenuIcon />
-          </GlassButton>
-        )}
+          </IconButton>
+        </Box>
 
-        {/* Mobile Menu */}
+        {/* Desktop Navigation */}
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2, alignItems: 'center' }}>
+          {navItems.map((item) => (
+            <GlassButton
+              key={item.text}
+              component={RouterLink}
+              to={item.path}
+            >
+              {item.text}
+            </GlassButton>
+          ))}
+          <Box sx={{ ml: 2 }}>
+            <GlassButton
+              component={RouterLink}
+              to="/auth/login"
+              sx={{ mr: 1 }}
+            >
+              Login
+            </GlassButton>
+            <GlassButton
+              component={RouterLink}
+              to="/auth/signup"
+              className="primary"
+            >
+              Sign Up
+            </GlassButton>
+          </Box>
+        </Box>
         {renderMobileMenu()}
       </Toolbar>
     </AppBar>
