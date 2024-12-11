@@ -16,7 +16,6 @@ import { GlassButton } from './shared/StyledComponents';
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const theme = useTheme();
-  // Increase breakpoint to 1024px to ensure mobile view triggers
   const isMobile = useMediaQuery('(max-width:1024px)');
 
   const navItems = [
@@ -99,7 +98,7 @@ const Navbar = () => {
         boxShadow: 'none',
       }}
     >
-      <Toolbar sx={{ justifyContent: 'space-between' }}>
+      <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
         <RouterLink to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <h6 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 600 }}>
@@ -113,8 +112,18 @@ const Navbar = () => {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            edge="start"
+            edge="end"
             onClick={() => setMobileMenuOpen(true)}
+            sx={{
+              display: { xs: 'flex', md: 'none' },
+              color: 'white',
+              background: 'rgba(255, 255, 255, 0.05)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              '&:hover': {
+                background: 'rgba(255, 255, 255, 0.1)',
+              },
+            }}
           >
             <MenuIcon />
           </IconButton>
