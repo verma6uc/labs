@@ -6,18 +6,16 @@ import {
   Drawer,
   IconButton,
   Toolbar,
-  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 import { GlassButton } from './shared/StyledComponents';
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const theme = useTheme();
-  const [forceMobile, setForceMobile] = useState(true);
-  const isNaturallyMobile = useMediaQuery('(max-width:960px)');
-  const isMobile = forceMobile || isNaturallyMobile;
+  const isMobile = true; // Always force mobile view for testing
 
   const handleMobileMenuToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -53,38 +51,48 @@ const Navbar = () => {
         }
       }}
     >
-      {navItems.map((item) => (
-        <GlassButton
-          key={item.text}
-          component={RouterLink}
-          to={item.path}
+      <Box sx={{ p: 2, display: 'flex', justifyContent: 'flex-end' }}>
+        <IconButton
           onClick={() => setMobileMenuOpen(false)}
-          className="secondary"
-          fullWidth
-          sx={{ justifyContent: 'flex-start', textAlign: 'left' }}
+          sx={{ color: 'white' }}
         >
-          {item.text}
-        </GlassButton>
-      ))}
-      <Box sx={{ mt: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <GlassButton
-          component={RouterLink}
-          to="/auth/login"
-          onClick={() => setMobileMenuOpen(false)}
-          className="secondary"
-          fullWidth
-        >
-          Login
-        </GlassButton>
-        <GlassButton
-          component={RouterLink}
-          to="/auth/signup"
-          onClick={() => setMobileMenuOpen(false)}
-          className="primary"
-          fullWidth
-        >
-          Sign Up
-        </GlassButton>
+          <CloseIcon />
+        </IconButton>
+      </Box>
+      <Box sx={{ p: 2 }}>
+        {navItems.map((item) => (
+          <GlassButton
+            key={item.text}
+            component={RouterLink}
+            to={item.path}
+            onClick={() => setMobileMenuOpen(false)}
+            className="secondary"
+            fullWidth
+            sx={{ justifyContent: 'flex-start', textAlign: 'left' }}
+          >
+            {item.text}
+          </GlassButton>
+        ))}
+        <Box sx={{ mt: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <GlassButton
+            component={RouterLink}
+            to="/auth/login"
+            onClick={() => setMobileMenuOpen(false)}
+            className="secondary"
+            fullWidth
+          >
+            Login
+          </GlassButton>
+          <GlassButton
+            component={RouterLink}
+            to="/auth/signup"
+            onClick={() => setMobileMenuOpen(false)}
+            className="primary"
+            fullWidth
+          >
+            Sign Up
+          </GlassButton>
+        </Box>
       </Box>
     </Drawer>
   );
@@ -107,37 +115,6 @@ const Navbar = () => {
             </h6>
           </Box>
         </RouterLink>
-
-        {/* Desktop Navigation */}
-        <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2, alignItems: 'center' }}>
-          {navItems.map((item) => (
-            <GlassButton
-              key={item.text}
-              component={RouterLink}
-              to={item.path}
-              className="secondary"
-            >
-              {item.text}
-            </GlassButton>
-          ))}
-          <Box sx={{ ml: 2 }}>
-            <GlassButton
-              component={RouterLink}
-              to="/auth/login"
-              className="secondary"
-              sx={{ mr: 1 }}
-            >
-              Login
-            </GlassButton>
-            <GlassButton
-              component={RouterLink}
-              to="/auth/signup"
-              className="primary"
-            >
-              Sign Up
-            </GlassButton>
-          </Box>
-        </Box>
 
         {/* Mobile Menu Button */}
         {isMobile && (
