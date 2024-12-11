@@ -177,6 +177,64 @@ export const agents: Agent[] = [
   }
 ];
 
+export const mockActivities = [
+  {
+    id: '1',
+    type: 'role_change',
+    user: {
+      name: 'Sarah Admin',
+      avatar: '',
+    },
+    action: 'Changed user role from User to Creator',
+    details: 'Updated permissions for John Smith',
+    timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 minutes ago
+  },
+  {
+    id: '2',
+    type: 'integration',
+    user: {
+      name: 'System',
+      avatar: '',
+    },
+    action: 'API key rotation completed',
+    details: 'Successfully rotated keys for OpenAI integration',
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 hours ago
+  },
+  {
+    id: '3',
+    type: 'security',
+    user: {
+      name: 'Security Monitor',
+      avatar: '',
+    },
+    action: 'Detected unusual login pattern',
+    details: 'Multiple failed attempts from IP 192.168.1.100',
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString(), // 4 hours ago
+  },
+  {
+    id: '4',
+    type: 'settings',
+    user: {
+      name: 'Mike Admin',
+      avatar: '',
+    },
+    action: 'Updated system settings',
+    details: 'Modified rate limiting configuration',
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 12).toISOString(), // 12 hours ago
+  },
+  {
+    id: '5',
+    type: 'role_change',
+    user: {
+      name: 'Sarah Admin',
+      avatar: '',
+    },
+    action: 'Bulk role update',
+    details: 'Updated 15 user permissions',
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 24 hours ago
+  },
+];
+
 export interface User {
   id: string;
   name: string;
