@@ -105,8 +105,8 @@ const Navbar = () => {
           </Box>
         </RouterLink>
 
-        {/* Mobile Menu Button */}
-        <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+        {/* Mobile Menu Button - Always visible for testing */}
+        <Box sx={{ display: 'block' }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -117,8 +117,8 @@ const Navbar = () => {
           </IconButton>
         </Box>
 
-        {/* Desktop Navigation */}
-        <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2, alignItems: 'center' }}>
+        {/* Desktop Navigation - Hidden for testing */}
+        <Box sx={{ display: 'none' }}>
           {navItems.map((item) => (
             <GlassButton
               key={item.text}
