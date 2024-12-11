@@ -180,58 +180,58 @@ export const agents: Agent[] = [
 export const mockActivities = [
   {
     id: '1',
-    type: 'role_change',
+    type: 'user' as const,
     user: {
       name: 'Sarah Admin',
       avatar: '',
     },
-    action: 'Changed user role from User to Creator',
-    details: 'Updated permissions for John Smith',
-    timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 minutes ago
+    action: 'Changed role for',
+    target: 'John Smith',
+    timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
   },
   {
     id: '2',
-    type: 'integration',
+    type: 'system' as const,
     user: {
       name: 'System',
       avatar: '',
     },
-    action: 'API key rotation completed',
-    details: 'Successfully rotated keys for OpenAI integration',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 hours ago
+    action: 'Completed',
+    target: 'API key rotation',
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
   },
   {
     id: '3',
-    type: 'security',
+    type: 'security' as const,
     user: {
       name: 'Security Monitor',
       avatar: '',
     },
-    action: 'Detected unusual login pattern',
-    details: 'Multiple failed attempts from IP 192.168.1.100',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString(), // 4 hours ago
+    action: 'Detected',
+    target: 'unusual login pattern',
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 4), // 4 hours ago
   },
   {
     id: '4',
-    type: 'settings',
+    type: 'system' as const,
     user: {
       name: 'Mike Admin',
       avatar: '',
     },
-    action: 'Updated system settings',
-    details: 'Modified rate limiting configuration',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 12).toISOString(), // 12 hours ago
+    action: 'Modified',
+    target: 'rate limiting settings',
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 12), // 12 hours ago
   },
   {
     id: '5',
-    type: 'role_change',
+    type: 'data' as const,
     user: {
       name: 'Sarah Admin',
       avatar: '',
     },
-    action: 'Bulk role update',
-    details: 'Updated 15 user permissions',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 24 hours ago
+    action: 'Updated roles for',
+    target: '15 users',
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24), // 24 hours ago
   },
 ];
 
@@ -450,7 +450,6 @@ export const mockUsers: User[] = [
     company: 'Client Corp',
     createdAt: '2023-06-01T00:00:00',
   },
-  // Add more detailed user profiles...
 ];
 
 export interface Project {
@@ -638,7 +637,6 @@ export const mockAuditLogs: AuditLog[] = [
     timestamp: '2023-12-10T09:45:00',
     status: 'failure',
   },
-  // Add more audit logs as needed
 ];
 
 // Mock Notifications

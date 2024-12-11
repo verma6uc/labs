@@ -5,19 +5,16 @@ import {
   Grid,
   Tabs,
   Tab,
-  Divider,
   Tooltip,
   Snackbar,
   Alert,
+  TextField,
+  useTheme,
 } from '@mui/material';
-import {
-  Save as SaveIcon,
-  Refresh as RefreshIcon,
-  Info as InfoIcon,
-} from '@mui/icons-material';
 import { mockSettings } from '../../data/mockData';
-import { StyledButton, FeatureCard, StyledTextField } from '../../components/shared/StyledComponents';
+import { StyledButton } from '../../components/shared/StyledComponents';
 import { StyledInfoIcon, StyledSaveIcon, StyledRefreshIcon } from '../../components/shared/StyledIcons';
+import AdminCard from '../../components/shared/AdminCard';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -42,6 +39,7 @@ const TabPanel = (props: TabPanelProps) => {
 };
 
 const SystemSettings = () => {
+  const theme = useTheme();
   const [currentTab, setCurrentTab] = useState(0);
   const [settings, setSettings] = useState(mockSettings);
   const [snackbar, setSnackbar] = useState({
@@ -71,14 +69,12 @@ const SystemSettings = () => {
       // In a real app, this would be an API call
       console.log('Saving settings:', settings);
       
-      // Show success message
       setSnackbar({
         open: true,
         message: 'Settings saved successfully',
         severity: 'success',
       });
     } catch (error) {
-      // Show error message
       setSnackbar({
         open: true,
         message: 'Failed to save settings',
@@ -107,40 +103,52 @@ const SystemSettings = () => {
       <Grid container spacing={3}>
         {categorySettings.map((setting) => (
           <Grid item xs={12} md={6} key={setting.id}>
-            <FeatureCard>
-              <Box sx={{ p: 2 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <Typography variant="subtitle1" sx={{ 
-                    fontWeight: 600,
-                    color: '#E2E8F0'
-                  }}>
-                    {setting.name}
-                  </Typography>
-                  <Tooltip title={setting.description} arrow placement="top">
-                    <Box sx={{ ml: 1, display: 'flex', alignItems: 'center' }}>
-                      <StyledInfoIcon fontSize="small" />
-                    </Box>
-                  </Tooltip>
-                </Box>
-                <StyledTextField
-                  fullWidth
-                  value={setting.value}
-                  onChange={(e) => handleSettingChange(setting.id, e.target.value)}
-                  size="small"
-                  placeholder={`Enter ${setting.name.toLowerCase()}`}
-                />
-                <Typography
-                  variant="caption"
-                  sx={{ 
-                    display: 'block',
-                    mt: 1,
-                    color: '#94A3B8'
-                  }}
-                >
-                  Last updated: {new Date(setting.lastUpdated).toLocaleString()}
+            <AdminCard>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Typography variant="subtitle1" sx={{ 
+                  fontWeight: 600,
+                  color: theme.palette.mode === 'dark' ? '#E2E8F0' : '#1E293B'
+                }}>
+                  {setting.name}
                 </Typography>
+                <Tooltip title={setting.description} arrow placement="top">
+                  <Box sx={{ ml: 1, display: 'flex', alignItems: 'center' }}>
+                    <StyledInfoIcon fontSize="small" />
+                  </Box>
+                </Tooltip>
               </Box>
-            </FeatureCard>
+              <TextField
+                fullWidth
+                value={setting.value}
+                onChange={(e) => handleSettingChange(setting.id, e.target.value)}
+                size="small"
+                placeholder={`Enter ${setting.name.toLowerCase()}`}
+                variant="outlined"
+                InputProps={{
+                  sx: {
+                    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.75)' : 'rgba(255, 255, 255, 0.9)',
+                    backdropFilter: 'blur(8px)',
+                    border: 'none',
+                    '& fieldset': {
+                      border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
+                    },
+                    '&:hover fieldset': {
+                      borderColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)',
+                    },
+                  },
+                }}
+              />
+              <Typography
+                variant="caption"
+                sx={{ 
+                  display: 'block',
+                  mt: 1,
+                  color: theme.palette.mode === 'dark' ? '#94A3B8' : '#64748B'
+                }}
+              >
+                Last updated: {new Date(setting.lastUpdated).toLocaleString()}
+              </Typography>
+            </AdminCard>
           </Grid>
         ))}
       </Grid>
@@ -149,43 +157,43 @@ const SystemSettings = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h5" sx={{
-          fontWeight: 600,
-          color: '#E2E8F0'
-        }}>
-          System Settings
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <StyledButton
-            variant="outlined"
-            startIcon={<StyledRefreshIcon />}
-            onClick={handleReset}
-          >
-            Reset
-          </StyledButton>
-          <StyledButton
-            variant="contained"
-            startIcon={<StyledSaveIcon />}
-            onClick={handleSave}
-          >
-            Save Changes
-          </StyledButton>
+      <AdminCard sx={{ mb: 3 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+          <Typography variant="h5" sx={{
+            fontWeight: 600,
+            color: theme.palette.mode === 'dark' ? '#E2E8F0' : '#1E293B'
+          }}>
+            System Settings
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <StyledButton
+              variant="outlined"
+              startIcon={<StyledRefreshIcon />}
+              onClick={handleReset}
+            >
+              Reset
+            </StyledButton>
+            <StyledButton
+              variant="contained"
+              startIcon={<StyledSaveIcon />}
+              onClick={handleSave}
+            >
+              Save Changes
+            </StyledButton>
+          </Box>
         </Box>
-      </Box>
 
-      <FeatureCard>
         <Tabs
           value={currentTab}
           onChange={handleTabChange}
           sx={{
             borderBottom: 1,
-            borderColor: 'rgba(255, 255, 255, 0.08)',
+            borderColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.1)',
             '& .MuiTabs-indicator': {
               backgroundColor: '#0EA5E9',
             },
             '& .MuiTab-root': {
-              color: '#94A3B8',
+              color: theme.palette.mode === 'dark' ? '#94A3B8' : '#64748B',
               '&.Mui-selected': {
                 color: '#0EA5E9',
               },
@@ -206,7 +214,7 @@ const SystemSettings = () => {
         <TabPanel value={currentTab} index={2}>
           {renderSettingFields('notifications')}
         </TabPanel>
-      </FeatureCard>
+      </AdminCard>
 
       <Snackbar
         open={snackbar.open}

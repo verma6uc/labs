@@ -32,7 +32,7 @@ const Login = () => {
 
     // Mock credentials for the prototype
     const validCredentials = {
-      email: 'admin@creatorlabs.com',
+      email: 'admin@creatorlabs.ai',
       password: 'admin123'
     };
 
@@ -128,10 +128,7 @@ const Login = () => {
               style={{ 
                 color: '#0EA5E9', 
                 textDecoration: 'none',
-                fontSize: '14px',
-                '&:hover': {
-                  textDecoration: 'underline'
-                }
+                fontSize: '14px'
               }}
             >
               Forgot password?
@@ -153,10 +150,7 @@ const Login = () => {
               to="/auth/signup"
               style={{ 
                 color: '#0EA5E9', 
-                textDecoration: 'none',
-                '&:hover': {
-                  textDecoration: 'underline'
-                }
+                textDecoration: 'none'
               }}
             >
               Sign up

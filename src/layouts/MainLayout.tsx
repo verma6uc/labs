@@ -12,12 +12,9 @@ import {
   useMediaQuery,
   Menu,
   MenuItem,
-  Tooltip,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
-  Brightness4 as Brightness4Icon,
-  Brightness7 as Brightness7Icon,
 } from '@mui/icons-material';
 import { useTheme as useThemeContext } from '../contexts/ThemeContext';
 import ParticleBackground from '../components/ParticleBackground';
@@ -25,7 +22,7 @@ import Logo from '../components/Logo';
 
 const MainLayout = () => {
   const theme = useTheme();
-  const { mode, toggleTheme } = useThemeContext();
+  const { mode } = useThemeContext();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileMenuAnchorEl, setMobileMenuAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -129,17 +126,6 @@ const MainLayout = () => {
             )}
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Tooltip title={`Switch to ${mode === 'light' ? 'dark' : 'light'} mode`}>
-                <IconButton 
-                  onClick={toggleTheme} 
-                  sx={{
-                    color: (theme) => theme.palette.mode === 'dark' ? '#E2E8F0' : '#1E293B',
-                  }}
-                >
-                  {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-                </IconButton>
-              </Tooltip>
-              
               {!isMobile && (
                 <>
                   <Button
