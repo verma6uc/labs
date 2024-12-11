@@ -8,25 +8,19 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TableSortLabel,
+  Paper,
+  Avatar,
   Chip,
   IconButton,
-  TablePagination,
-  TextField,
   InputAdornment,
-  Avatar,
-  Tooltip,
-  useTheme,
+  TextField,
 } from '@mui/material';
-import { Search as SearchIcon } from '@mui/icons-material';
-import { StyledButton } from '../../components/shared/StyledComponents';
-import { StyledEditIcon, StyledDeleteIcon, StyledAddIcon } from '../../components/shared/StyledIcons';
-import { mockUsers } from '../../data/mockData';
-import { formatDistanceToNow } from 'date-fns';
-import AdminCard from '../../components/shared/AdminCard';
-
-type Order = 'asc' | 'desc';
-type OrderBy = 'name' | 'role' | 'status' | 'lastActive';
+import {
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Search as SearchIcon,
+} from '@mui/icons-material';
+import AdminButton from '../../components/shared/AdminButton';
 
 interface User {
   id: string;
@@ -37,320 +31,195 @@ interface User {
   lastActive: string;
 }
 
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator<Key extends keyof any>(
-  order: Order,
-  orderBy: Key,
-): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
+const mockUsers: User[] = [
+  {
+    id: '1',
+    name: 'John Admin',
+    email: 'john.admin@creatorlabs.com',
+    role: 'SUPERADMIN',
+    status: 'active',
+    lastActive: 'about 1 year ago',
+  },
+  // Add more mock users as needed
+];
 
 const UserManagement = () => {
-  const theme = useTheme();
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
-  const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<OrderBy>('name');
 
-  const handleRequestSort = (property: OrderBy) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+  const getInitials = (name: string) => {
+    const names = name.split(' ');
+    return names.length > 1 
+      ? `${names[0][0]}${names[names.length - 1][0]}`.toUpperCase()
+      : `${names[0][0]}${names[0][1]}`.toUpperCase();
   };
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-    setPage(0);
-  };
-
-  const filteredUsers = mockUsers.filter(user =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.role.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const sortedUsers = filteredUsers.sort(getComparator(order, orderBy));
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case 'active':
-        return {
-          color: '#10B981',
-          backgroundColor: 'rgba(16, 185, 129, 0.1)',
-        };
+        return '#10B981';
       case 'inactive':
-        return {
-          color: '#EF4444',
-          backgroundColor: 'rgba(239, 68, 68, 0.1)',
-        };
+        return '#EF4444';
       default:
-        return {
-          color: '#F59E0B',
-          backgroundColor: 'rgba(245, 158, 11, 0.1)',
-        };
-    }
-  };
-
-  const getRoleColor = (role: string) => {
-    switch (role.toUpperCase()) {
-      case 'SUPERADMIN':
-        return {
-          color: '#8B5CF6',
-          backgroundColor: 'rgba(139, 92, 246, 0.1)',
-        };
-      case 'CREATOR':
-        return {
-          color: '#3B82F6',
-          backgroundColor: 'rgba(59, 130, 246, 0.1)',
-        };
-      case 'USER':
-        return {
-          color: '#6366F1',
-          backgroundColor: 'rgba(99, 102, 241, 0.1)',
-        };
-      default:
-        return {
-          color: '#9CA3AF',
-          backgroundColor: 'rgba(156, 163, 175, 0.1)',
-        };
+        return '#F59E0B';
     }
   };
 
   return (
-    <Box sx={{ p: 3 }}>
-      <AdminCard sx={{ mb: 3 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <Typography variant="h4" sx={{ 
-            color: theme.palette.mode === 'dark' ? '#E2E8F0' : '#1E293B',
-            fontWeight: 600 
-          }}>
-            User Management
-          </Typography>
-          <StyledButton
-            startIcon={<StyledAddIcon />}
-            onClick={() => {}}
-            sx={{ px: 3 }}
-          >
-            Add User
-          </StyledButton>
-        </Box>
+    <Box sx={{ 
+      backgroundColor: 'rgba(17, 25, 40, 0.75)',
+      backdropFilter: 'blur(20px)',
+      borderRadius: 2,
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      p: 3,
+    }}>
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        mb: 3,
+      }}>
+        <Typography variant="h5" sx={{ 
+          color: '#E2E8F0',
+          fontWeight: 600,
+        }}>
+          User Management
+        </Typography>
+        <AdminButton
+          startIcon={<EditIcon />}
+          onClick={() => {/* handle add user */}}
+        >
+          Add User
+        </AdminButton>
+      </Box>
 
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Search users..."
-          value={searchQuery}
-          onChange={handleSearchChange}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon sx={{ color: theme.palette.mode === 'dark' ? '#64748B' : '#94A3B8' }} />
-              </InputAdornment>
-            ),
-            sx: {
-              backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.75)' : 'rgba(255, 255, 255, 0.9)',
-              backdropFilter: 'blur(8px)',
-              border: 'none',
-              '& fieldset': {
-                border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
-              },
-              '&:hover fieldset': {
-                borderColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)',
-              },
+      <TextField
+        fullWidth
+        variant="outlined"
+        placeholder="Search users..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        sx={{
+          mb: 3,
+          '& .MuiOutlinedInput-root': {
+            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+            borderRadius: 2,
+            '& fieldset': {
+              borderColor: 'rgba(255, 255, 255, 0.1)',
             },
-          }}
-        />
-      </AdminCard>
+            '&:hover fieldset': {
+              borderColor: 'rgba(255, 255, 255, 0.2)',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#0EA5E9',
+            },
+          },
+          '& .MuiOutlinedInput-input': {
+            color: '#E2E8F0',
+          },
+        }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon sx={{ color: '#94A3B8' }} />
+            </InputAdornment>
+          ),
+        }}
+      />
 
-      <AdminCard noPadding>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569', fontWeight: 600 }}>User</TableCell>
-                <TableCell>
-                  <TableSortLabel
-                    active={orderBy === 'role'}
-                    direction={orderBy === 'role' ? order : 'asc'}
-                    onClick={() => handleRequestSort('role')}
-                    sx={{
-                      color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569',
+      <TableContainer component={Paper} sx={{ 
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        boxShadow: 'none',
+      }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>User</TableCell>
+              <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Role</TableCell>
+              <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Status</TableCell>
+              <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Last Active</TableCell>
+              <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {mockUsers.map((user) => (
+              <TableRow key={user.id}>
+                <TableCell sx={{ 
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Avatar sx={{ 
+                      bgcolor: 'rgba(14, 165, 233, 0.2)',
+                      color: '#0EA5E9',
                       fontWeight: 600,
-                      '&.MuiTableSortLabel-active': {
-                        color: '#0EA5E9',
-                      },
-                      '& .MuiTableSortLabel-icon': {
-                        color: '#0EA5E9 !important',
-                      },
-                    }}
-                  >
-                    Role
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell>
-                  <TableSortLabel
-                    active={orderBy === 'status'}
-                    direction={orderBy === 'status' ? order : 'asc'}
-                    onClick={() => handleRequestSort('status')}
-                    sx={{
-                      color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569',
-                      fontWeight: 600,
-                      '&.MuiTableSortLabel-active': {
-                        color: '#0EA5E9',
-                      },
-                      '& .MuiTableSortLabel-icon': {
-                        color: '#0EA5E9 !important',
-                      },
-                    }}
-                  >
-                    Status
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell>
-                  <TableSortLabel
-                    active={orderBy === 'lastActive'}
-                    direction={orderBy === 'lastActive' ? order : 'asc'}
-                    onClick={() => handleRequestSort('lastActive')}
-                    sx={{
-                      color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569',
-                      fontWeight: 600,
-                      '&.MuiTableSortLabel-active': {
-                        color: '#0EA5E9',
-                      },
-                      '& .MuiTableSortLabel-icon': {
-                        color: '#0EA5E9 !important',
-                      },
-                    }}
-                  >
-                    Last Active
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell align="right" sx={{ color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569', fontWeight: 600 }}>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {sortedUsers
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((user) => (
-                  <TableRow key={user.id} hover>
-                    <TableCell>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <Avatar sx={{ bgcolor: '#3B82F6' }}>
-                          {user.name.charAt(0)}
-                        </Avatar>
-                        <Box>
-                          <Typography sx={{ 
-                            color: theme.palette.mode === 'dark' ? '#E2E8F0' : '#1E293B',
-                            fontWeight: 500 
-                          }}>
-                            {user.name}
-                          </Typography>
-                          <Typography variant="body2" sx={{ color: '#64748B' }}>
-                            {user.email}
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Chip
-                        label={user.role}
-                        size="small"
-                        sx={{
-                          ...getRoleColor(user.role),
-                          fontWeight: 500,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Chip
-                        label={user.status}
-                        size="small"
-                        sx={{
-                          ...getStatusColor(user.status),
-                          fontWeight: 500,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Typography sx={{ color: '#64748B' }}>
-                        {formatDistanceToNow(new Date(user.lastActive), { addSuffix: true })}
+                    }}>
+                      {getInitials(user.name)}
+                    </Avatar>
+                    <Box>
+                      <Typography sx={{ color: '#E2E8F0', fontWeight: 500 }}>
+                        {user.name}
                       </Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Tooltip title="Edit User">
-                        <IconButton 
-                          size="small"
-                          sx={{
-                            color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569',
-                            '&:hover': {
-                              color: '#3B82F6',
-                              backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            },
-                          }}
-                        >
-                          <StyledEditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Delete User">
-                        <IconButton 
-                          size="small"
-                          sx={{
-                            color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569',
-                            '&:hover': {
-                              color: '#EF4444',
-                              backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                            },
-                          }}
-                        >
-                          <StyledDeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={filteredUsers.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            sx={{
-              color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569',
-              borderTop: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
-              '& .MuiToolbar-root': {
-                '.MuiInputBase-root': {
-                  color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569',
-                },
-              },
-            }}
-          />
-        </TableContainer>
-      </AdminCard>
+                      <Typography sx={{ color: '#94A3B8', fontSize: '0.875rem' }}>
+                        {user.email}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </TableCell>
+                <TableCell sx={{ 
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                }}>
+                  <Chip
+                    label={user.role}
+                    sx={{
+                      backgroundColor: 'rgba(14, 165, 233, 0.2)',
+                      color: '#0EA5E9',
+                      fontWeight: 500,
+                    }}
+                  />
+                </TableCell>
+                <TableCell sx={{ 
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                }}>
+                  <Chip
+                    label={user.status}
+                    sx={{
+                      backgroundColor: `${getStatusColor(user.status)}20`,
+                      color: getStatusColor(user.status),
+                      fontWeight: 500,
+                    }}
+                  />
+                </TableCell>
+                <TableCell sx={{ 
+                  color: '#94A3B8',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                }}>
+                  {user.lastActive}
+                </TableCell>
+                <TableCell sx={{ 
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                }}>
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <AdminButton
+                      buttonType="secondary"
+                      isIconButton
+                      onClick={() => {/* handle edit */}}
+                    >
+                      <EditIcon sx={{ fontSize: 20 }} />
+                    </AdminButton>
+                    <AdminButton
+                      buttonType="secondary"
+                      isIconButton
+                      onClick={() => {/* handle delete */}}
+                    >
+                      <DeleteIcon sx={{ fontSize: 20 }} />
+                    </AdminButton>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Box>
   );
 };

@@ -6,9 +6,11 @@ import {
   Drawer,
   ListItemIcon,
   ListItemText,
+  Button,
 } from '@mui/material';
 
 export const DRAWER_WIDTH = 280;
+export const HEADER_HEIGHT = 72;
 
 export const commonBackground = {
   backgroundColor: 'rgba(17, 25, 40, 0.75)',
@@ -18,7 +20,8 @@ export const commonBackground = {
 export const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  padding: theme.spacing(3),
+  padding: '0 24px',
+  height: HEADER_HEIGHT,
   justifyContent: 'space-between',
   ...commonBackground,
   borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
@@ -30,10 +33,10 @@ export const UserAvatar = styled(Avatar)(({ theme }) => ({
   width: 32,
   height: 32,
   fontSize: '0.875rem',
-  fontWeight: 500,
-  background: 'linear-gradient(135deg, #0EA5E9 0%, #3B82F6 100%)',
-  border: '2px solid rgba(255, 255, 255, 0.1)',
-  boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+  fontWeight: 600,
+  background: 'rgba(14, 165, 233, 0.2)',
+  color: '#0EA5E9',
+  border: '1px solid rgba(14, 165, 233, 0.3)',
 }));
 
 export const StyledDrawer = styled(Drawer)(({ theme }) => ({
@@ -76,8 +79,9 @@ export const ParticleWrapper = styled(Box)({
 export const StyledListItemIcon = styled(ListItemIcon)({
   minWidth: 'auto',
   marginRight: '16px',
+  color: '#94A3B8',
   '& svg': {
-    fontSize: 24,
+    fontSize: 20,
   },
 });
 
@@ -85,6 +89,7 @@ export const StyledListItemText = styled(ListItemText)({
   '& .MuiTypography-root': {
     fontSize: '0.9375rem',
     fontWeight: 500,
+    color: '#E2E8F0',
   },
 });
 
@@ -92,6 +97,12 @@ export const StyledAppBar = styled(AppBar)(({ theme }) => ({
   ...commonBackground,
   boxShadow: 'none',
   borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+  height: HEADER_HEIGHT,
+  '& .MuiToolbar-root': {
+    height: HEADER_HEIGHT,
+    minHeight: HEADER_HEIGHT,
+    padding: '0 24px',
+  },
 }));
 
 export const MainContent = styled(Box)(({ theme }) => ({
@@ -100,4 +111,31 @@ export const MainContent = styled(Box)(({ theme }) => ({
   minHeight: '100vh',
   position: 'relative',
   zIndex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+  '& > *': {
+    maxWidth: '1400px',
+    width: '100%',
+    margin: '0 auto',
+  },
+}));
+
+export const AdminButton = styled(Button)(({ theme }) => ({
+  backgroundColor: 'rgba(14, 165, 233, 0.15)',
+  color: '#0EA5E9',
+  textTransform: 'none',
+  borderRadius: '8px',
+  padding: '8px 16px',
+  fontWeight: 500,
+  fontSize: '0.875rem',
+  '&:hover': {
+    backgroundColor: 'rgba(14, 165, 233, 0.25)',
+  },
+  '&.secondary': {
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    color: '#E2E8F0',
+    '&:hover': {
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    },
+  },
 }));

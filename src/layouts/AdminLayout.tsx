@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Outlet } from 'react-router-dom';
 import {
   Box,
-  IconButton,
   List,
   ListItem,
   Toolbar,
-  Typography,
   useTheme,
   useMediaQuery,
   Badge,
@@ -20,9 +18,11 @@ import { menuItems } from '../data/mockData';
 import { useTheme as useThemeContext } from '../contexts/ThemeContext';
 import ParticleBackground from '../components/ParticleBackground';
 import StyledListItemButton from '../components/shared/StyledListItemButton';
+import AdminButton from '../components/shared/AdminButton';
 
 import {
   DRAWER_WIDTH,
+  HEADER_HEIGHT,
   commonBackground,
   DrawerHeader,
   UserAvatar,
@@ -52,6 +52,7 @@ const AdminLayout = () => {
   const [notificationsAnchorEl, setNotificationsAnchorEl] = useState<null | HTMLElement>(null);
   const [authorizedMenuItems, setAuthorizedMenuItems] = useState(menuItems);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [userInitials, setUserInitials] = useState('UN');
 
   useEffect(() => {
     if (isMobile) {
@@ -71,6 +72,15 @@ const AdminLayout = () => {
       item.allowedRoles.includes(user.role)
     );
     setAuthorizedMenuItems(filteredItems);
+
+    // Set user initials from name
+    if (user.name) {
+      const names = user.name.split(' ');
+      const initials = names.length > 1 
+        ? `${names[0][0]}${names[names.length - 1][0]}`.toUpperCase()
+        : `${names[0][0]}${names[0][1]}`.toUpperCase();
+      setUserInitials(initials);
+    }
   }, [navigate]);
 
   const handleDrawerToggle = () => {
@@ -120,43 +130,26 @@ const AdminLayout = () => {
           }),
         }}
       >
-        <Toolbar sx={{ justifyContent: 'space-between', height: 64 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <Box sx={{ display: { sm: 'none' } }}>
+            <AdminButton
+              buttonType="secondary"
+              isIconButton
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: 'none' } }}
             >
               <MenuIcon sx={{ fontSize: 24 }} />
-            </IconButton>
-            <Typography
-              variant="h6"
-              sx={{
-                fontSize: '1.25rem',
-                fontWeight: 600,
-                background: 'linear-gradient(to right, #fff, #94A3B8)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              Creator Labs
-            </Typography>
+            </AdminButton>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <IconButton
-              color="inherit"
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 2,
+            marginLeft: 'auto'
+          }}>
+            <AdminButton
+              buttonType="secondary"
+              isIconButton
               onClick={handleNotificationsClick}
-              sx={{
-                width: 40,
-                height: 40,
-                borderRadius: 2,
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                },
-              }}
             >
               <Badge
                 badgeContent={4}
@@ -169,25 +162,17 @@ const AdminLayout = () => {
               >
                 <NotificationsIcon sx={{ color: '#94A3B8', fontSize: 24 }} />
               </Badge>
-            </IconButton>
+            </AdminButton>
 
-            <IconButton
+            <AdminButton
+              buttonType="secondary"
+              isIconButton
               onClick={handleProfileClick}
-              sx={{
-                p: 0,
-                width: 40,
-                height: 40,
-                borderRadius: 2,
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                },
-              }}
             >
               <UserAvatar>
-                U
+                {userInitials}
               </UserAvatar>
-            </IconButton>
+            </AdminButton>
           </Box>
         </Toolbar>
       </StyledAppBar>
@@ -204,9 +189,13 @@ const AdminLayout = () => {
           <DrawerHeader>
             <HeaderLogo onClick={() => isMobile && handleDrawerToggle()} />
             {isMobile && (
-              <IconButton onClick={handleDrawerToggle}>
+              <AdminButton
+                buttonType="secondary"
+                isIconButton
+                onClick={handleDrawerToggle}
+              >
                 <CloseIcon sx={{ color: '#94A3B8', fontSize: 24 }} />
-              </IconButton>
+              </AdminButton>
             )}
           </DrawerHeader>
 
@@ -224,11 +213,6 @@ const AdminLayout = () => {
                   </StyledListItemIcon>
                   <StyledListItemText
                     primary={item.title}
-                    primaryTypographyProps={{
-                      sx: {
-                        color: '#94A3B8',
-                      },
-                    }}
                   />
                 </StyledListItemButton>
               </ListItem>
@@ -244,7 +228,7 @@ const AdminLayout = () => {
             xs: '100%',
             sm: drawerOpen ? `calc(100% - ${DRAWER_WIDTH}px)` : '100%'
           },
-          marginTop: '64px',
+          marginTop: HEADER_HEIGHT,
           transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
