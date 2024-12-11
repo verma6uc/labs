@@ -15,7 +15,7 @@ import { GlassButton } from './shared/StyledComponents';
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery('(max-width:960px)');
+  const isMobile = useMediaQuery('(max-width:1600px)'); // Temporarily increase breakpoint to force mobile view
 
   const handleMobileMenuToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen);
