@@ -1,16 +1,16 @@
 import React from 'react';
-import { 
-  Box, 
-  Typography, 
-  Grid, 
-  Card, 
-  LinearProgress, 
-  Chip, 
-  IconButton, 
-  Button, 
-  Avatar, 
-  AvatarGroup 
+import {
+  Box,
+  Typography,
+  Grid,
+  Card,
+  LinearProgress,
+  Chip,
+  IconButton,
+  Avatar,
+  AvatarGroup
 } from '@mui/material';
+import { GlassButton } from '../../components/shared/StyledComponents';
 import WelcomeBanner from '../../components/dashboard/WelcomeBanner';
 import {
   Edit as EditIcon,
@@ -287,8 +287,8 @@ interface ActionButtonProps {
 }
 
 const ActionButton: React.FC<ActionButtonProps> = ({ children, stage, ...props }) => (
-  <Button
-    variant="contained"
+  <GlassButton
+    className="primary"
     size="small"
     sx={{
       background: `linear-gradient(45deg, ${projectStages[stage].color}, ${projectStages[stage].color}CC)`,
@@ -297,16 +297,12 @@ const ActionButton: React.FC<ActionButtonProps> = ({ children, stage, ...props }
       '&:hover': {
         background: `linear-gradient(45deg, ${projectStages[stage].color}CC, ${projectStages[stage].color})`,
         transform: 'translateY(-1px)',
-        boxShadow: `0 4px 15px ${projectStages[stage].color}60`,
-      },
-      '&:active': {
-        transform: 'translateY(0)',
       },
     }}
     {...props}
   >
     {children}
-  </Button>
+  </GlassButton>
 );
 
 const actionItems: ActionItem[] = [

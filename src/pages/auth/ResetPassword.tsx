@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate, useSearchParams, Link as RouterLink } from 'react-router-dom';
 import {
   TextField,
-  Button,
   Typography,
   Link,
   Box,
@@ -13,6 +12,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import AuthLayout from '../../components/auth/AuthLayout';
 import BeakerIcon from '../../components/BeakerIcon';
+import { GlassButton } from '../../components/shared/StyledComponents';
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -87,14 +87,14 @@ const ResetPassword = () => {
           <Typography variant="body1" color="text.secondary" gutterBottom>
             The password reset link is invalid or has expired.
           </Typography>
-          <Button
+          <GlassButton
             component={RouterLink}
             to="/auth/forgot-password"
-            variant="contained"
+            className="primary"
             sx={{ mt: 2 }}
           >
             Request New Reset Link
-          </Button>
+          </GlassButton>
         </Box>
       </AuthLayout>
     );
@@ -153,16 +153,16 @@ const ResetPassword = () => {
           required
         />
 
-        <Button
+        <GlassButton
           type="submit"
           fullWidth
-          variant="contained"
+          className="primary"
           size="large"
           disabled={loading}
           sx={{ mt: 3 }}
         >
           {loading ? 'Resetting Password...' : 'Reset Password'}
-        </Button>
+        </GlassButton>
 
         <Box sx={{ mt: 3, textAlign: 'center' }}>
           <Typography variant="body2">

@@ -1,6 +1,8 @@
 import { styled } from '@mui/material/styles';
-import { Box, Container, Typography, Paper, Button, TextField } from '@mui/material';
+import { Box, Container, Typography, Paper, TextField } from '@mui/material';
+import { Button, ButtonProps } from '@mui/material';
 import { alpha } from '@mui/material';
+import { LinkProps } from 'react-router-dom';
 
 export const GradientText = styled(Typography)(({ theme }) => ({
   background: 'linear-gradient(135deg, #00A3FF 0%, #0066FF 100%)',
@@ -165,7 +167,20 @@ export const StyledButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-export const GlassButton = styled(Button)(({ theme }) => ({
+export interface GlassButtonProps extends ButtonProps {
+  component?: React.ElementType;
+  to?: string;
+  className?: string;
+  startIcon?: React.ReactNode;
+  endIcon?: React.ReactNode;
+  fullWidth?: boolean;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  sx?: any;
+  href?: string;
+  LinkComponent?: React.ElementType;
+}
+
+export const GlassButton = styled(Button)<GlassButtonProps>(({ theme }) => ({
   position: 'relative',
   overflow: 'hidden',
   padding: '12px 32px',
@@ -177,43 +192,32 @@ export const GlassButton = styled(Button)(({ theme }) => ({
   background: 'rgba(255, 255, 255, 0.05)',
   backdropFilter: 'blur(10px)',
   border: '1px solid rgba(255, 255, 255, 0.1)',
-  color: '#fff',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'linear-gradient(135deg, rgba(0, 163, 255, 0.2), rgba(0, 102, 255, 0.2))',
-    opacity: 0,
-    transition: 'opacity 0.3s ease-in-out',
-  },
+  color: theme.palette.mode === 'dark' ? '#fff' : '#1E293B',
   '&:hover': {
-    transform: 'translateY(-2px)',
-    border: '1px solid rgba(0, 163, 255, 0.5)',
-    boxShadow: '0 8px 20px rgba(0, 163, 255, 0.15)',
-    '&::before': {
-      opacity: 1,
-    }
-  },
-  '&:active': {
-    transform: 'translateY(0)',
+    background: 'rgba(255, 255, 255, 0.1)',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
   },
   '&.primary': {
-    background: 'linear-gradient(135deg, rgba(0, 163, 255, 0.2), rgba(0, 102, 255, 0.2))',
-    border: '1px solid rgba(0, 163, 255, 0.3)',
+    background: 'linear-gradient(135deg, rgba(14, 165, 233, 0.6), rgba(99, 102, 241, 0.6))',
+    border: 'none',
+    color: '#fff',
     '&:hover': {
-      background: 'linear-gradient(135deg, rgba(0, 163, 255, 0.3), rgba(0, 102, 255, 0.3))',
-      border: '1px solid rgba(0, 163, 255, 0.6)',
-      boxShadow: '0 8px 25px rgba(0, 163, 255, 0.25)',
+      background: 'linear-gradient(135deg, rgba(14, 165, 233, 0.7), rgba(99, 102, 241, 0.7))',
     }
   },
   '&.secondary': {
-    background: 'rgba(255, 255, 255, 0.03)',
+    background: 'rgba(255, 255, 255, 0.05)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    color: '#E2E8F0',
     '&:hover': {
-      background: 'rgba(255, 255, 255, 0.05)',
+      background: 'rgba(255, 255, 255, 0.1)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
     }
+  },
+  '&.Mui-disabled': {
+    background: 'rgba(255, 255, 255, 0.05)',
+    border: '1px solid rgba(255, 255, 255, 0.05)',
+    color: 'rgba(255, 255, 255, 0.3)',
   }
 }));
 

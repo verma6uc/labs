@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import AuthLayout from '../../components/auth/AuthLayout';
-import { FormContainer, Form, Input, Button, InputWrapper, PasswordInput, EyeIcon } from '../../components/auth/AuthStyles';
+import { FormContainer, Form, Input, InputWrapper, PasswordInput, EyeIcon } from '../../components/auth/AuthStyles';
+import { GlassButton } from '../../components/shared/StyledComponents';
 import { mockUsers } from '../../data/mockData';
 
 const EyeIconSvg = () => (
@@ -63,30 +64,30 @@ const Login = () => {
   return (
     <AuthLayout>
       <FormContainer>
-        <h1 style={{ 
-          color: '#fff', 
-          fontSize: '24px', 
+        <h1 style={{
+          color: '#fff',
+          fontSize: '24px',
           fontWeight: 600,
           marginBottom: '8px',
-          textAlign: 'center' 
+          textAlign: 'center'
         }}>
           Welcome back
         </h1>
-        <p style={{ 
-          color: 'rgba(255, 255, 255, 0.7)', 
+        <p style={{
+          color: 'rgba(255, 255, 255, 0.7)',
           fontSize: '14px',
           marginBottom: '32px',
-          textAlign: 'center' 
+          textAlign: 'center'
         }}>
           Sign in to continue to Creator Labs
         </p>
 
         {error && (
-          <p style={{ 
-            color: '#EF4444', 
+          <p style={{
+            color: '#EF4444',
             fontSize: '14px',
             marginBottom: '16px',
-            textAlign: 'center' 
+            textAlign: 'center'
           }}>
             {error}
           </p>
@@ -100,7 +101,7 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          
+
           <InputWrapper>
             <PasswordInput
               type={showPassword ? 'text' : 'password'}
@@ -118,15 +119,15 @@ const Login = () => {
             </EyeIcon>
           </InputWrapper>
 
-          <div style={{ 
-            display: 'flex', 
+          <div style={{
+            display: 'flex',
             justifyContent: 'flex-end',
-            marginBottom: '16px' 
+            marginBottom: '16px'
           }}>
-            <RouterLink 
+            <RouterLink
               to="/auth/forgot-password"
-              style={{ 
-                color: '#0EA5E9', 
+              style={{
+                color: '#0EA5E9',
                 textDecoration: 'none',
                 fontSize: '14px'
               }}
@@ -135,21 +136,21 @@ const Login = () => {
             </RouterLink>
           </div>
 
-          <Button type="submit" disabled={loading}>
+          <GlassButton type="submit" disabled={loading} className="primary" fullWidth>
             {loading ? 'Signing in...' : 'Sign In'}
-          </Button>
+          </GlassButton>
 
-          <p style={{ 
+          <p style={{
             color: 'rgba(255, 255, 255, 0.7)',
             fontSize: '14px',
             textAlign: 'center',
-            marginTop: '24px' 
+            marginTop: '24px'
           }}>
             Don't have an account?{' '}
-            <RouterLink 
+            <RouterLink
               to="/auth/signup"
-              style={{ 
-                color: '#0EA5E9', 
+              style={{
+                color: '#0EA5E9',
                 textDecoration: 'none'
               }}
             >

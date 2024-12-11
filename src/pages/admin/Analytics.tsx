@@ -14,7 +14,6 @@ import {
   CloudDownload as CloudDownloadIcon,
 } from '@mui/icons-material';
 import { FeatureCard } from '../../components/shared/StyledComponents';
-import { mockAnalytics } from '../../data/mockData';
 
 interface MetricCardProps {
   title: string;

@@ -59,11 +59,17 @@ const MilestoneCard = styled(Card)<{ index: number }>(({ theme, index }) => ({
   },
 }));
 
-const MilestoneIcon = styled(Box)(({ theme }) => ({
+interface MilestoneIconProps {
+  index: number;
+  className?: string;
+  children?: React.ReactNode;
+}
+
+const MilestoneIcon = styled(Box)<MilestoneIconProps>(({ theme, index }) => ({
   position: 'absolute',
   [theme.breakpoints.up('md')]: {
     top: '50%',
-    left: ({ index }: { index: number }) => index % 2 === 0 ? 'calc(100% + 32px)' : 'calc(-80px)',
+    left: index % 2 === 0 ? 'calc(100% + 32px)' : 'calc(-80px)',
     transform: 'translateY(-50%)',
   },
   [theme.breakpoints.down('md')]: {

@@ -1,11 +1,12 @@
 import React from 'react';
-import { Box, Container, Typography, useTheme, Button, Link } from '@mui/material';
+import { Box, Container, Typography, useTheme, Link } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import TimelineStep from './TimelineStep';
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined';
 import RocketLaunchOutlinedIcon from '@mui/icons-material/RocketLaunchOutlined';
+import { GlassButton } from '../shared/StyledComponents';
 
 const SectionWrapper = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -52,24 +53,6 @@ const StepContainer = styled(Box)(({ theme }) => ({
       ? 'linear-gradient(180deg, rgba(14, 165, 233, 0.3) 0%, rgba(14, 165, 233, 0) 100%)'
       : 'linear-gradient(180deg, rgba(14, 165, 233, 0.2) 0%, rgba(14, 165, 233, 0) 100%)',
   },
-}));
-
-const ActionButton = styled(Button)(({ theme }) => ({
-  background: 'linear-gradient(45deg, #0EA5E9 30%, #3B82F6 90%)',
-  color: 'white',
-  padding: theme.spacing(2, 6),
-  borderRadius: '12px',
-  textTransform: 'none',
-  fontSize: '1.2rem',
-  fontWeight: 600,
-  marginTop: theme.spacing(8),
-  boxShadow: '0 8px 32px rgba(14, 165, 233, 0.2)',
-  '&:hover': {
-    background: 'linear-gradient(45deg, #0284C7 30%, #2563EB 90%)',
-    boxShadow: '0 8px 32px rgba(14, 165, 233, 0.4)',
-    transform: 'translateY(-2px)',
-  },
-  transition: 'all 0.3s ease-in-out',
 }));
 
 const timelineSteps = [
@@ -158,14 +141,15 @@ const HowItWorks: React.FC = () => {
           </StepContainer>
 
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <ActionButton
+            <GlassButton
               component={Link}
               to="/journey/start"
               variant="contained"
               size="large"
+              className="primary"
             >
               Start Your Journey
-            </ActionButton>
+            </GlassButton>
           </Box>
         </Container>
       </ContentWrapper>

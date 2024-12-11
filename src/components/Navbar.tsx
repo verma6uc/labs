@@ -1,6 +1,20 @@
-import { AppBar, Toolbar, Typography, Button, Box, styled, Container, IconButton, Drawer } from '@mui/material';
-import { 
-  Menu as MenuIcon, 
+import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import { useMediaQuery } from '@mui/material';
+import {
+  AppBar,
+  Box,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Toolbar,
+  Typography,
+  Container,
+} from '@mui/material';
+import {
+  Menu as MenuIcon,
   Close as CloseIcon,
   Home as HomeIcon,
   Lightbulb as FeaturesIcon,
@@ -9,55 +23,21 @@ import {
   Timeline as JourneyIcon,
   Login as LoginIcon
 } from '@mui/icons-material';
-import { Link as RouterLink } from 'react-router-dom';
 import BeakerIcon from './BeakerIcon';
-import { useState } from 'react';
-
-const NavButton = styled(Button)({
-  color: '#FFFFFF',
-  textTransform: 'none',
-  fontSize: '0.875rem',
-  fontWeight: 500,
-  padding: '8px 16px',
-  borderRadius: '50px',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  '&:hover': {
-    color: '#0EA5E9',
-    backgroundColor: 'rgba(14, 165, 233, 0.08)',
-  },
-});
-
-const LoginButton = styled(Button)({
-  backgroundColor: 'rgba(14, 165, 233, 0.1)',
-  color: '#0EA5E9',
-  textTransform: 'none',
-  fontSize: '0.875rem',
-  fontWeight: 500,
-  padding: '8px 20px',
-  borderRadius: '50px',
-  border: '1px solid #0EA5E9',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  '&:hover': {
-    backgroundColor: 'rgba(14, 165, 233, 0.2)',
-    transform: 'translateY(-2px)',
-  },
-});
+import { GlassButton } from './shared/StyledComponents';
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isMobile = useMediaQuery('(max-width:960px)');
 
   const handleMobileMenuToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
   return (
-    <AppBar 
-      position="fixed" 
-      sx={{ 
+    <AppBar
+      position="fixed"
+      sx={{
         backgroundColor: 'rgba(2, 6, 23, 0.75)',
         backdropFilter: 'blur(10px)',
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
@@ -65,18 +45,18 @@ const Navbar = () => {
       }}
     >
       <Container maxWidth={false} sx={{ px: { xs: 2, sm: 4, md: 6, lg: 8 } }}>
-        <Toolbar 
-          sx={{ 
-            py: 1.5, 
+        <Toolbar
+          sx={{
+            py: 1.5,
             px: '0 !important',
             minHeight: { xs: '64px', md: '72px' },
           }}
         >
-          <Typography 
-            component={RouterLink} 
-            to="/" 
-            sx={{ 
-              textDecoration: 'none', 
+          <Typography
+            component={RouterLink}
+            to="/"
+            sx={{
+              textDecoration: 'none',
               color: 'white',
               display: 'flex',
               alignItems: 'center',
@@ -93,34 +73,34 @@ const Navbar = () => {
             <BeakerIcon sx={{ color: '#0EA5E9', fontSize: { xs: 22, md: 24 } }} />
             Creator Labs
           </Typography>
-          
+
           {/* Desktop Menu */}
-          <Box sx={{ 
-            display: { xs: 'none', md: 'flex' }, 
+          <Box sx={{
+            display: { xs: 'none', md: 'flex' },
             alignItems: 'center',
             gap: 2,
             flexGrow: 1,
           }}>
-            <NavButton component={RouterLink} to="/">
+            <GlassButton component={RouterLink} to="/" className="secondary">
               Home
-            </NavButton>
-            <NavButton component={RouterLink} to="/features">
+            </GlassButton>
+            <GlassButton component={RouterLink} to="/features" className="secondary">
               Features
-            </NavButton>
-            <NavButton component={RouterLink} to="/solutions">
+            </GlassButton>
+            <GlassButton component={RouterLink} to="/solutions" className="secondary">
               Solutions
-            </NavButton>
-            <NavButton component={RouterLink} to="/agents">
+            </GlassButton>
+            <GlassButton component={RouterLink} to="/agents" className="secondary">
               Agents
-            </NavButton>
-            <NavButton component={RouterLink} to="/journey">
+            </GlassButton>
+            <GlassButton component={RouterLink} to="/journey" className="secondary">
               Journey
-            </NavButton>
+            </GlassButton>
           </Box>
 
           {/* Mobile Menu Button */}
           <IconButton
-            sx={{ 
+            sx={{
               display: { xs: 'flex', md: 'none' },
               color: 'white',
               mr: 1
@@ -132,15 +112,14 @@ const Navbar = () => {
 
           {/* Login Button - Hide on mobile */}
           <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-            <LoginButton 
-              component={RouterLink} 
+            <GlassButton
+              component={RouterLink}
               to="/auth/login"
-              variant="contained"
-              disableElevation
+              className="primary"
               startIcon={<LoginIcon />}
             >
               Login
-            </LoginButton>
+            </GlassButton>
           </Box>
 
           {/* Mobile Menu Drawer */}
@@ -169,64 +148,67 @@ const Navbar = () => {
                 </IconButton>
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <NavButton 
-                  component={RouterLink} 
+                <GlassButton
+                  component={RouterLink}
                   to="/"
                   onClick={() => setMobileMenuOpen(false)}
                   fullWidth
+                  className="secondary"
                   startIcon={<HomeIcon />}
                 >
                   Home
-                </NavButton>
-                <NavButton 
-                  component={RouterLink} 
+                </GlassButton>
+                <GlassButton
+                  component={RouterLink}
                   to="/features"
                   onClick={() => setMobileMenuOpen(false)}
                   fullWidth
+                  className="secondary"
                   startIcon={<FeaturesIcon />}
                 >
                   Features
-                </NavButton>
-                <NavButton 
-                  component={RouterLink} 
+                </GlassButton>
+                <GlassButton
+                  component={RouterLink}
                   to="/solutions"
                   onClick={() => setMobileMenuOpen(false)}
                   fullWidth
+                  className="secondary"
                   startIcon={<SolutionsIcon />}
                 >
                   Solutions
-                </NavButton>
-                <NavButton 
-                  component={RouterLink} 
+                </GlassButton>
+                <GlassButton
+                  component={RouterLink}
                   to="/agents"
                   onClick={() => setMobileMenuOpen(false)}
                   fullWidth
+                  className="secondary"
                   startIcon={<AgentsIcon />}
                 >
                   Agents
-                </NavButton>
-                <NavButton 
-                  component={RouterLink} 
+                </GlassButton>
+                <GlassButton
+                  component={RouterLink}
                   to="/journey"
                   onClick={() => setMobileMenuOpen(false)}
                   fullWidth
+                  className="secondary"
                   startIcon={<JourneyIcon />}
                 >
                   Journey
-                </NavButton>
-                {/* Login Button in Mobile Menu */}
-                <LoginButton 
-                  component={RouterLink} 
+                </GlassButton>
+                <GlassButton
+                  component={RouterLink}
                   to="/auth/login"
-                  variant="contained"
-                  disableElevation
                   onClick={() => setMobileMenuOpen(false)}
                   fullWidth
+                  className="primary"
                   startIcon={<LoginIcon />}
                   sx={{ mt: 2 }}
                 >
                   Login
-                </LoginButton>
+                </GlassButton>
               </Box>
             </Box>
           </Drawer>

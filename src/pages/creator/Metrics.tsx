@@ -16,6 +16,7 @@ import {
   Tab,
   Chip,
   Avatar,
+  AvatarGroup,
   List,
   ListItem,
   ListItemText,

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box, Container, Grid, Typography, useTheme, Button, Link } from '@mui/material';
+import { Box, Container, Grid, Typography, useTheme, Link } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ExampleCard from './ExampleCard';
+import { GlassButton } from '../shared/StyledComponents';
 
 const SectionWrapper = styled(Box)(({ theme }) => ({
   padding: theme.spacing(10, 0),
@@ -73,26 +74,20 @@ const RealWorldExamples: React.FC = () => {
         </Grid>
 
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Button
+          <GlassButton
             component={Link}
             to="/solutions"
             variant="contained"
             size="large"
+            className="primary"
             sx={{
-              background: 'linear-gradient(45deg, #0EA5E9 30%, #3B82F6 90%)',
-              color: 'white',
               px: 4,
               py: 1.5,
-              borderRadius: '12px',
-              textTransform: 'none',
               fontSize: '1.1rem',
-              '&:hover': {
-                background: 'linear-gradient(45deg, #0284C7 30%, #2563EB 90%)',
-              },
             }}
           >
             See More Use Cases
-          </Button>
+          </GlassButton>
         </Box>
       </Container>
     </SectionWrapper>

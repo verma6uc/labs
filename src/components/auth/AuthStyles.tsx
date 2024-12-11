@@ -1,4 +1,5 @@
 import { styled } from '@mui/material/styles';
+import { Button as MuiButton, ButtonProps } from '@mui/material';
 
 export const Input = styled('input')({
   width: '100%',
@@ -22,8 +23,7 @@ export const Input = styled('input')({
   marginBottom: '20px',
 });
 
-export const Button = styled('button')({
-  width: '100%',
+export const Button = styled(MuiButton)<ButtonProps>(({ theme }) => ({
   height: '44px',
   backgroundColor: 'rgba(14, 165, 233, 0.1)',
   border: '1px solid #0EA5E9',
@@ -44,7 +44,7 @@ export const Button = styled('button')({
     cursor: 'not-allowed',
     transform: 'none',
   },
-});
+}));
 
 export const FormContainer = styled('div')({
   backgroundColor: 'rgba(15, 23, 42, 0.8)',

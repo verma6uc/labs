@@ -6,10 +6,10 @@ import {
   Grid,
   Card,
   TextField,
-  Button,
   Alert,
   useTheme,
 } from '@mui/material';
+import { GlassButton } from '../components/shared/StyledComponents';
 import {
   Email as EmailIcon,
   LocationOn as LocationIcon,
@@ -267,21 +267,17 @@ const Contact = () => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Button
+                  <GlassButton
                     type="submit"
-                    variant="contained"
                     size="large"
+                    className="primary"
                     sx={{
                       py: 1.5,
                       px: 4,
-                      backgroundColor: '#0EA5E9',
-                      '&:hover': {
-                        backgroundColor: '#0284C7',
-                      },
                     }}
                   >
                     Send Message
-                  </Button>
+                  </GlassButton>
                 </Grid>
               </Grid>
             </Box>

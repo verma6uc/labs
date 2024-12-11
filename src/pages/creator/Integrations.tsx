@@ -4,7 +4,6 @@ import {
   Typography,
   Grid,
   Paper,
-  Button,
   IconButton,
   Dialog,
   DialogTitle,
@@ -21,6 +20,7 @@ import {
   Tooltip,
   CircularProgress,
 } from '@mui/material';
+import { GlassButton } from '../../components/shared/StyledComponents';
 import {
   Add as AddIcon,
   Settings as SettingsIcon,
@@ -153,18 +153,15 @@ const IntegrationsPage: React.FC = () => {
               Connect and manage your external services
             </Typography>
           </Box>
-          <Button
+          <GlassButton
             startIcon={<AddIcon />}
+            className="secondary"
             sx={{
               color: '#E2E8F0',
-              backgroundColor: 'rgba(17, 25, 40, 0.6)',
-              '&:hover': {
-                backgroundColor: 'rgba(17, 25, 40, 0.8)',
-              },
             }}
           >
             Add New Integration
-          </Button>
+          </GlassButton>
         </Box>
       </Box>
 
@@ -239,21 +236,13 @@ const IntegrationsPage: React.FC = () => {
                             </Tooltip>
                           </>
                         ) : (
-                          <Button
-                            variant="outlined"
+                          <GlassButton
                             size="small"
+                            className="primary"
                             onClick={() => handleConfigOpen(integration)}
-                            sx={{
-                              color: '#3B82F6',
-                              borderColor: '#3B82F6',
-                              '&:hover': {
-                                borderColor: '#2563EB',
-                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                              },
-                            }}
                           >
                             Connect
-                          </Button>
+                          </GlassButton>
                         )}
                       </Box>
                     </ListItemSecondaryAction>
@@ -353,30 +342,34 @@ const IntegrationsPage: React.FC = () => {
           )}
         </DialogContent>
         <DialogActions sx={{ p: 2 }}>
-          <Button
-            onClick={handleConfigClose}
-            sx={{ color: 'rgba(148, 163, 184, 0.8)' }}
-          >
+          <GlassButton onClick={handleConfigClose} className="secondary">
             Cancel
-          </Button>
+          </GlassButton>
           {selectedIntegration?.status === 'connected' ? (
-            <Button
-              variant="contained"
-              color="error"
-              startIcon={<DeleteIcon />}
-              sx={{
-                backgroundColor: 'rgba(239, 68, 68, 0.2)',
-                color: '#EF4444',
-                '&:hover': {
-                  backgroundColor: 'rgba(239, 68, 68, 0.3)',
-                },
-              }}
-            >
-              Disconnect
-            </Button>
+            <>
+              <GlassButton
+                className="primary"
+                onClick={handleConnect}
+                disabled={connecting}
+              >
+                {connecting ? 'Saving...' : 'Save Changes'}
+              </GlassButton>
+              <GlassButton
+                className="secondary"
+                startIcon={<DeleteIcon />}
+                sx={{
+                  color: '#EF4444',
+                  '&:hover': {
+                    background: 'rgba(239, 68, 68, 0.2)',
+                  },
+                }}
+              >
+                Disconnect
+              </GlassButton>
+            </>
           ) : (
-            <Button
-              variant="contained"
+            <GlassButton
+              className="primary"
               onClick={handleConnect}
               disabled={connecting}
               startIcon={connecting ? <CircularProgress size={20} /> : <LinkIcon />}
@@ -388,7 +381,7 @@ const IntegrationsPage: React.FC = () => {
               }}
             >
               {connecting ? 'Connecting...' : 'Connect'}
-            </Button>
+            </GlassButton>
           )}
         </DialogActions>
       </Dialog>

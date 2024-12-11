@@ -19,6 +19,7 @@ import {
 import { useTheme as useThemeContext } from '../contexts/ThemeContext';
 import ParticleBackground from '../components/ParticleBackground';
 import Logo from '../components/Logo';
+import { GlassButton } from '../components/shared/StyledComponents';
 
 const MainLayout = () => {
   const theme = useTheme();
@@ -54,8 +55,8 @@ const MainLayout = () => {
           borderBottom: '1px solid',
           borderColor: 'divider',
           backdropFilter: 'blur(8px)',
-          background: (theme) => 
-            theme.palette.mode === 'dark' 
+          background: (theme) =>
+            theme.palette.mode === 'dark'
               ? 'rgba(22, 28, 36, 0.94)'
               : 'rgba(255, 255, 255, 0.9)',
           transition: theme.transitions.create(['margin', 'width'], {
@@ -112,7 +113,7 @@ const MainLayout = () => {
                       px: 2,
                       '&:hover': {
                         color: '#0EA5E9',
-                        background: (theme) => 
+                        background: (theme) =>
                           theme.palette.mode === 'dark'
                             ? 'rgba(14, 165, 233, 0.1)'
                             : 'rgba(14, 165, 233, 0.08)',
@@ -128,40 +129,23 @@ const MainLayout = () => {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {!isMobile && (
                 <>
-                  <Button
+                  <GlassButton
                     component={RouterLink}
                     to="/auth/login"
-                    variant="outlined"
                     size="small"
-                    sx={{
-                      color: '#0EA5E9',
-                      borderColor: '#0EA5E9',
-                      textTransform: 'none',
-                      px: 3,
-                      '&:hover': {
-                        borderColor: '#0284C7',
-                        backgroundColor: 'rgba(14, 165, 233, 0.08)',
-                      },
-                    }}
+                    sx={{ px: 3 }}
                   >
                     Login
-                  </Button>
-                  <Button
+                  </GlassButton>
+                  <GlassButton
                     component={RouterLink}
                     to="/auth/signup"
-                    variant="contained"
                     size="small"
-                    sx={{
-                      backgroundColor: '#0EA5E9',
-                      textTransform: 'none',
-                      px: 3,
-                      '&:hover': {
-                        backgroundColor: '#0284C7',
-                      },
-                    }}
+                    className="primary"
+                    sx={{ px: 3 }}
                   >
                     Sign Up
-                  </Button>
+                  </GlassButton>
                 </>
               )}
             </Box>
@@ -178,7 +162,7 @@ const MainLayout = () => {
             width: '100%',
             maxWidth: 300,
             mt: 1.5,
-            background: (theme) => 
+            background: (theme) =>
               theme.palette.mode === 'dark'
                 ? 'rgba(22, 28, 36, 0.94)'
                 : 'rgba(255, 255, 255, 0.9)',
@@ -197,7 +181,7 @@ const MainLayout = () => {
             sx={{
               color: (theme) => theme.palette.mode === 'dark' ? '#E2E8F0' : '#1E293B',
               '&:hover': {
-                backgroundColor: (theme) => 
+                backgroundColor: (theme) =>
                   theme.palette.mode === 'dark'
                     ? 'rgba(14, 165, 233, 0.1)'
                     : 'rgba(14, 165, 233, 0.08)',
@@ -209,39 +193,24 @@ const MainLayout = () => {
           </MenuItem>
         ))}
         <Box sx={{ px: 2, py: 1 }}>
-          <Button
+          <GlassButton
             component={RouterLink}
             to="/auth/login"
             fullWidth
-            variant="outlined"
             sx={{
               mb: 1,
-              color: '#0EA5E9',
-              borderColor: '#0EA5E9',
-              textTransform: 'none',
-              '&:hover': {
-                borderColor: '#0284C7',
-                backgroundColor: 'rgba(14, 165, 233, 0.08)',
-              },
             }}
           >
             Login
-          </Button>
-          <Button
+          </GlassButton>
+          <GlassButton
             component={RouterLink}
             to="/auth/signup"
             fullWidth
-            variant="contained"
-            sx={{
-              backgroundColor: '#0EA5E9',
-              textTransform: 'none',
-              '&:hover': {
-                backgroundColor: '#0284C7',
-              },
-            }}
+            className="primary"
           >
             Sign Up
-          </Button>
+          </GlassButton>
         </Box>
       </Menu>
 

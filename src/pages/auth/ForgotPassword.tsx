@@ -10,7 +10,7 @@ import {
   Button,
 } from '@mui/material';
 import BeakerIcon from '../../components/BeakerIcon';
-import { Input as StyledTextField, Button as AuthButton } from '../../components/auth/AuthStyles';
+import { Button as AuthButton } from '../../components/auth/AuthStyles';
 import AuthLayout from '../../components/auth/AuthLayout';
 
 const ForgotPassword = () => {
@@ -114,7 +114,7 @@ const ForgotPassword = () => {
         </Alert>
       ) : (
         <Container component="form" onSubmit={handleSubmit}>
-          <StyledTextField
+          <TextField
             fullWidth
             label="Email Address"
             type="email"

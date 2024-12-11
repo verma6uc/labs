@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import {
   TextField,
-  Button,
   Typography,
   Link,
   Box,
@@ -14,6 +13,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import AuthLayout from '../../components/auth/AuthLayout';
 import BeakerIcon from '../../components/BeakerIcon';
+import { GlassButton } from '../../components/shared/StyledComponents';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -67,8 +67,8 @@ const Signup = () => {
       }
 
       // Redirect to verification page
-      navigate('/auth/verify-email', { 
-        state: { email: formData.email } 
+      navigate('/auth/verify-email', {
+        state: { email: formData.email }
       });
     } catch (err) {
       setError(err.message);
@@ -176,16 +176,16 @@ const Signup = () => {
           required
         />
 
-        <Button
+        <GlassButton
           type="submit"
           fullWidth
-          variant="contained"
+          className="primary"
           size="large"
           disabled={loading}
           sx={{ mt: 3 }}
         >
           {loading ? 'Creating Account...' : 'Create Account'}
-        </Button>
+        </GlassButton>
 
         <Box sx={{ mt: 3, textAlign: 'center' }}>
           <Typography variant="body2">
