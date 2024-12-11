@@ -1,216 +1,417 @@
 import React from 'react';
-import { Box, Container, Grid, Typography, useTheme } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Grid, Typography, Box } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { GradientText, FeatureCard, IconWrapper, GlassButton } from '../components/shared/StyledComponents';
 import ParticleBackground from '../components/ParticleBackground';
-import HowItWorks from '../components/home/HowItWorks';
-import AgentsIntroduction from '../components/home/AgentsIntroduction';
-import TrustSection from '../components/home/TrustSection';
-import { AIInsightsIcon, BlueprintIcon, FeedbackIcon, IntegrationIcon } from '../components/icons/CustomIcons';
+import {
+  AutoAwesome,
+  Code,
+  Psychology,
+  Hub as HubIcon,
+  Search as SearchIcon,
+  Extension as ExtensionIcon,
+  Timeline as TimelineIcon,
+  Lightbulb as LightbulbIcon,
+  Public as PublicIcon,
+  Hexagon as HexagonIcon,
+  Description as DescriptionIcon,
+  BarChart as BarChartIcon,
+  Refresh as RefreshIcon
+} from '@mui/icons-material';
 
-const PageWrapper = styled(Box)({
-  position: 'relative',
-  overflow: 'hidden',
-  width: '100%',
-});
-
-const HeroSection = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  minHeight: '100vh',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: theme.spacing(4),
-  textAlign: 'center',
-  backgroundColor: theme.palette.mode === 'dark' ? '#0A1929' : '#F8FAFC',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
+const FeatureItem: React.FC<{ icon: React.ReactNode; title: string; description: string }> = ({
+  icon,
+  title,
+  description
+}) => (
+  <FeatureCard sx={{
     height: '100%',
-    background: theme.palette.mode === 'dark'
-      ? 'radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.15), rgba(10, 25, 41, 0) 70%)'
-      : 'radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.1), rgba(248, 250, 252, 0) 70%)',
-  },
-}));
+    background: 'rgba(13, 25, 41, 0.5)',
+    backdropFilter: 'blur(20px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    '&:hover': {
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
+    }
+  }}>
+    <IconWrapper sx={{
+      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+      color: 'primary.main'
+    }}>
+      {icon}
+    </IconWrapper>
+    <Typography variant="h6" sx={{ color: 'white' }} gutterBottom>{title}</Typography>
+    <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+      {description}
+    </Typography>
+  </FeatureCard>
+);
 
-const GlowingIcon = styled(Box)(({ theme }) => ({
-  width: '80px',
-  height: '80px',
-  borderRadius: '24px',
-  backgroundColor: theme.palette.mode === 'dark'
-    ? 'rgba(14, 165, 233, 0.1)'
-    : 'rgba(14, 165, 233, 0.08)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: theme.spacing(3),
-  position: 'relative',
-  transition: 'all 0.3s ease-in-out',
-  '& svg': {
-    width: '40px',
-    height: '40px',
-    color: '#0EA5E9',
-    filter: 'drop-shadow(0 0 8px rgba(14, 165, 233, 0.5))',
-  },
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    inset: '-1px',
-    borderRadius: 'inherit',
-    padding: '1px',
-    background: 'linear-gradient(45deg, #0EA5E9, #38BDF8)',
-    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-    WebkitMaskComposite: 'xor',
-    maskComposite: 'exclude',
-  },
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    inset: '-2px',
-    borderRadius: 'inherit',
-    background: 'linear-gradient(45deg, #0EA5E9, #38BDF8)',
-    filter: 'blur(8px)',
-    opacity: 0,
-    transition: 'opacity 0.3s ease-in-out',
-  },
-  '&:hover': {
-    transform: 'translateY(-5px)',
-    '&::after': {
-      opacity: 0.3,
-    },
-  },
-}));
+const ValueCard: React.FC<{ icon: React.ReactNode; title: string; description: string }> = ({
+  icon,
+  title,
+  description
+}) => (
+  <FeatureCard sx={{
+    height: '100%',
+    background: 'rgba(13, 25, 41, 0.5)',
+    backdropFilter: 'blur(20px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    p: 4,
+    '&:hover': {
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
+    }
+  }}>
+    <IconWrapper sx={{
+      width: 56,
+      height: 56,
+      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+      color: 'primary.main',
+      mb: 3
+    }}>
+      {icon}
+    </IconWrapper>
+    <Typography variant="h5" sx={{ color: 'white', mb: 2, fontWeight: 600 }}>{title}</Typography>
+    <Typography variant="body1" sx={{ color: 'rgba(255, 255, 255, 0.7)', lineHeight: 1.7 }}>
+      {description}
+    </Typography>
+  </FeatureCard>
+);
 
-const FeatureCard = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(4),
-  height: '100%',
-  backgroundColor: theme.palette.mode === 'dark'
-    ? 'rgba(10, 25, 41, 0.7)'
-    : 'rgba(255, 255, 255, 0.9)',
-  backdropFilter: 'blur(20px)',
-  borderRadius: '24px',
-  border: `1px solid ${theme.palette.mode === 'dark'
-    ? 'rgba(255, 255, 255, 0.1)'
-    : 'rgba(0, 0, 0, 0.1)'}`,
-  transition: 'all 0.3s ease-in-out',
-  '&:hover': {
-    transform: 'translateY(-8px)',
-    backgroundColor: theme.palette.mode === 'dark'
-      ? 'rgba(10, 25, 41, 0.8)'
-      : 'rgba(255, 255, 255, 0.95)',
-    boxShadow: theme.palette.mode === 'dark'
-      ? '0 20px 40px rgba(0, 0, 0, 0.4)'
-      : '0 20px 40px rgba(14, 165, 233, 0.15)',
-  },
-}));
-
-const features = [
-  {
-    icon: <AIInsightsIcon />,
-    title: 'AI Insights',
-    description: 'Get real-time feedback and suggestions powered by advanced AI algorithms',
-  },
-  {
-    icon: <BlueprintIcon />,
-    title: 'Blueprinting & PRD',
-    description: 'Generate comprehensive product requirements and specifications automatically',
-  },
-  {
-    icon: <FeedbackIcon />,
-    title: 'Continuous Feedback',
-    description: 'Receive ongoing suggestions for improvement throughout development',
-  },
-  {
-    icon: <IntegrationIcon />,
-    title: 'Seamless Integration',
-    description: 'Connect with your existing tools and workflows effortlessly',
-  },
-];
+const TimelineStep: React.FC<{ icon: React.ReactNode; title: string; description: string; index: number }> = ({
+  icon,
+  title,
+  description,
+  index
+}) => (
+  <Box sx={{ 
+    position: 'relative',
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      left: 24,
+      top: 48,
+      bottom: -48,
+      width: 2,
+      background: 'linear-gradient(180deg, rgba(0, 163, 255, 0.3) 0%, rgba(0, 163, 255, 0) 100%)',
+      display: index === 5 ? 'none' : 'block'
+    }
+  }}>
+    <Box sx={{ 
+      display: 'flex',
+      gap: 3,
+      mb: 6,
+      position: 'relative',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        left: -16,
+        top: 24,
+        width: 16,
+        height: 2,
+        backgroundColor: 'rgba(0, 163, 255, 0.3)',
+      }
+    }}>
+      <Box sx={{ position: 'relative' }}>
+        <IconWrapper sx={{
+          width: 48,
+          height: 48,
+          flexShrink: 0,
+          backgroundColor: 'rgba(0, 163, 255, 0.1)',
+          color: '#00A3FF',
+          position: 'relative',
+          zIndex: 2,
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            backgroundColor: 'rgba(0, 163, 255, 0.2)',
+            transform: 'scale(1.1)'
+          }
+        }}>
+          {icon}
+        </IconWrapper>
+        <Typography sx={{
+          position: 'absolute',
+          left: -40,
+          top: '50%',
+          transform: 'translateY(-50%)',
+          color: 'rgba(255, 255, 255, 0.4)',
+          fontSize: '0.875rem',
+          fontWeight: 600
+        }}>
+          {(index + 1).toString().padStart(2, '0')}
+        </Typography>
+      </Box>
+      <Box sx={{ flex: 1 }}>
+        <Typography variant="h6" sx={{ 
+          color: 'white', 
+          mb: 1,
+          fontSize: '1.25rem',
+          fontWeight: 600,
+          background: 'linear-gradient(135deg, #00A3FF 0%, #0066FF 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+        }}>
+          {title}
+        </Typography>
+        <Typography variant="body1" sx={{ 
+          color: 'rgba(255, 255, 255, 0.7)',
+          lineHeight: 1.7,
+          position: 'relative',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            left: -24,
+            top: '50%',
+            width: 8,
+            height: 8,
+            borderRadius: '50%',
+            backgroundColor: 'rgba(0, 163, 255, 0.3)',
+          }
+        }}>
+          {description}
+        </Typography>
+      </Box>
+    </Box>
+  </Box>
+);
 
 const Home: React.FC = () => {
   const theme = useTheme();
 
+  const features = [
+    {
+      icon: <AutoAwesome />,
+      title: 'AI-Powered Creation',
+      description: 'Transform your ideas into reality with advanced AI assistance at every step'
+    },
+    {
+      icon: <Psychology />,
+      title: 'Intelligent Insights',
+      description: 'Get real-time suggestions and improvements as you build your product'
+    },
+    {
+      icon: <Code />,
+      title: 'Code Generation',
+      description: 'Automatically generate high-quality, production-ready code'
+    },
+    {
+      icon: <HubIcon />,
+      title: 'Seamless Integration',
+      description: 'Works with your existing tools and workflows effortlessly'
+    }
+  ];
+
+  const valueProps = [
+    {
+      icon: <SearchIcon />,
+      title: 'AI Insights at Every Step',
+      description: 'Our research agents analyze market data and user behavior to recommend features, brand archetypes, and improvement paths—ensuring your product aligns with real-world needs.'
+    },
+    {
+      icon: <ExtensionIcon />,
+      title: 'Blueprinting & PRD Generation',
+      description: 'Turn abstract ideas into actionable plans. Create navigation flows, define sections, integrate metrics, and produce a detailed PRD ready for development.'
+    },
+    {
+      icon: <TimelineIcon />,
+      title: 'Continuous Feedback & Metrics',
+      description: 'Refine your blueprint by providing direct feedback. Add or remove metrics, adjust page sections, and watch the system adapt, ensuring you always move closer to your desired outcomes.'
+    },
+    {
+      icon: <HubIcon />,
+      title: 'Seamless Integrations & Scalability',
+      description: 'Easily integrate with external services, analytics tools, or data sources. Our flexible architecture and unified ontology ensure every piece fits harmoniously.'
+    }
+  ];
+
+  const timelineSteps = [
+    {
+      icon: <LightbulbIcon />,
+      title: 'Start with an Idea',
+      description: 'Provide a short description of what you want to create—no technical details needed.'
+    },
+    {
+      icon: <PublicIcon />,
+      title: 'AI-Driven Research',
+      description: 'Our agents analyze competitors, market context, and user patterns, turning your vague concept into structured recommendations.'
+    },
+    {
+      icon: <HexagonIcon />,
+      title: 'Blueprint Generation',
+      description: 'We produce a visual map of pages, sections, features, and metrics. Drag and drop to rearrange, rename, or remove elements.'
+    },
+    {
+      icon: <DescriptionIcon />,
+      title: 'PRD & Documentation',
+      description: 'Receive a detailed Product Requirements Document and integrated references—ready to hand off to a development team or use as your actionable guide.'
+    },
+    {
+      icon: <BarChartIcon />,
+      title: 'Add Metrics & Integrations',
+      description: 'Define KPIs, track performance, and connect to external platforms. Tweak metrics anytime to measure real success.'
+    },
+    {
+      icon: <RefreshIcon />,
+      title: 'Continuous Refinement',
+      description: 'Give feedback at each stage. Every comment, suggestion, or data point feeds back into our system, improving recommendations and outcomes over time.'
+    }
+  ];
+
   return (
-    <PageWrapper>
+    <Box sx={{ 
+      position: 'relative', 
+      minHeight: '100vh',
+      background: 'linear-gradient(180deg, #0A1929 0%, #1A2942 100%)',
+      color: 'white',
+      overflow: 'hidden'
+    }}>
       <ParticleBackground />
       
-      <HeroSection>
-        <Box sx={{ maxWidth: '1400px', width: '100%', px: 3 }}>
-          <Typography
-            variant="h1"
-            sx={{
-              fontSize: { xs: '3.5rem', sm: '4.5rem', md: '6rem' },
-              fontWeight: 800,
-              letterSpacing: '-0.02em',
-              mb: 3,
-              background: theme.palette.mode === 'dark'
-                ? 'linear-gradient(135deg, #E2E8F0 0%, #94A3B8 100%)'
-                : 'linear-gradient(135deg, #1E293B 0%, #475569 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              textAlign: 'center',
-              filter: 'drop-shadow(0 4px 6px rgba(14, 165, 233, 0.2))',
-            }}
-          >
+      <Box sx={{ 
+        position: 'relative', 
+        zIndex: 1, 
+        width: '100%',
+        px: { xs: 2, sm: 4, md: 6 }, 
+        py: { xs: 8, md: 12 } 
+      }}>
+        {/* Hero Section */}
+        <Box sx={{ textAlign: 'center', mb: { xs: 6, md: 8 }, maxWidth: '1200px', mx: 'auto' }}>
+          <GradientText variant="h1" sx={{ 
+            mb: 3, 
+            fontSize: { xs: '2.5rem', md: '4rem' }, 
+            fontWeight: 700,
+            letterSpacing: '-0.02em',
+            background: 'linear-gradient(135deg, #00A3FF 0%, #0066FF 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}>
             Creator Labs
-          </Typography>
-
+          </GradientText>
           <Typography
             variant="h2"
             sx={{
-              fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
-              fontWeight: 600,
-              color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569',
-              mb: 10,
-              maxWidth: '900px',
+              mb: 4,
+              fontSize: { xs: '1.25rem', md: '1.5rem' },
+              color: 'rgba(255, 255, 255, 0.7)',
+              maxWidth: '800px',
               mx: 'auto',
-              lineHeight: 1.4,
-              textShadow: theme.palette.mode === 'dark'
-                ? '0 2px 4px rgba(0, 0, 0, 0.5)'
-                : '0 2px 4px rgba(0, 0, 0, 0.1)',
+              lineHeight: 1.6
             }}
           >
-            AI-powered platform that transforms your vision into fully realized products
+            Transform your ideas into fully realized products with our AI-powered platform
           </Typography>
+          <GlassButton
+            className="primary"
+            size="large"
+          >
+            Start Creating
+          </GlassButton>
+        </Box>
 
-          <Grid container spacing={4} sx={{ maxWidth: '1400px', mx: 'auto' }}>
-            {features.map((feature, index) => (
+        {/* Value Proposition Cards */}
+        <Box sx={{ maxWidth: '1400px', mx: 'auto', mb: { xs: 8, md: 12 } }}>
+          <Grid container spacing={4}>
+            {valueProps.map((prop, index) => (
               <Grid item xs={12} sm={6} md={3} key={index}>
-                <FeatureCard>
-                  <GlowingIcon>
-                    {feature.icon}
-                  </GlowingIcon>
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      fontWeight: 600,
-                      mb: 2,
-                      color: theme.palette.mode === 'dark' ? '#E2E8F0' : '#1E293B',
-                    }}
-                  >
-                    {feature.title}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569',
-                    }}
-                  >
-                    {feature.description}
-                  </Typography>
-                </FeatureCard>
+                <ValueCard {...prop} />
               </Grid>
             ))}
           </Grid>
         </Box>
-      </HeroSection>
 
-      <HowItWorks />
-      <AgentsIntroduction />
-      <TrustSection />
-    </PageWrapper>
+        {/* Features Section */}
+        <Box sx={{ maxWidth: '1400px', mx: 'auto', mb: { xs: 8, md: 12 } }}>
+          <Grid container spacing={4}>
+            {features.map((feature, index) => (
+              <Grid item xs={12} sm={6} md={3} key={index}>
+                <FeatureItem {...feature} />
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+
+        {/* How It Works Section */}
+        <Box sx={{ 
+          maxWidth: '1200px', 
+          mx: 'auto',
+          position: 'relative',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            left: '50%',
+            top: 0,
+            bottom: 0,
+            width: '1px',
+            background: 'rgba(255, 255, 255, 0.1)'
+          }
+        }}>
+          <Typography variant="h2" sx={{ 
+            textAlign: 'center',
+            fontSize: { xs: '2rem', md: '2.5rem' },
+            fontWeight: 700,
+            mb: 3,
+            background: 'linear-gradient(135deg, #00A3FF 0%, #0066FF 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}>
+            How It Works: A Guided Path from Concept to Completion
+          </Typography>
+          <Typography sx={{ 
+            textAlign: 'center',
+            color: 'rgba(255, 255, 255, 0.7)',
+            fontSize: { xs: '1.1rem', md: '1.25rem' },
+            maxWidth: '800px',
+            mx: 'auto',
+            mb: 12,
+            lineHeight: 1.6
+          }}>
+            Building something extraordinary doesn't have to be complicated. We've designed a step-by-step journey where your idea evolves effortlessly through AI-driven insights, user feedback loops, and intelligent orchestration.
+          </Typography>
+
+          <Box sx={{ 
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+            position: 'relative',
+            pl: { xs: 6, md: 8 }
+          }}>
+            {timelineSteps.map((step, index) => (
+              <TimelineStep {...step} index={index} key={index} />
+            ))}
+          </Box>
+        </Box>
+
+        <Box sx={{ 
+          mt: { xs: 8, md: 12 }, 
+          textAlign: 'center',
+          color: 'rgba(255, 255, 255, 0.7)'
+        }}>
+          <Typography variant="h3" sx={{ 
+            mb: 3,
+            fontSize: { xs: '1.75rem', md: '2.25rem' },
+            fontWeight: 600,
+            color: 'white'
+          }}>
+            Ready to Build Something Amazing?
+          </Typography>
+          <Typography sx={{ 
+            maxWidth: '600px', 
+            mx: 'auto',
+            mb: 4,
+            fontSize: '1.1rem'
+          }}>
+            Join us in revolutionizing the way products are built. Experience the power of AI-assisted creation.
+          </Typography>
+          <GlassButton
+            className="secondary"
+            size="large"
+          >
+            Learn More
+          </GlassButton>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

@@ -26,21 +26,21 @@ const defaultTheme = createTheme({
 
 export const getTheme = (mode: PaletteMode) => {
   const isLight = mode === 'light';
-  
+
   return createTheme({
     ...defaultTheme,
     palette: {
       ...defaultTheme.palette,
       mode,
       background: {
-        default: isLight ? '#F1F5F9' : '#0F172A',
+        default: isLight ? '#EBF8FF' : '#0F172A',
         paper: isLight ? '#FFFFFF' : '#1E293B',
       },
       text: {
-        primary: isLight ? '#1E293B' : '#E2E8F0',
-        secondary: isLight ? '#64748B' : '#94A3B8',
+        primary: isLight ? '#1A365D' : '#E2E8F0',
+        secondary: isLight ? '#2D4A7D' : '#94A3B8',
       },
-      divider: alpha(isLight ? '#64748B' : '#94A3B8', 0.12),
+      divider: alpha(isLight ? '#64748B' : '#94A3B8', isLight ? 0.15 : 0.12),
       error: {
         main: '#EF4444',
         light: '#F87171',
@@ -92,18 +92,17 @@ export const getTheme = (mode: PaletteMode) => {
 
 export const getCardStyle = (mode: PaletteMode) => {
   const isLight = mode === 'light';
-  
+
   return {
-    background: alpha(isLight ? '#FFFFFF' : '#1E293B', isLight ? 0.8 : 0.6),
+    background: alpha(isLight ? '#FFFFFF' : '#1E293B', isLight ? 0.95 : 0.6),
     backdropFilter: 'blur(16px) saturate(180%)',
-    border: `1px solid ${alpha(isLight ? '#E2E8F0' : '#475569', 0.1)}`,
+    border: `1px solid ${alpha(isLight ? '#B4C6E3' : '#475569', isLight ? 0.2 : 0.1)}`,
+    boxShadow: isLight ? '0 4px 20px rgba(0, 0, 0, 0.08)' : 'none',
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     '&:hover': {
-      transform: 'translateY(-4px) scale(1.01)',
-      boxShadow: isLight 
-        ? '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-        : '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2)',
-      border: `1px solid ${alpha(isLight ? '#0EA5E9' : '#38BDF8', 0.2)}`,
+      transform: 'translateY(-2px)',
+      boxShadow: isLight ? '0 8px 25px rgba(0, 0, 0, 0.12)' : 'none',
+      border: `1px solid ${alpha(isLight ? '#0EA5E9' : '#475569', isLight ? 0.3 : 0.2)}`,
       '& .MuiChip-root': {
         transform: 'scale(1.05)',
       },

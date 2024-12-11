@@ -16,7 +16,7 @@ import {
   Info as InfoIcon,
 } from '@mui/icons-material';
 import { mockSettings } from '../../data/mockData';
-import { StyledButton, StyledCard, StyledTextField } from '../../components/shared/StyledComponents';
+import { StyledButton, FeatureCard, StyledTextField } from '../../components/shared/StyledComponents';
 import { StyledInfoIcon, StyledSaveIcon, StyledRefreshIcon } from '../../components/shared/StyledIcons';
 
 interface TabPanelProps {
@@ -107,7 +107,7 @@ const SystemSettings = () => {
       <Grid container spacing={3}>
         {categorySettings.map((setting) => (
           <Grid item xs={12} md={6} key={setting.id}>
-            <StyledCard>
+            <FeatureCard>
               <Box sx={{ p: 2 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                   <Typography variant="subtitle1" sx={{ 
@@ -140,7 +140,7 @@ const SystemSettings = () => {
                   Last updated: {new Date(setting.lastUpdated).toLocaleString()}
                 </Typography>
               </Box>
-            </StyledCard>
+            </FeatureCard>
           </Grid>
         ))}
       </Grid>
@@ -174,7 +174,7 @@ const SystemSettings = () => {
         </Box>
       </Box>
 
-      <StyledCard>
+      <FeatureCard>
         <Tabs
           value={currentTab}
           onChange={handleTabChange}
@@ -206,7 +206,7 @@ const SystemSettings = () => {
         <TabPanel value={currentTab} index={2}>
           {renderSettingFields('notifications')}
         </TabPanel>
-      </StyledCard>
+      </FeatureCard>
 
       <Snackbar
         open={snackbar.open}

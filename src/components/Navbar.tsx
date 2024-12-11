@@ -58,10 +58,10 @@ const Navbar = () => {
     <AppBar 
       position="fixed" 
       sx={{ 
-        backgroundColor: 'rgba(17, 24, 39, 0.95)',
+        backgroundColor: 'rgba(2, 6, 23, 0.75)',
         backdropFilter: 'blur(10px)',
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-        boxShadow: 'none',
+        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
       }}
     >
       <Container maxWidth={false} sx={{ px: { xs: 2, sm: 4, md: 6, lg: 8 } }}>

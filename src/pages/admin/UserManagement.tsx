@@ -11,9 +11,18 @@ import {
   Chip,
   IconButton,
   TablePagination,
+  TextField,
+  InputAdornment,
+  Paper,
+  Avatar,
+  Tooltip,
+  useTheme,
 } from '@mui/material';
-import { StyledButton, StyledCard, StyledSearchField } from '../../components/shared/StyledComponents';
+import { Search as SearchIcon } from '@mui/icons-material';
+import { StyledButton, FeatureCard } from '../../components/shared/StyledComponents';
 import { StyledEditIcon, StyledDeleteIcon, StyledAddIcon } from '../../components/shared/StyledIcons';
+import { mockUsers } from '../../data/mockData';
+import { formatDistanceToNow } from 'date-fns';
 
 interface User {
   id: number;
@@ -24,30 +33,10 @@ interface User {
   lastActive: string;
 }
 
-// Mock data
-const mockUsers: User[] = [
-  {
-    id: 1,
-    name: 'John Doe',
-    email: 'john@example.com',
-    role: 'CREATOR',
-    status: 'active',
-    lastActive: '2023-12-10 15:30',
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    role: 'USER',
-    status: 'inactive',
-    lastActive: '2023-12-09 12:45',
-  },
-  // Add more mock users as needed
-];
-
 const UserManagement = () => {
+  const theme = useTheme();
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -59,172 +48,225 @@ const UserManagement = () => {
     setPage(0);
   };
 
-  const filteredUsers = mockUsers.filter(
-    (user) =>
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase())
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+    setPage(0);
+  };
+
+  const filteredUsers = mockUsers.filter(user =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.role.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleEditUser = (user: User) => {
-    console.log('Edit user:', user);
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'active':
+        return {
+          color: '#10B981',
+          backgroundColor: 'rgba(16, 185, 129, 0.1)',
+        };
+      case 'inactive':
+        return {
+          color: '#EF4444',
+          backgroundColor: 'rgba(239, 68, 68, 0.1)',
+        };
+      default:
+        return {
+          color: '#F59E0B',
+          backgroundColor: 'rgba(245, 158, 11, 0.1)',
+        };
+    }
   };
 
-  const handleDeleteUser = (user: User) => {
-    console.log('Delete user:', user);
-  };
-
-  const handleAddUser = () => {
-    console.log('Add user');
-  };
-
-  const handleExportData = () => {
-    console.log('Export data');
+  const getRoleColor = (role: string) => {
+    switch (role.toUpperCase()) {
+      case 'SUPERADMIN':
+        return {
+          color: '#8B5CF6',
+          backgroundColor: 'rgba(139, 92, 246, 0.1)',
+        };
+      case 'CREATOR':
+        return {
+          color: '#3B82F6',
+          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        };
+      case 'USER':
+        return {
+          color: '#6366F1',
+          backgroundColor: 'rgba(99, 102, 241, 0.1)',
+        };
+      default:
+        return {
+          color: '#9CA3AF',
+          backgroundColor: 'rgba(156, 163, 175, 0.1)',
+        };
+    }
   };
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h5" sx={{ 
-          fontWeight: 600,
-          background: 'linear-gradient(to right, #fff, #94A3B8)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
+      <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="h4" sx={{ 
+          color: theme.palette.mode === 'dark' ? '#E2E8F0' : '#1E293B',
+          fontWeight: 600 
         }}>
           User Management
         </Typography>
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <StyledButton
-            variant="outlined"
-            startIcon={<StyledAddIcon />}
-            onClick={handleAddUser}
-          >
-            Add User
-          </StyledButton>
-          <StyledButton
-            variant="outlined"
-            onClick={handleExportData}
-          >
-            Export Data
-          </StyledButton>
-        </Box>
+        <StyledButton
+          startIcon={<StyledAddIcon />}
+          onClick={() => {}}
+          sx={{ px: 3 }}
+        >
+          Add User
+        </StyledButton>
       </Box>
 
-      <StyledCard>
-        <Box sx={{ p: 2 }}>
-          <StyledSearchField
-            fullWidth
-            placeholder="Search users..."
-            size="small"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </Box>
-
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>Name</TableCell>
-                <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>Email</TableCell>
-                <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>Role</TableCell>
-                <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>Status</TableCell>
-                <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>Last Active</TableCell>
-                <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {filteredUsers
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((user) => (
-                  <TableRow key={user.id} sx={{ '&:last-child td': { border: 0 } }}>
-                    <TableCell sx={{ color: '#fff', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>{user.name}</TableCell>
-                    <TableCell sx={{ color: '#fff', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>{user.email}</TableCell>
-                    <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                      <Chip
-                        label={user.role}
-                        size="small"
-                        sx={{
-                          backgroundColor: user.role === 'CREATOR' ? 'rgba(14, 165, 233, 0.2)' : 'rgba(99, 102, 241, 0.2)',
-                          color: user.role === 'CREATOR' ? '#0EA5E9' : '#818CF8',
-                          fontWeight: 500,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                      <Chip
-                        label={user.status}
-                        size="small"
-                        sx={{
-                          backgroundColor: user.status === 'active' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)',
-                          color: user.status === 'active' ? '#22C55E' : '#EF4444',
-                          fontWeight: 500,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>{user.lastActive}</TableCell>
-                    <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                      <Box sx={{ display: 'flex', gap: 1 }}>
-                        <StyledButton
-                          variant="outlined"
-                          className="icon"
-                          onClick={() => handleEditUser(user)}
-                          sx={{
-                            color: '#94A3B8',
-                            borderColor: 'rgba(148, 163, 184, 0.2)',
-                            '&:hover': {
-                              color: '#0EA5E9',
-                              borderColor: '#0EA5E9',
-                              backgroundColor: 'rgba(14, 165, 233, 0.08)',
-                            },
-                          }}
-                        >
-                          <StyledEditIcon fontSize="small" />
-                        </StyledButton>
-                        <StyledButton
-                          variant="outlined"
-                          className="icon"
-                          onClick={() => handleDeleteUser(user)}
-                          sx={{
-                            color: '#94A3B8',
-                            borderColor: 'rgba(148, 163, 184, 0.2)',
-                            '&:hover': {
-                              color: '#EF4444',
-                              borderColor: '#EF4444',
-                              backgroundColor: 'rgba(239, 68, 68, 0.08)',
-                            },
-                          }}
-                        >
-                          <StyledDeleteIcon fontSize="small" />
-                        </StyledButton>
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-
-        <TablePagination
-          component="div"
-          count={filteredUsers.length}
-          page={page}
-          onPageChange={handleChangePage}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={{
-            color: '#94A3B8',
-            '.MuiTablePagination-select': {
-              color: '#fff',
-            },
-            '.MuiTablePagination-selectIcon': {
-              color: '#94A3B8',
-            },
-            '.MuiTablePagination-actions': {
-              color: '#94A3B8',
+      <Box sx={{ mb: 3 }}>
+        <TextField
+          fullWidth
+          variant="outlined"
+          placeholder="Search users..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: theme.palette.mode === 'dark' ? '#64748B' : '#94A3B8' }} />
+              </InputAdornment>
+            ),
+            sx: {
+              backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.75)' : 'rgba(255, 255, 255, 0.9)',
+              backdropFilter: 'blur(8px)',
+              border: 'none',
+              '& fieldset': {
+                border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
+              },
+              '&:hover fieldset': {
+                borderColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)',
+              },
             },
           }}
         />
-      </StyledCard>
+      </Box>
+
+      <TableContainer component={Paper} sx={{
+        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.75)' : 'rgba(255, 255, 255, 0.9)',
+        backdropFilter: 'blur(8px)',
+        borderRadius: 2,
+        border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
+      }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569', fontWeight: 600 }}>User</TableCell>
+              <TableCell sx={{ color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569', fontWeight: 600 }}>Role</TableCell>
+              <TableCell sx={{ color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569', fontWeight: 600 }}>Status</TableCell>
+              <TableCell sx={{ color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569', fontWeight: 600 }}>Last Active</TableCell>
+              <TableCell align="right" sx={{ color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569', fontWeight: 600 }}>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredUsers
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((user) => (
+                <TableRow key={user.id} hover>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                      <Avatar sx={{ bgcolor: '#3B82F6' }}>
+                        {user.name.charAt(0)}
+                      </Avatar>
+                      <Box>
+                        <Typography sx={{ 
+                          color: theme.palette.mode === 'dark' ? '#E2E8F0' : '#1E293B',
+                          fontWeight: 500 
+                        }}>
+                          {user.name}
+                        </Typography>
+                        <Typography variant="body2" sx={{ color: '#64748B' }}>
+                          {user.email}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      label={user.role}
+                      size="small"
+                      sx={{
+                        ...getRoleColor(user.role),
+                        fontWeight: 500,
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      label={user.status}
+                      size="small"
+                      sx={{
+                        ...getStatusColor(user.status),
+                        fontWeight: 500,
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Typography sx={{ color: '#64748B' }}>
+                      {formatDistanceToNow(new Date(user.lastActive), { addSuffix: true })}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Tooltip title="Edit User">
+                      <IconButton 
+                        size="small"
+                        sx={{
+                          color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569',
+                          '&:hover': {
+                            color: '#3B82F6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                          },
+                        }}
+                      >
+                        <StyledEditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete User">
+                      <IconButton 
+                        size="small"
+                        sx={{
+                          color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569',
+                          '&:hover': {
+                            color: '#EF4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                          },
+                        }}
+                      >
+                        <StyledDeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={filteredUsers.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          sx={{
+            color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569',
+            borderTop: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
+            '& .MuiToolbar-root': {
+              '.MuiInputBase-root': {
+                color: theme.palette.mode === 'dark' ? '#94A3B8' : '#475569',
+              },
+            },
+          }}
+        />
+      </TableContainer>
     </Box>
   );
 };

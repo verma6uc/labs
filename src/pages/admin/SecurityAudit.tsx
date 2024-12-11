@@ -28,7 +28,7 @@ import {
   CheckCircle as CheckCircleIcon,
 } from '@mui/icons-material';
 import { mockAuditLogs, mockUsers } from '../../data/mockData';
-import { StyledCard, StyledTextField } from '../../components/shared/StyledComponents';
+import { FeatureCard, StyledTextField } from '../../components/shared/StyledComponents';
 
 const SecurityAudit = () => {
   const [page, setPage] = useState(0);
@@ -94,7 +94,7 @@ const SecurityAudit = () => {
         </Typography>
       </Box>
 
-      <StyledCard>
+      <FeatureCard>
         <Box sx={{ p: 3, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
           <StyledTextField
             placeholder="Search audit logs..."
@@ -254,7 +254,7 @@ const SecurityAudit = () => {
             },
           }}
         />
-      </StyledCard>
+      </FeatureCard>
     </Box>
   );
 };

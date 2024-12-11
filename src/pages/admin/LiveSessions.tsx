@@ -21,7 +21,7 @@ import {
   RemoveCircle as DisconnectIcon,
 } from '@mui/icons-material';
 import { mockLiveSessions, mockUsers } from '../../data/mockData';
-import { StyledCard, StyledTextField } from '../../components/shared/StyledComponents';
+import { FeatureCard, StyledTextField } from '../../components/shared/StyledComponents';
 import { formatDistanceToNow } from 'date-fns';
 
 const LiveSessions = () => {
@@ -117,7 +117,7 @@ const LiveSessions = () => {
       <Grid container spacing={3}>
         {filteredSessions.map((session) => (
           <Grid item xs={12} md={6} lg={4} key={session.id}>
-            <StyledCard>
+            <FeatureCard>
               <Box sx={{ p: 2 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -179,7 +179,7 @@ const LiveSessions = () => {
                   />
                 </Box>
               </Box>
-            </StyledCard>
+            </FeatureCard>
           </Grid>
         ))}
       </Grid>

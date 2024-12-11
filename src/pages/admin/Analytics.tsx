@@ -13,7 +13,7 @@ import {
   Timer as TimerIcon,
   CloudDownload as CloudDownloadIcon,
 } from '@mui/icons-material';
-import { StyledCard } from '../../components/shared/StyledComponents';
+import { FeatureCard } from '../../components/shared/StyledComponents';
 import { mockAnalytics } from '../../data/mockData';
 
 interface MetricCardProps {
@@ -27,7 +27,7 @@ interface MetricCardProps {
 
 const MetricCard: React.FC<MetricCardProps> = ({ title, value, change, period, color, icon }) => {
   return (
-    <StyledCard sx={{ height: '100%' }}>
+    <FeatureCard sx={{ height: '100%' }}>
       <Box sx={{ p: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
           <Box
@@ -76,7 +76,7 @@ const MetricCard: React.FC<MetricCardProps> = ({ title, value, change, period, c
           {period}
         </Typography>
       </Box>
-    </StyledCard>
+    </FeatureCard>
   );
 };
 
@@ -88,65 +88,65 @@ const Analytics = () => {
       </Typography>
 
       <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
-          <MetricCard
-            title="Active Users"
-            value="2,847"
-            change={12.5}
-            period="Last 30 days"
-            color="#0EA5E9"
-            icon={<GroupIcon />}
-          />
+        <Grid item xs={12} md={8}>
+          <FeatureCard>
+            <MetricCard
+              title="Active Users"
+              value="2,847"
+              change={12.5}
+              period="Last 30 days"
+              color="#0EA5E9"
+              icon={<GroupIcon />}
+            />
+          </FeatureCard>
         </Grid>
         <Grid item xs={12} md={4}>
-          <MetricCard
-            title="Total Storage"
-            value="856 GB"
-            change={8.2}
-            period="Last 30 days"
-            color="#6366F1"
-            icon={<StorageIcon />}
-          />
+          <FeatureCard>
+            <MetricCard
+              title="Total Storage"
+              value="856 GB"
+              change={8.2}
+              period="Last 30 days"
+              color="#6366F1"
+              icon={<StorageIcon />}
+            />
+          </FeatureCard>
         </Grid>
-        <Grid item xs={12} md={4}>
-          <MetricCard
-            title="Response Time"
-            value="124ms"
-            change={-3.2}
-            period="Last 7 days"
-            color="#F59E0B"
-            icon={<TimerIcon />}
-          />
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <MetricCard
-            title="API Requests"
-            value="1.2M"
-            change={15.7}
-            period="Last 7 days"
-            color="#10B981"
-            icon={<QueryStatsIcon />}
-          />
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <MetricCard
-            title="Downloads"
-            value="45.2K"
-            change={5.3}
-            period="Last 30 days"
-            color="#8B5CF6"
-            icon={<CloudDownloadIcon />}
-          />
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <MetricCard
-            title="Growth Rate"
-            value="24.8%"
-            change={2.1}
-            period="Last quarter"
-            color="#EC4899"
-            icon={<TrendingUpIcon />}
-          />
+        <Grid item xs={12}>
+          <FeatureCard>
+            <MetricCard
+              title="Response Time"
+              value="124ms"
+              change={-3.2}
+              period="Last 7 days"
+              color="#F59E0B"
+              icon={<TimerIcon />}
+            />
+            <MetricCard
+              title="API Requests"
+              value="1.2M"
+              change={15.7}
+              period="Last 7 days"
+              color="#10B981"
+              icon={<QueryStatsIcon />}
+            />
+            <MetricCard
+              title="Downloads"
+              value="45.2K"
+              change={5.3}
+              period="Last 30 days"
+              color="#8B5CF6"
+              icon={<CloudDownloadIcon />}
+            />
+            <MetricCard
+              title="Growth Rate"
+              value="24.8%"
+              change={2.1}
+              period="Last quarter"
+              color="#EC4899"
+              icon={<TrendingUpIcon />}
+            />
+          </FeatureCard>
         </Grid>
       </Grid>
 

@@ -33,6 +33,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Glowing icon effects with hover animations
 - Enhanced hero section with more dramatic visuals
 - Custom icon components in a dedicated icons directory
+- Notification count chip in admin header
+- Custom scrollbar styling for notification menu
+- Hover effects for notification items
 
 ### Changed
 - Updated Agents page styling
@@ -58,10 +61,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refined feature cards with glassmorphism effects
 - Removed early access badge and simplified hero section
 - Improved responsive behavior across all screen sizes
-- Updated admin navigation structure
-  - Removed Analytics page and related components
-  - Fixed System Settings path for better consistency
-  - Streamlined menu items for better user experience
+- Enhanced notification cards
+  - Improved color contrast for better readability
+  - Added colored backgrounds for notification icons
+  - Better spacing and typography hierarchy
+  - Enhanced mobile responsiveness
+- Improved user management table
+  - Better visibility for action icons in dark mode
+  - Added hover effects with color transitions
+  - Enhanced table styling with glassmorphism
+  - Improved user information display
 
 ### Deprecated
 - N/A
@@ -78,6 +87,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Progress cards section from homepage
 
 ### Fixed
+- Action icons visibility in dark mode
+  - Added proper light/dark mode colors
+  - Improved hover states and transitions
+  - Better contrast for icon buttons
 - System Settings path consistency
   - Updated path from /admin/settings to /admin/system-settings
   - Fixed menu item linking in AdminLayout
