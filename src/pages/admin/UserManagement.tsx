@@ -11,7 +11,6 @@ import {
   Paper,
   Avatar,
   Chip,
-  IconButton,
   InputAdornment,
   TextField,
 } from '@mui/material';
@@ -70,7 +69,7 @@ const UserManagement = () => {
       backdropFilter: 'blur(20px)',
       borderRadius: 2,
       border: '1px solid rgba(255, 255, 255, 0.1)',
-      p: 3,
+      p: 2,
     }}>
       <Box sx={{ 
         display: 'flex', 
@@ -134,11 +133,11 @@ const UserManagement = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>User</TableCell>
+              <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', pl: 0 }}>User</TableCell>
               <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Role</TableCell>
               <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Status</TableCell>
               <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Last Active</TableCell>
-              <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Actions</TableCell>
+              <TableCell sx={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', pr: 0 }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -146,6 +145,7 @@ const UserManagement = () => {
               <TableRow key={user.id}>
                 <TableCell sx={{ 
                   borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                  pl: 0,
                 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                     <Avatar sx={{ 
@@ -197,6 +197,7 @@ const UserManagement = () => {
                 </TableCell>
                 <TableCell sx={{ 
                   borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                  pr: 0,
                 }}>
                   <Box sx={{ display: 'flex', gap: 1 }}>
                     <AdminButton

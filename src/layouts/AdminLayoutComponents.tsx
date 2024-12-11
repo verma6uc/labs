@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
-  IconButton,
   Typography,
   Menu,
   MenuItem,
@@ -28,30 +27,36 @@ import Logo from '../components/Logo';
 import { mockNotifications } from '../data/mockData';
 import { commonBackground } from './AdminLayoutStyles';
 
-export const getMenuIcon = (iconName: string) => {
-  switch (iconName) {
+interface MenuIconProps {
+  name: string;
+}
+
+export const MenuIcon = React.memo<MenuIconProps>(({ name }) => {
+  switch (name) {
     case 'dashboard':
-      return <DashboardIcon sx={{ fontSize: 24 }} />;
+      return <DashboardIcon sx={{ fontSize: 20 }} />;
     case 'analytics':
-      return <AnalyticsIcon sx={{ fontSize: 24 }} />;
+      return <AnalyticsIcon sx={{ fontSize: 20 }} />;
     case 'people':
-      return <PeopleIcon sx={{ fontSize: 24 }} />;
+      return <PeopleIcon sx={{ fontSize: 20 }} />;
     case 'timer':
-      return <TimerIcon sx={{ fontSize: 24 }} />;
+      return <TimerIcon sx={{ fontSize: 20 }} />;
     case 'security':
-      return <SecurityIcon sx={{ fontSize: 24 }} />;
+      return <SecurityIcon sx={{ fontSize: 20 }} />;
     case 'settings':
-      return <SettingsIcon sx={{ fontSize: 24 }} />;
+      return <SettingsIcon sx={{ fontSize: 20 }} />;
     default:
-      return <CircleIcon sx={{ fontSize: 24 }} />;
+      return <CircleIcon sx={{ fontSize: 20 }} />;
   }
-};
+});
+
+MenuIcon.displayName = 'MenuIcon';
 
 interface HeaderLogoProps {
   onClick?: () => void;
 }
 
-export const HeaderLogo: React.FC<HeaderLogoProps> = ({ onClick }) => (
+export const HeaderLogo = React.memo<HeaderLogoProps>(({ onClick }) => (
   <Box 
     component={Link} 
     to="/admin/dashboard"
@@ -80,7 +85,9 @@ export const HeaderLogo: React.FC<HeaderLogoProps> = ({ onClick }) => (
       Creator Labs
     </Typography>
   </Box>
-);
+));
+
+HeaderLogo.displayName = 'HeaderLogo';
 
 interface ProfileMenuProps {
   anchorEl: null | HTMLElement;
@@ -89,7 +96,7 @@ interface ProfileMenuProps {
   onLogout: () => void;
 }
 
-export const ProfileMenu: React.FC<ProfileMenuProps> = ({ anchorEl, open, onClose, onLogout }) => (
+export const ProfileMenu = React.memo<ProfileMenuProps>(({ anchorEl, open, onClose, onLogout }) => (
   <Menu
     anchorEl={anchorEl}
     open={open}
@@ -99,6 +106,7 @@ export const ProfileMenu: React.FC<ProfileMenuProps> = ({ anchorEl, open, onClos
         width: 200,
         mt: 1.5,
         ...commonBackground,
+        border: '1px solid rgba(255, 255, 255, 0.1)',
       },
     }}
     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
@@ -111,7 +119,9 @@ export const ProfileMenu: React.FC<ProfileMenuProps> = ({ anchorEl, open, onClos
       <Typography variant="body2" sx={{ color: '#E2E8F0' }}>Logout</Typography>
     </MenuItem>
   </Menu>
-);
+));
+
+ProfileMenu.displayName = 'ProfileMenu';
 
 interface NotificationsMenuProps {
   anchorEl: null | HTMLElement;
@@ -119,7 +129,7 @@ interface NotificationsMenuProps {
   onClose: () => void;
 }
 
-export const NotificationsMenu: React.FC<NotificationsMenuProps> = ({ anchorEl, open, onClose }) => (
+export const NotificationsMenu = React.memo<NotificationsMenuProps>(({ anchorEl, open, onClose }) => (
   <Menu
     anchorEl={anchorEl}
     open={open}
@@ -130,7 +140,7 @@ export const NotificationsMenu: React.FC<NotificationsMenuProps> = ({ anchorEl, 
         maxHeight: 480,
         overflow: 'auto',
         ...commonBackground,
-        border: '1px solid rgba(255, 255, 255, 0.125)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
         mt: 1,
         '&::-webkit-scrollbar': {
@@ -253,4 +263,6 @@ export const NotificationsMenu: React.FC<NotificationsMenuProps> = ({ anchorEl, 
       </Box>
     )}
   </Menu>
-);
+));
+
+NotificationsMenu.displayName = 'NotificationsMenu';

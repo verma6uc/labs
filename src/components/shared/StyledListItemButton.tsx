@@ -1,23 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ListItemButton, ListItemButtonProps, styled } from '@mui/material';
-import { glassButton } from '../../layouts/AdminLayoutStyles';
 
 interface StyledListItemButtonProps extends Omit<ListItemButtonProps, 'component'> {
   to?: string;
 }
 
 const StyledButton = styled(ListItemButton)(({ theme }) => ({
-  borderRadius: '12px',
+  borderRadius: '8px',
   padding: '12px 16px',
   marginBottom: '4px',
+  width: '100%',
+  backgroundColor: 'rgba(255, 255, 255, 0.05)',
   '&.Mui-selected': {
     backgroundColor: 'rgba(14, 165, 233, 0.15)',
-    backdropFilter: 'blur(10px)',
-    border: '1px solid rgba(14, 165, 233, 0.2)',
     '&:hover': {
-      backgroundColor: 'rgba(14, 165, 233, 0.2)',
-      border: '1px solid rgba(14, 165, 233, 0.3)',
+      backgroundColor: 'rgba(14, 165, 233, 0.25)',
     },
     '& .MuiListItemIcon-root': {
       color: '#0EA5E9',
@@ -28,8 +26,6 @@ const StyledButton = styled(ListItemButton)(({ theme }) => ({
     },
   },
   '&:not(.Mui-selected)': {
-    ...glassButton,
-    border: '1px solid transparent',
     '& .MuiListItemIcon-root': {
       color: '#94A3B8',
     },
@@ -38,7 +34,6 @@ const StyledButton = styled(ListItemButton)(({ theme }) => ({
     },
     '&:hover': {
       backgroundColor: 'rgba(255, 255, 255, 0.1)',
-      border: '1px solid rgba(255, 255, 255, 0.2)',
       '& .MuiListItemIcon-root': {
         color: '#0EA5E9',
       },
@@ -50,7 +45,7 @@ export const StyledListItemButton = React.forwardRef<HTMLDivElement, StyledListI
   ({ to, children, ...props }, ref) => {
     if (to) {
       return (
-        <Link to={to} style={{ textDecoration: 'none' }}>
+        <Link to={to} style={{ textDecoration: 'none', width: '100%' }}>
           <StyledButton ref={ref} {...props}>
             {children}
           </StyledButton>

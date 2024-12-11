@@ -6,7 +6,6 @@ import {
   Drawer,
   ListItemIcon,
   ListItemText,
-  Button,
 } from '@mui/material';
 
 export const DRAWER_WIDTH = 280;
@@ -30,13 +29,14 @@ export const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export const UserAvatar = styled(Avatar)(({ theme }) => ({
-  width: 32,
-  height: 32,
+  width: 40,
+  height: 40,
   fontSize: '0.875rem',
   fontWeight: 600,
   background: 'rgba(14, 165, 233, 0.2)',
   color: '#0EA5E9',
   border: '1px solid rgba(14, 165, 233, 0.3)',
+  transition: 'border-color 0.2s ease-in-out',
 }));
 
 export const StyledDrawer = styled(Drawer)(({ theme }) => ({
@@ -108,34 +108,26 @@ export const StyledAppBar = styled(AppBar)(({ theme }) => ({
 export const MainContent = styled(Box)(({ theme }) => ({
   ...commonBackground,
   flexGrow: 1,
-  minHeight: '100vh',
   position: 'relative',
   zIndex: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  '& > *': {
-    maxWidth: '1400px',
+  padding: '16px',
+  marginTop: HEADER_HEIGHT,
+  height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+  overflow: 'auto',
+  '&::-webkit-scrollbar': {
+    width: '6px',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: '3px',
+  },
+  '& > div': {
+    maxWidth: '1600px',
     width: '100%',
     margin: '0 auto',
+    height: '100%',
   },
-}));
-
-export const AdminButton = styled(Button)(({ theme }) => ({
-  backgroundColor: 'rgba(14, 165, 233, 0.15)',
-  color: '#0EA5E9',
-  textTransform: 'none',
-  borderRadius: '8px',
-  padding: '8px 16px',
-  fontWeight: 500,
-  fontSize: '0.875rem',
-  '&:hover': {
-    backgroundColor: 'rgba(14, 165, 233, 0.25)',
-  },
-  '&.secondary': {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    color: '#E2E8F0',
-    '&:hover': {
-      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    },
+  [theme.breakpoints.up('sm')]: {
+    padding: '20px',
   },
 }));

@@ -36,7 +36,7 @@ import {
 } from './AdminLayoutStyles';
 
 import {
-  getMenuIcon,
+  MenuIcon as SidebarIcon,
   HeaderLogo,
   ProfileMenu,
   NotificationsMenu,
@@ -73,7 +73,6 @@ const AdminLayout = () => {
     );
     setAuthorizedMenuItems(filteredItems);
 
-    // Set user initials from name
     if (user.name) {
       const names = user.name.split(' ');
       const initials = names.length > 1 
@@ -146,10 +145,21 @@ const AdminLayout = () => {
             gap: 2,
             marginLeft: 'auto'
           }}>
-            <AdminButton
-              buttonType="secondary"
-              isIconButton
+            <Box
               onClick={handleNotificationsClick}
+              sx={{
+                width: 40,
+                height: 40,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 1,
+                cursor: 'pointer',
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                },
+              }}
             >
               <Badge
                 badgeContent={4}
@@ -162,17 +172,23 @@ const AdminLayout = () => {
               >
                 <NotificationsIcon sx={{ color: '#94A3B8', fontSize: 24 }} />
               </Badge>
-            </AdminButton>
+            </Box>
 
-            <AdminButton
-              buttonType="secondary"
-              isIconButton
+            <Box
               onClick={handleProfileClick}
+              sx={{
+                cursor: 'pointer',
+                '&:hover': {
+                  '& .MuiAvatar-root': {
+                    borderColor: 'rgba(14, 165, 233, 0.4)',
+                  },
+                },
+              }}
             >
               <UserAvatar>
                 {userInitials}
               </UserAvatar>
-            </AdminButton>
+            </Box>
           </Box>
         </Toolbar>
       </StyledAppBar>
@@ -209,7 +225,7 @@ const AdminLayout = () => {
                   onClick={() => isMobile && handleDrawerToggle()}
                 >
                   <StyledListItemIcon>
-                    {getMenuIcon(item.icon)}
+                    <SidebarIcon name={item.icon} />
                   </StyledListItemIcon>
                   <StyledListItemText
                     primary={item.title}
@@ -223,19 +239,26 @@ const AdminLayout = () => {
 
       <MainContent
         sx={{
-          p: { xs: 2, sm: 3 },
           width: { 
             xs: '100%',
             sm: drawerOpen ? `calc(100% - ${DRAWER_WIDTH}px)` : '100%'
           },
-          marginTop: HEADER_HEIGHT,
           transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
           }),
         }}
       >
-        <Outlet />
+        <Box sx={{ 
+          maxWidth: '1400px', 
+          width: '100%', 
+          margin: '0 auto',
+          minHeight: `calc(100vh - ${HEADER_HEIGHT}px)`,
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
+          <Outlet />
+        </Box>
       </MainContent>
 
       <ProfileMenu
