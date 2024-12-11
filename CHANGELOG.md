@@ -58,22 +58,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refined feature cards with glassmorphism effects
 - Removed early access badge and simplified hero section
 - Improved responsive behavior across all screen sizes
+- Updated admin navigation structure
+  - Removed Analytics page and related components
+  - Fixed System Settings path for better consistency
+  - Streamlined menu items for better user experience
 
 ### Deprecated
 - N/A
 
 ### Removed
+- Analytics page and related components
+  - Removed Analytics route from App.tsx
+  - Removed Analytics menu item from navigation
+  - Cleaned up mock analytics data
+  - Removed unused Analytics imports
 - Material-UI icons from Agents page in favor of custom SVG icons
 - Material-UI default icons in favor of custom SVG icons
 - Early access badge and redundant CTA buttons
 - Progress cards section from homepage
-- N/A
 
 ### Fixed
+- System Settings path consistency
+  - Updated path from /admin/settings to /admin/system-settings
+  - Fixed menu item linking in AdminLayout
 - TypeScript issues in Navbar and Agents components
 - Mobile menu styling and functionality
 - Agent card animations and transitions
-- N/A
 
 ### Security
 - N/A
