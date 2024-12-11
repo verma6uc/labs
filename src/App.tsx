@@ -19,6 +19,16 @@ import SystemSettings from './pages/admin/SystemSettings';
 import SecurityAudit from './pages/admin/SecurityAudit';
 import LiveSessions from './pages/admin/LiveSessions';
 
+// Creator Pages
+import CreatorLayout from './layouts/CreatorLayout';
+import CreatorDashboard from './pages/creator/Dashboard';
+import Projects from './pages/creator/Projects';
+import Blueprint from './pages/creator/Blueprint';
+import Metrics from './pages/creator/Metrics';
+import Integrations from './pages/creator/Integrations';
+import AIInsights from './pages/creator/AIInsights';
+import Feedback from './pages/creator/Feedback';
+
 // Static Pages
 import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
@@ -114,6 +124,45 @@ const router = createBrowserRouter([
       {
         path: 'security-audit',
         element: <SecurityAudit />,
+      },
+    ],
+  },
+  {
+    path: 'creator',
+    element: <CreatorLayout />,
+    errorElement: <ErrorBoundary />,
+    children: [
+      {
+        path: '',
+        element: <CreatorDashboard />,
+      },
+      {
+        path: 'dashboard',
+        element: <CreatorDashboard />,
+      },
+      {
+        path: 'projects',
+        element: <Projects />,
+      },
+      {
+        path: 'blueprint',
+        element: <Blueprint />,
+      },
+      {
+        path: 'metrics',
+        element: <Metrics />,
+      },
+      {
+        path: 'integrations',
+        element: <Integrations />,
+      },
+      {
+        path: 'ai-insights',
+        element: <AIInsights />,
+      },
+      {
+        path: 'feedback',
+        element: <Feedback />,
       },
     ],
   },

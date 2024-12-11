@@ -35,14 +35,21 @@ const Login = () => {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 500));
 
-      // Find superadmin user from mockUsers
-      const superAdmin = mockUsers.find(user => user.role === 'SUPERADMIN');
+      // Find user with matching email
+      const user = mockUsers.find(user => user.email === email);
 
-      // For demo purposes, any password will work with the correct email
-      if (email === superAdmin?.email) {
+      if (user) {
         localStorage.setItem('token', 'mock-jwt-token');
-        localStorage.setItem('user', JSON.stringify(superAdmin));
-        navigate('/admin');
+        localStorage.setItem('user', JSON.stringify(user));
+
+        // Redirect based on role
+        if (user.role === 'SUPERADMIN') {
+          navigate('/admin');
+        } else if (user.role === 'CREATOR') {
+          navigate('/creator/dashboard');
+        } else {
+          navigate('/dashboard');
+        }
       } else {
         throw new Error('Invalid email or password');
       }
