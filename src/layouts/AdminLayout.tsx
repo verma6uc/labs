@@ -1,127 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
+import { useLocation, useNavigate, Outlet } from 'react-router-dom';
 import {
-  AppBar,
-  Avatar,
   Box,
-  Drawer,
   IconButton,
   List,
   ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Toolbar,
   Typography,
   useTheme,
   useMediaQuery,
-  styled,
   Badge,
-  Menu,
-  MenuItem,
-  Tooltip,
-  Chip,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
   Close as CloseIcon,
-  Dashboard as DashboardIcon,
-  Analytics as AnalyticsIcon,
-  People as PeopleIcon,
-  Timer as TimerIcon,
-  Security as SecurityIcon,
-  Settings as SettingsIcon,
-  Circle as CircleIcon,
-  Logout as LogoutIcon,
   Notifications as NotificationsIcon,
-  CheckCircle as CheckCircleIcon,
-  Warning as WarningIcon,
-  Error as ErrorIcon,
 } from '@mui/icons-material';
-import { menuItems, mockNotifications } from '../data/mockData';
-import Logo from '../components/Logo';
-import { formatDistanceToNow } from 'date-fns';
+import { menuItems } from '../data/mockData';
 import { useTheme as useThemeContext } from '../contexts/ThemeContext';
 import ParticleBackground from '../components/ParticleBackground';
+import StyledListItemButton from '../components/shared/StyledListItemButton';
 
-const DRAWER_WIDTH = 280;
+import {
+  DRAWER_WIDTH,
+  commonBackground,
+  DrawerHeader,
+  UserAvatar,
+  StyledDrawer,
+  DrawerContent,
+  ParticleWrapper,
+  StyledListItemIcon,
+  StyledListItemText,
+  StyledAppBar,
+  MainContent,
+} from './AdminLayoutStyles';
 
-const commonBackground = {
-  backgroundColor: 'rgba(17, 25, 40, 0.75)',
-  backdropFilter: 'blur(20px)',
-};
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(2),
-  justifyContent: 'space-between',
-  ...commonBackground,
-  borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-  position: 'relative',
-  zIndex: 2
-}));
-
-const UserAvatar = styled(Avatar)(({ theme }) => ({
-  width: 32,
-  height: 32,
-  fontSize: '0.875rem',
-  fontWeight: 500,
-  background: 'linear-gradient(135deg, #0EA5E9 0%, #3B82F6 100%)',
-  border: '2px solid rgba(255, 255, 255, 0.1)',
-  boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-}));
-
-const StyledDrawer = styled(Drawer)(({ theme }) => ({
-  width: DRAWER_WIDTH,
-  flexShrink: 0,
-  '& .MuiDrawer-paper': {
-    width: DRAWER_WIDTH,
-    boxSizing: 'border-box',
-    ...commonBackground,
-    borderRight: '1px solid rgba(255, 255, 255, 0.1)',
-    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-    position: 'relative',
-    '&::-webkit-scrollbar': {
-      width: '6px',
-    },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-      borderRadius: '3px',
-    },
-  },
-}));
-
-const DrawerContent = styled(Box)({
-  position: 'relative',
-  zIndex: 2,
-  height: '100%',
-  ...commonBackground,
-});
-
-const ParticleWrapper = styled(Box)({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  zIndex: 1,
-  overflow: 'hidden'
-});
-
-const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  ...commonBackground,
-  boxShadow: 'none',
-  borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-}));
-
-const MainContent = styled(Box)(({ theme }) => ({
-  ...commonBackground,
-  flexGrow: 1,
-  minHeight: '100vh',
-  position: 'relative',
-  zIndex: 1,
-}));
+import {
+  getMenuIcon,
+  HeaderLogo,
+  ProfileMenu,
+  NotificationsMenu,
+} from './AdminLayoutComponents';
 
 const AdminLayout = () => {
   const theme = useTheme();
@@ -180,25 +99,6 @@ const AdminLayout = () => {
     navigate('/auth/login');
   };
 
-  const getMenuIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'dashboard':
-        return <DashboardIcon />;
-      case 'analytics':
-        return <AnalyticsIcon />;
-      case 'people':
-        return <PeopleIcon />;
-      case 'timer':
-        return <TimerIcon />;
-      case 'security':
-        return <SecurityIcon />;
-      case 'settings':
-        return <SettingsIcon />;
-      default:
-        return <CircleIcon />;
-    }
-  };
-
   return (
     <Box sx={{ 
       display: 'flex', 
@@ -229,11 +129,12 @@ const AdminLayout = () => {
               onClick={handleDrawerToggle}
               sx={{ mr: 2, display: { sm: 'none' } }}
             >
-              <MenuIcon />
+              <MenuIcon sx={{ fontSize: 24 }} />
             </IconButton>
             <Typography
               variant="h6"
               sx={{
+                fontSize: '1.25rem',
                 fontWeight: 600,
                 background: 'linear-gradient(to right, #fff, #94A3B8)',
                 WebkitBackgroundClip: 'text',
@@ -266,7 +167,7 @@ const AdminLayout = () => {
                   }
                 }}
               >
-                <NotificationsIcon sx={{ color: '#94A3B8' }} />
+                <NotificationsIcon sx={{ color: '#94A3B8', fontSize: 24 }} />
               </Badge>
             </IconButton>
 
@@ -301,81 +202,27 @@ const AdminLayout = () => {
         </ParticleWrapper>
         <DrawerContent>
           <DrawerHeader>
-            <Box 
-              component={Link} 
-              to="/admin/dashboard"
-              sx={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: 1,
-                textDecoration: 'none',
-                '&:hover': {
-                  opacity: 0.8
-                }
-              }}
-            >
-              <Logo sx={{ width: 24, height: 24, color: '#0EA5E9' }} />
-              <Typography 
-                variant="h6" 
-                sx={{ 
-                  fontWeight: 600,
-                  background: 'linear-gradient(to right, #fff, #94A3B8)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                Creator Labs
-              </Typography>
-            </Box>
+            <HeaderLogo onClick={() => isMobile && handleDrawerToggle()} />
             {isMobile && (
               <IconButton onClick={handleDrawerToggle}>
-                <CloseIcon sx={{ color: '#94A3B8' }} />
+                <CloseIcon sx={{ color: '#94A3B8', fontSize: 24 }} />
               </IconButton>
             )}
           </DrawerHeader>
 
-          <List sx={{ px: 2, position: 'relative', zIndex: 2 }}>
+          <List sx={{ px: 2, py: 2, position: 'relative', zIndex: 2 }}>
             {authorizedMenuItems.map((item) => (
-              <ListItem key={item.path} disablePadding sx={{ mb: 1 }}>
-                <ListItemButton
-                  component={Link}
+              <ListItem key={item.path} disablePadding>
+                <StyledListItemButton
                   to={item.path}
                   selected={location.pathname === item.path || 
                            (item.path === '/admin' && location.pathname === '/admin/dashboard')}
                   onClick={() => isMobile && handleDrawerToggle()}
-                  sx={{
-                    borderRadius: '12px',
-                    minHeight: 48,
-                    px: 2,
-                    '&.Mui-selected': {
-                      backgroundColor: 'rgba(14, 165, 233, 0.08)',
-                      '&:hover': {
-                        backgroundColor: 'rgba(14, 165, 233, 0.12)',
-                      },
-                      '& .MuiListItemIcon-root': {
-                        color: '#0EA5E9',
-                      },
-                      '& .MuiTypography-root': {
-                        color: '#E2E8F0',
-                        fontWeight: 500,
-                      },
-                    },
-                    '&:hover': {
-                      backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                    },
-                  }}
                 >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: 3,
-                      color: '#94A3B8',
-                      justifyContent: 'center',
-                    }}
-                  >
+                  <StyledListItemIcon>
                     {getMenuIcon(item.icon)}
-                  </ListItemIcon>
-                  <ListItemText
+                  </StyledListItemIcon>
+                  <StyledListItemText
                     primary={item.title}
                     primaryTypographyProps={{
                       sx: {
@@ -383,7 +230,7 @@ const AdminLayout = () => {
                       },
                     }}
                   />
-                </ListItemButton>
+                </StyledListItemButton>
               </ListItem>
             ))}
           </List>
@@ -407,161 +254,18 @@ const AdminLayout = () => {
         <Outlet />
       </MainContent>
 
-      <Menu
+      <ProfileMenu
         anchorEl={profileAnchorEl}
         open={Boolean(profileAnchorEl)}
         onClose={handleProfileClose}
-        PaperProps={{
-          sx: {
-            width: 200,
-            mt: 1.5,
-            ...commonBackground,
-          },
-        }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-      >
-        <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <LogoutIcon fontSize="small" sx={{ color: '#94A3B8' }} />
-          </ListItemIcon>
-          <Typography variant="body2" sx={{ color: '#E2E8F0' }}>Logout</Typography>
-        </MenuItem>
-      </Menu>
+        onLogout={handleLogout}
+      />
 
-      <Menu
+      <NotificationsMenu
         anchorEl={notificationsAnchorEl}
         open={Boolean(notificationsAnchorEl)}
         onClose={handleNotificationsClose}
-        sx={{
-          '& .MuiPaper-root': {
-            width: 360,
-            maxHeight: 480,
-            overflow: 'auto',
-            ...commonBackground,
-            border: '1px solid rgba(255, 255, 255, 0.125)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
-            mt: 1,
-            '&::-webkit-scrollbar': {
-              width: '8px',
-            },
-            '&::-webkit-scrollbar-track': {
-              background: 'transparent',
-            },
-            '&::-webkit-scrollbar-thumb': {
-              background: 'rgba(255, 255, 255, 0.2)',
-              borderRadius: '4px',
-            },
-          },
-        }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-      >
-        <Box sx={{ 
-          p: 2, 
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
-          <Typography variant="h6" sx={{ 
-            color: '#E2E8F0',
-            fontWeight: 600
-          }}>
-            Notifications
-          </Typography>
-          <Chip
-            label={`${mockNotifications.length} New`}
-            size="small"
-            sx={{
-              backgroundColor: 'rgba(59, 130, 246, 0.2)',
-              color: '#3B82F6',
-              fontWeight: 500,
-            }}
-          />
-        </Box>
-        <Box sx={{ maxHeight: 400, overflow: 'auto' }}>
-          {mockNotifications.map((notification) => (
-            <Box 
-              key={notification.id} 
-              sx={{ 
-                p: 1,
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                },
-              }}
-            >
-              <Box sx={{ 
-                display: 'flex', 
-                alignItems: 'flex-start',
-                p: 1.5,
-                backgroundColor: 'rgba(17, 25, 40, 0.6)',
-                borderRadius: 1,
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-              }}>
-                <Box sx={{ 
-                  mr: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: 40,
-                  height: 40,
-                  borderRadius: 1,
-                  backgroundColor: (() => {
-                    switch (notification.type) {
-                      case 'success':
-                        return 'rgba(16, 185, 129, 0.2)';
-                      case 'warning':
-                        return 'rgba(245, 158, 11, 0.2)';
-                      case 'error':
-                        return 'rgba(239, 68, 68, 0.2)';
-                      default:
-                        return 'rgba(59, 130, 246, 0.2)';
-                    }
-                  })(),
-                }}>
-                  {notification.type === 'success' && <CheckCircleIcon sx={{ color: '#10B981' }} />}
-                  {notification.type === 'warning' && <WarningIcon sx={{ color: '#F59E0B' }} />}
-                  {notification.type === 'error' && <ErrorIcon sx={{ color: '#EF4444' }} />}
-                  {notification.type === 'info' && <NotificationsIcon sx={{ color: '#3B82F6' }} />}
-                </Box>
-                <Box sx={{ flex: 1 }}>
-                  <Typography sx={{ 
-                    color: '#E2E8F0',
-                    fontWeight: 600,
-                    mb: 0.5,
-                  }}>
-                    {notification.title}
-                  </Typography>
-                  <Typography sx={{ 
-                    color: '#94A3B8',
-                    fontSize: '0.875rem',
-                    mb: 1,
-                  }}>
-                    {notification.message}
-                  </Typography>
-                  <Typography sx={{ 
-                    color: '#64748B',
-                    fontSize: '0.75rem',
-                  }}>
-                    {formatDistanceToNow(new Date(notification.timestamp), { addSuffix: true })}
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
-          ))}
-        </Box>
-        {mockNotifications.length === 0 && (
-          <Box sx={{ p: 3, textAlign: 'center' }}>
-            <Typography sx={{ 
-              color: '#64748B',
-              fontSize: '0.875rem',
-            }}>
-              No new notifications
-            </Typography>
-          </Box>
-        )}
-      </Menu>
+      />
     </Box>
   );
 };
