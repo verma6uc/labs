@@ -271,3 +271,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API endpoint signatures
 - Authentication headers
 - Response formats
+
+## [2024-12-10]
+
+### Changed
+- Modified `README.md`
+- Modified `src/App.tsx`
+- Modified `src/components/shared/StyledComponents.tsx`
+- Modified `src/layouts/CreatorLayout.tsx`
+- Modified `src/pages/creator/AIInsights.tsx`
+- Modified `src/pages/creator/Blueprint.tsx`
+- Modified `src/pages/creator/Dashboard.tsx`
+- Modified `src/pages/creator/Feedback.tsx`
+- Modified `src/pages/creator/Integrations.tsx`
+- Modified `src/pages/creator/Projects.tsx`
+- Modified `src/routes/index.tsx`
+- Added new onboarding pages in `src/pages/onboarding/`

@@ -29,6 +29,9 @@ import Integrations from './pages/creator/Integrations';
 import AIInsights from './pages/creator/AIInsights';
 import Feedback from './pages/creator/Feedback';
 
+// Onboarding
+import OnboardingFlow from './pages/onboarding/OnboardingFlow';
+
 // Static Pages
 import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
@@ -74,6 +77,11 @@ const router = createBrowserRouter([
         element: <Contact />,
       },
     ],
+  },
+  {
+    path: 'onboarding',
+    element: <OnboardingFlow />,
+    errorElement: <ErrorBoundary />,
   },
   {
     path: 'auth',

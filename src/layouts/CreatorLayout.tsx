@@ -1,8 +1,9 @@
 import React from 'react';
 import { Box, List, ListItem, Toolbar, Typography, AppBar, IconButton, Badge, Avatar } from '@mui/material';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import ParticleBackground from '../components/ParticleBackground';
 import StyledListItemButton from '../components/shared/StyledListItemButton';
+import BeakerIcon from '../components/BeakerIcon';
 import {
   Dashboard as DashboardIcon,
   Lightbulb as IdeaIcon,
@@ -49,9 +50,35 @@ const CreatorLayout: React.FC = () => {
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
       }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Typography variant="h6" sx={{ color: '#E2E8F0', fontWeight: 600 }}>
-            Creator Labs
-          </Typography>
+          <Box 
+            component={Link} 
+            to="/"
+            sx={{ 
+              textDecoration: 'none', 
+              color: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1.5,
+              '&:hover': {
+                color: '#0EA5E9',
+              },
+            }}
+          >
+            <BeakerIcon sx={{ color: '#0EA5E9', fontSize: 24 }} />
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                fontSize: '1.25rem',
+                fontWeight: 600,
+                background: 'linear-gradient(90deg, #0EA5E9 0%, #6366F1 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                textTransform: 'uppercase',
+              }}
+            >
+              Creator Labs
+            </Typography>
+          </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <IconButton color="inherit">
               <Badge badgeContent={3} color="error">

@@ -185,14 +185,14 @@ export const GlassButton = styled(Button)(({ theme }) => ({
     left: 0,
     right: 0,
     bottom: 0,
-    background: 'linear-gradient(135deg, rgba(0, 163, 255, 0.2), rgba(0, 102, 255, 0.2))',
+    background: 'linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(99, 102, 241, 0.2))',
     opacity: 0,
     transition: 'opacity 0.3s ease-in-out',
   },
   '&:hover': {
     transform: 'translateY(-2px)',
-    border: '1px solid rgba(0, 163, 255, 0.5)',
-    boxShadow: '0 8px 20px rgba(0, 163, 255, 0.15)',
+    border: '1px solid rgba(14, 165, 233, 0.5)',
+    boxShadow: '0 8px 20px rgba(14, 165, 233, 0.15)',
     '&::before': {
       opacity: 1,
     }
@@ -201,12 +201,12 @@ export const GlassButton = styled(Button)(({ theme }) => ({
     transform: 'translateY(0)',
   },
   '&.primary': {
-    background: 'linear-gradient(135deg, rgba(0, 163, 255, 0.2), rgba(0, 102, 255, 0.2))',
-    border: '1px solid rgba(0, 163, 255, 0.3)',
+    background: 'linear-gradient(135deg, #0EA5E9, #6366F1)',
+    border: '1px solid rgba(14, 165, 233, 0.3)',
     '&:hover': {
-      background: 'linear-gradient(135deg, rgba(0, 163, 255, 0.3), rgba(0, 102, 255, 0.3))',
-      border: '1px solid rgba(0, 163, 255, 0.6)',
-      boxShadow: '0 8px 25px rgba(0, 163, 255, 0.25)',
+      background: 'linear-gradient(135deg, #0284C7, #4F46E5)',
+      border: '1px solid rgba(14, 165, 233, 0.6)',
+      boxShadow: '0 8px 25px rgba(14, 165, 233, 0.25)',
     }
   },
   '&.secondary': {

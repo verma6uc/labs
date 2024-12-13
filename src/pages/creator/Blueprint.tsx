@@ -3,15 +3,15 @@ import { Box, Typography } from '@mui/material';
 
 const Blueprint: React.FC = () => {
   return (
-    <Box>
-      <Typography variant="h4" sx={{ color: '#E2E8F0', mb: 3 }}>
+    <Box sx={{ p: 3 }}>
+      <Typography variant="h4" component="h1" gutterBottom>
         Blueprint
       </Typography>
-      <Typography sx={{ color: '#94A3B8' }}>
-        Design your product structure and flow
+      <Typography variant="body1">
+        Design your product blueprints here. This page is under construction.
       </Typography>
     </Box>
   );
 };
 
-export default Blueprint;
+export default Blueprint; 
